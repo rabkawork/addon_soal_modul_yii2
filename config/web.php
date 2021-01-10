@@ -11,10 +11,17 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'modules' => [
+
+        'Presentasi' => [
+            'class' => 'app\modules\Presentasi\Settings',
+        ],
+
+    ],
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'QQM18xCVoFN7UlXCyawRSdIGNfUZac5a',
+            'cookieValidationKey' => 'gAmT5T8t1iU9H3BZp_QGjK9HP5C6y78Y',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -56,6 +63,14 @@ $config = [
 ];
 
 if (YII_ENV_DEV) {
+
+    $config['bootstrap'][] = 'gii';
+    $config['modules']['gii'] = [
+        'class' => 'yii\gii\Module',
+    ];
+
+
+    
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
