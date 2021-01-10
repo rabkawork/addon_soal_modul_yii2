@@ -2,9 +2,9 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost:3306;dbname=addon_yii2',
+    'dsn' => 'mysql:host=localhost:3306;dbname=addon_soal',
     'username' => 'root',
-    'password' => '123456',
+    'password' => '',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)
