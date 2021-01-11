@@ -3403,12 +3403,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "da4c3663721420520b024e5aede66b813019e744"
+                "reference": "7286c70d99c958cd419f10dae098ed3fc33670d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/da4c3663721420520b024e5aede66b813019e744",
-                "reference": "da4c3663721420520b024e5aede66b813019e744",
+                "url": "https://api.github.com/repos/symfony/console/zipball/7286c70d99c958cd419f10dae098ed3fc33670d9",
+                "reference": "7286c70d99c958cd419f10dae098ed3fc33670d9",
                 "shasum": ""
             },
             "require": {
@@ -3467,7 +3467,7 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Symfony Console Component",
+            "description": "Eases the creation of beautiful and testable command line interfaces",
             "homepage": "https://symfony.com",
             "keywords": [
                 "cli",
@@ -3475,7 +3475,7 @@
                 "console",
                 "terminal"
             ],
-            "time": "2021-01-05T20:16:44+00:00"
+            "time": "2021-01-10T16:31:27+00:00"
         },
         {
             "name": "symfony/css-selector",
@@ -3483,12 +3483,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/css-selector.git",
-                "reference": "cae52f750588574e51c51dabc08a8903ee5c7ffc"
+                "reference": "fe838b678fffb8dbadc590295a3981d3bdc82427"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/css-selector/zipball/cae52f750588574e51c51dabc08a8903ee5c7ffc",
-                "reference": "cae52f750588574e51c51dabc08a8903ee5c7ffc",
+                "url": "https://api.github.com/repos/symfony/css-selector/zipball/fe838b678fffb8dbadc590295a3981d3bdc82427",
+                "reference": "fe838b678fffb8dbadc590295a3981d3bdc82427",
                 "shasum": ""
             },
             "require": {
@@ -3521,9 +3521,9 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Symfony CssSelector Component",
+            "description": "Converts CSS selectors to XPath expressions",
             "homepage": "https://symfony.com",
-            "time": "2021-01-01T09:25:51+00:00"
+            "time": "2021-01-10T16:29:19+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -3582,12 +3582,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dom-crawler.git",
-                "reference": "5d7a9ad114cee04094e69f8471d8376163035501"
+                "reference": "ebcfbb503f8ff655202d9017879141d8cd487259"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/5d7a9ad114cee04094e69f8471d8376163035501",
-                "reference": "5d7a9ad114cee04094e69f8471d8376163035501",
+                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/ebcfbb503f8ff655202d9017879141d8cd487259",
+                "reference": "ebcfbb503f8ff655202d9017879141d8cd487259",
                 "shasum": ""
             },
             "require": {
@@ -3628,9 +3628,9 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Symfony DomCrawler Component",
+            "description": "Eases DOM navigation for HTML and XML documents",
             "homepage": "https://symfony.com",
-            "time": "2021-01-04T17:30:04+00:00"
+            "time": "2021-01-10T16:25:35+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -3638,12 +3638,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "6d0ca87886dc1433bea9f938db3bf9d92a6ccf63"
+                "reference": "0e02f20626852c97fcc7073e71f1e7f2031f49ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/6d0ca87886dc1433bea9f938db3bf9d92a6ccf63",
-                "reference": "6d0ca87886dc1433bea9f938db3bf9d92a6ccf63",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/0e02f20626852c97fcc7073e71f1e7f2031f49ea",
+                "reference": "0e02f20626852c97fcc7073e71f1e7f2031f49ea",
                 "shasum": ""
             },
             "require": {
@@ -3696,9 +3696,9 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Symfony EventDispatcher Component",
+            "description": "Provides tools that allow your application components to communicate with each other by dispatching events and listening to them",
             "homepage": "https://symfony.com",
-            "time": "2021-01-01T09:26:45+00:00"
+            "time": "2021-01-10T16:30:10+00:00"
         },
         {
             "name": "symfony/event-dispatcher-contracts",
@@ -3769,12 +3769,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "e2e8e054327340a9c1535fd176da80120d564add"
+                "reference": "4f5792c1dd7aa949e1e26c316c615f773b9d2136"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/e2e8e054327340a9c1535fd176da80120d564add",
-                "reference": "e2e8e054327340a9c1535fd176da80120d564add",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/4f5792c1dd7aa949e1e26c316c615f773b9d2136",
+                "reference": "4f5792c1dd7aa949e1e26c316c615f773b9d2136",
                 "shasum": ""
             },
             "require": {
@@ -3803,9 +3803,9 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Symfony Finder Component",
+            "description": "Finds files and directories via an intuitive fluent interface",
             "homepage": "https://symfony.com",
-            "time": "2021-01-05T06:22:18+00:00"
+            "time": "2021-01-10T16:29:19+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -4130,12 +4130,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "99f25957efe05db14a1aa6cff643eca0f83a952c"
+                "reference": "7a62495108b3dc7e749b709357ae720fccb5a39b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/99f25957efe05db14a1aa6cff643eca0f83a952c",
-                "reference": "99f25957efe05db14a1aa6cff643eca0f83a952c",
+                "url": "https://api.github.com/repos/symfony/string/zipball/7a62495108b3dc7e749b709357ae720fccb5a39b",
+                "reference": "7a62495108b3dc7e749b709357ae720fccb5a39b",
                 "shasum": ""
             },
             "require": {
@@ -4178,7 +4178,7 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Symfony String component",
+            "description": "Provides an object-oriented API to strings and deals with bytes, UTF-8 code points and grapheme clusters in a unified way",
             "homepage": "https://symfony.com",
             "keywords": [
                 "grapheme",
@@ -4188,7 +4188,7 @@
                 "utf-8",
                 "utf8"
             ],
-            "time": "2021-01-01T09:26:45+00:00"
+            "time": "2021-01-10T16:38:27+00:00"
         },
         {
             "name": "symfony/yaml",
@@ -4196,12 +4196,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "861d4af84c695aef0ec7475455f032a00a87cc0a"
+                "reference": "6647256db1074e3c80a465ec3bed38d0d9d25597"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/861d4af84c695aef0ec7475455f032a00a87cc0a",
-                "reference": "861d4af84c695aef0ec7475455f032a00a87cc0a",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/6647256db1074e3c80a465ec3bed38d0d9d25597",
+                "reference": "6647256db1074e3c80a465ec3bed38d0d9d25597",
                 "shasum": ""
             },
             "require": {
@@ -4244,9 +4244,9 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Symfony Yaml Component",
+            "description": "Loads and dumps YAML files",
             "homepage": "https://symfony.com",
-            "time": "2021-01-03T22:10:36+00:00"
+            "time": "2021-01-10T16:31:27+00:00"
         },
         {
             "name": "theseer/tokenizer",
