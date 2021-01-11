@@ -21,6 +21,11 @@ use Yii;
  */
 class RefClasss extends \yii\db\ActiveRecord
 {
+
+
+
+
+    
     /**
      * {@inheritdoc}
      */

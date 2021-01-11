@@ -19,5 +19,24 @@ class SoalController extends Controller
     }
 
 
-    
+    public function actionCreate()
+    {
+
+    }
+
+    public function actionDelete($id)
+    {
+
+    }
+
+
+    public function actionUpdate($id)
+   	{
+
+   	}
+
+
+
+
+
 }

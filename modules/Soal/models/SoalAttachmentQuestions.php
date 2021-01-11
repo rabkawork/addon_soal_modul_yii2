@@ -1,6 +1,8 @@
 <?php
 
 namespace app\modules\Soal\models;
+use yii\db\ActiveRecord;
+use yii2tech\ar\softdelete\SoftDeleteBehavior;
 
 use Yii;
 
@@ -18,6 +20,22 @@ use Yii;
  */
 class SoalAttachmentQuestions extends \yii\db\ActiveRecord
 {
+
+
+    public function behaviors()
+    {
+        return [
+            'softDeleteBehavior' => [
+                'class' => SoftDeleteBehavior::className(),
+                'softDeleteAttributeValues' => [
+                    'isDeleted' => true
+                ],
+            ],
+        ];
+    }
+
+
+    
     /**
      * {@inheritdoc}
      */
