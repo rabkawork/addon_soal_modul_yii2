@@ -13,6 +13,7 @@ use app\modules\Soal\models\SoalSubjects;
 use app\modules\Soal\models\SoalChoices;
 use app\modules\Soal\models\SoalQuestions;
 use yii\db\Query;
+use Db;
 
 use yii\base\Widget;
 use yii\web\UploadedFile;
@@ -40,10 +41,13 @@ class SoalController extends Controller
         // $models = $query->offset($pages->offset)->limit($pages->limit)->asArray()->all();
 
 
-        $limit = 10;
+        $limit      =   10;
+        $from       =   (isset($_GET['page'])) ? ($_GET['page']-1)*$limit : 0; // Match according to your query string
+
 
         $query = new Query;
-        $query->from('soal_subjects')
+        $query->select('ref_kurikulums.name as nama_kurikulum')
+                ->from('soal_subjects')
                 ->join('inner JOIN', 'ref_classs',
                     'soal_subjects.class = ref_classs.id')      
                 ->join('inner JOIN', 'ref_jenjangs', 
@@ -52,10 +56,29 @@ class SoalController extends Controller
                     'soal_subjects.lesson = ref_lessons.id')
                 ->join('inner JOIN', 'ref_kurikulums', 
                     'soal_subjects.kurikulum = ref_kurikulums.id')
-                ->where('soal_subjects.hidden = 0');
+                ->where('soal_subjects.hidden = 1 LIMIT '.$from.','.$limit);
+
 
         $command = $query->createCommand();
         $data = $command->queryAll();
+
+        $count   = \Yii::$app->db->createCommand('SELECT COUNT(*) as total FROM soal_subjects where soal_subjects.hidden = 1')->queryScalar();
+
+        $pagination = new \yii\data\Pagination(['totalCount' => $count, 'pageSize' => $limit]);           
+
+
+        var_dump($data);
+        exit();
+
+
+        return $this->render('index', [
+            'result' => $data,
+            'pagination' => $pagination,
+        ]);
+
+
+
+        
     }
 
 

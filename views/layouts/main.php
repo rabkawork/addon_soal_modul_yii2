@@ -49,7 +49,7 @@ AppAsset::register($this);
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
-      <span class="brand-text font-weight-light">Modul Addon Soal</span>
+      <i class="nav-icon fas fa-edit"></i> <span class="brand-text font-weight-light"><strong>Addon Soal</strong></span>
     </a>
 
     <!-- Sidebar -->
@@ -74,7 +74,7 @@ AppAsset::register($this);
           
           <li class="nav-item">
             <a href="<?php echo  Url::to(['/site/login']); ?>" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-user"></i>
               <p>
                 Login
               </p>
@@ -85,7 +85,7 @@ AppAsset::register($this);
 
           <li class="nav-item">
             <a href="<?php echo  Url::to(['/Soal/soal/index', 'id' => 1,'page' => 1]); ?>" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-tree"></i>
               <p>
                 Soal
               </p>
@@ -136,7 +136,7 @@ AppAsset::register($this);
 
   <!-- Main Footer -->
   <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2019.</strong>
+    <strong>Copyright &copy; 2021.</strong>
   </footer>
 </div>
 <!-- ./wrapper -->
