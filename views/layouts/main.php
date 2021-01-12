@@ -82,6 +82,19 @@ AppAsset::register($this);
               </p>
             </a>
           </li>
+
+
+
+          <li class="nav-item">
+            <a href="<?php echo  Url::to(['/Soal/soal/index', 'id' => 1,'page' => 1]); ?>" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Soal
+              </p>
+            </a>
+          </li>
+
+
       
         </ul>
       </nav>

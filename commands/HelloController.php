@@ -9,6 +9,7 @@ namespace app\commands;
 
 use yii\console\Controller;
 use yii\console\ExitCode;
+use app\modules\Soal\models\SoalSubjects;
 
 /**
  * This command echoes the first argument that you have entered.
@@ -29,5 +30,6 @@ class HelloController extends Controller
     {
         // echo $message . "\n";
         // return ExitCode::OK;
+
     }
 }

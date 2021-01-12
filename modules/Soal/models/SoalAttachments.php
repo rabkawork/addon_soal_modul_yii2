@@ -27,7 +27,7 @@ class SoalAttachments extends \yii\db\ActiveRecord
             'softDeleteBehavior' => [
                 'class' => SoftDeleteBehavior::className(),
                 'softDeleteAttributeValues' => [
-                    'isDeleted' => true
+                    'hidden' => true
                 ],
             ],
         ];

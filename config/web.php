@@ -12,9 +12,8 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'modules' => [
-
-        'Presentasi' => [
-            'class' => 'app\modules\Presentasi\Settings',
+        'Soal' => [
+            'class' => 'app\modules\Soal\Settings',
         ],
 
     ],
