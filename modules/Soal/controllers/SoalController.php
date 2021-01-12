@@ -52,7 +52,7 @@ class SoalController extends Controller
                     'soal_subjects.lesson = ref_lessons.id')
                 ->join('inner JOIN', 'ref_kurikulums', 
                     'soal_subjects.kurikulum = ref_kurikulums.id')
-                ->where('hidden = 0');
+                ->where('soal_subjects.hidden = 0');
 
         $command = $query->createCommand();
         $data = $command->queryAll();
@@ -72,15 +72,14 @@ class SoalController extends Controller
 
 
 
-    public function actionDelete($id)
+    public function actionDel($id)
     {
         $delete = SoalSubjects::findOne($id);
         $delete->softDelete(); 
-
     }
 
 
-    public function actionDeleteSoalPilGan($id)
+    public function actionDelpilgan($id)
     {
         $delete = SoalChoices::findOne($id);
         $delete->softDelete(); 
@@ -88,14 +87,14 @@ class SoalController extends Controller
     }
 
 
-    public function actionDeleteSoalEssay($id)
+    public function actionDelessay($id)
     {
         $delete = SoalQuestions::findOne($id);
         $delete->softDelete(); 
     }
 
 
-    public function actionSoalSave()
+    public function actionSoalpublish()
     {
 
     }
