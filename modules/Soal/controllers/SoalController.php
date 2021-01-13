@@ -42,7 +42,10 @@ class SoalController extends Controller
 
 
         $limit      =   10;
-        $from       =   (isset($_GET['page'])) ? ($_GET['page']-1)*$limit : 0; // Match according to your query string
+
+
+        $page = Yii::$app->request->get('page');
+        $from       =   (isset($page)) ? ($page-1)*$limit : 0; // Match according to your query string
 
 
         $query = new Query;
@@ -60,19 +63,22 @@ class SoalController extends Controller
                     'soal_subjects.lesson = ref_lessons.id')
                 ->join('inner JOIN', 'ref_kurikulums', 
                     'soal_subjects.kurikulum = ref_kurikulums.id')
-                ->where('soal_subjects.hidden = 1 LIMIT '.$from.','.$limit);
+                ->join('inner JOIN', 'ref_tahun_ajarans', 
+                    'soal_subjects.tahun_ajaran = ref_tahun_ajarans.id')
+                ->where('soal_subjects.hidden = 0 LIMIT '.$from.','.$limit);
 
 
         $command = $query->createCommand();
         $data = $command->queryAll();
 
-        $count   = \Yii::$app->db->createCommand('SELECT COUNT(*) as total FROM soal_subjects where soal_subjects.hidden = 1')->queryScalar();
+        $count   = \Yii::$app->db->createCommand('SELECT COUNT(*) as total FROM soal_subjects where soal_subjects.hidden = 0')->queryScalar();
 
         $pagination = new \yii\data\Pagination(['totalCount' => $count, 'pageSize' => $limit]);           
 
         return $this->render('index', [
             'result' => $data,
             'pagination' => $pagination,
+            'page' => $page,
         ]);        
     }
 
@@ -121,6 +127,5 @@ class SoalController extends Controller
     {
 
     }
-
 
 }
