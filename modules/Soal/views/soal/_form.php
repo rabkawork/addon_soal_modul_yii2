@@ -8,15 +8,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="row">
-  <div class="col-md-12">
-    <div class="card">
-      <div class="card-header">
-         <a href="#" class="btn btn-primary right"> Tambah Jurusan </a>
-      </div>
-      <!-- /.card-header -->
-      <div class="card-body">
-        <div class="table-responsive">
+
               <?php $form = ActiveForm::begin(); ?>
 
                 <?= $form->field($model, 'province')->textInput() ?>
@@ -51,7 +43,7 @@ use yii\widgets\ActiveForm;
 
                 <?= $form->field($model, 'cover')->textInput(['maxlength' => true]) ?>
 
-                <?= $form->field($model, 'status')->dropDownList([ '0', '1', ], ['prompt' => '']) ?>
+                <?= $form->field($model, 'status')->dropDownList([ '0', '1', ], ['prompt' => ''])->hiddenInput()->label(false) ?>
 
                 <?= $form->field($model, 'language')->dropDownList([ 1 => '1', 2 => '2', ], ['prompt' => '']) ?>
 
@@ -69,18 +61,14 @@ use yii\widgets\ActiveForm;
 
                 <?= $form->field($model, 'date_modified')->hiddenInput()->label(false) ?>
 
-                <?= $form->field($model, 'hidden')->hiddenInput() ?>
+                <?= $form->field($model, 'hidden')->hiddenInput()->label(false) ?>
 
                 <div class="form-group">
                     <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
                 </div>
 
                 <?php ActiveForm::end(); ?>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+ 
 
   
 

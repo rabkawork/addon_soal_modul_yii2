@@ -5,17 +5,40 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\modules\Soal\models\SoalSubjects */
 
-$this->title = 'Update Soal Subjects: ' . $model->name;
+$this->title = 'Update Soal  ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Soal Subjects', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="soal-subjects-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    
+	<div class="row">
+  		<div class="col-md-12">
+    		<div class="card">
+		      <div class="card-header">
+    				<h1><?= Html::encode($this->title) ?></h1>
+		      </div>
+		    </div>
+		</div>
+	</div>
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
+	<div class="row">
+	  <div class="col-md-12">
+	    <div class="card">
+	      <!-- <div class="card-header">
+	      </div> -->
+	      <!-- /.card-header -->
+	      <div class="card-body">
+	        <div class="table-responsive">
+	        	
+			    <?= $this->render('_form', [
+			        'model' => $model,
+			    ]) ?>
 
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 </div>
