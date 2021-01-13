@@ -46,7 +46,11 @@ class SoalController extends Controller
 
 
         $query = new Query;
-        $query->select('ref_kurikulums.name as nama_kurikulum')
+        $query->select('soal_subjects.*,
+                        ref_jenjangs.`name` AS txt_jenjang,
+                        ref_kurikulums.`name` AS txt_kurikulum,
+                        ref_classs.`name` AS txt_class,
+                        ref_lessons.`name` AS txt_lesson')
                 ->from('soal_subjects')
                 ->join('inner JOIN', 'ref_classs',
                     'soal_subjects.class = ref_classs.id')      
@@ -66,19 +70,10 @@ class SoalController extends Controller
 
         $pagination = new \yii\data\Pagination(['totalCount' => $count, 'pageSize' => $limit]);           
 
-
-        var_dump($data);
-        exit();
-
-
         return $this->render('index', [
             'result' => $data,
             'pagination' => $pagination,
-        ]);
-
-
-
-        
+        ]);        
     }
 
 
