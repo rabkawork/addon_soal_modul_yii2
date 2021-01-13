@@ -100,6 +100,8 @@ class SoalController extends Controller
     {
         $delete = SoalSubjects::findOne($id);
         $delete->softDelete(); 
+
+        return $this->redirect(['/Soal/soal/index']);     
     }
 
 
@@ -107,6 +109,8 @@ class SoalController extends Controller
     {
         $delete = SoalChoices::findOne($id);
         $delete->softDelete(); 
+
+        echo "sukses";
     
     }
 
@@ -115,6 +119,9 @@ class SoalController extends Controller
     {
         $delete = SoalQuestions::findOne($id);
         $delete->softDelete(); 
+
+        echo "sukses";
+        
     }
 
 

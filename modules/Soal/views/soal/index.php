@@ -47,7 +47,7 @@ use yii\helpers\Url;
                   <div class="modal-content">
 
                     <div class="modal-header">
-                      <h4 class="modal-title" id="deleteModal">Confirm Remove</h4>
+                      <h4 class="modal-title" id="deleteModal">Konfirmasi</h4>
                     </div>
 
                     <div class="modal-body">
@@ -55,8 +55,8 @@ use yii\helpers\Url;
                     </div>
 
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-btn fa-times"></i>Cancel</button>
-                      <a href="<?php echo  Url::to(['/Soal/soal/del', 'id' => $value['id']]); ?>" class="btn btn-danger btn-ok"><i class="fa fa-btn fa-trash-o"></i>Remove</a>
+                      <button type="button" class="btn btn-primary" data-dismiss="modal">Batal</button>
+                      <a href="<?php echo  Url::to(['/Soal/soal/del', 'id' => $value['id']]); ?>" class="btn btn-danger btn-ok"><i class="fa fa-btn fa-trash-o"></i>Hapus</a>
                     </div>
                   </div>
                 </div>
