@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
   		<div class="col-md-12">
     		<div class="card">
 		      <div class="card-header">
-    				<h1><?= Html::encode($this->title) ?></h1>
+    				<h3><?= Html::encode($this->title) ?></h3>
 		      </div>
 		    </div>
 		</div>
@@ -31,9 +31,14 @@ $this->params['breadcrumbs'][] = $this->title;
 	      <!-- /.card-header -->
 	      <div class="card-body">
 	        <div class="table-responsive">
-	        	
+
 			    <?= $this->render('_form', [
 			        'model' => $model,
+					'dataRefClass' => $dataRefClass,
+		            'dataRefJenjangs' => $dataRefJenjangs,
+		            'dataRefKurikulums' => $dataRefKurikulums,
+		            'dataRefTahunAjarans' => $dataRefTahunAjarans,
+		            'dataRefLessons' => $dataRefLessons,
 			    ]) ?>
 
 	        </div>

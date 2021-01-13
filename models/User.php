@@ -28,11 +28,6 @@ use yii\web\IdentityInterface;
 // class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
-    // public $id;
-    // public $username;
-    // public $password;
-    // public $authKey;
-    // public $accessToken;
 
 
     const STATUS_DELETED = 0;
@@ -101,7 +96,13 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return $this->getPrimaryKey();
     }
- 
+    
+
+    public function getUsername()
+    {
+        return \Yii::$app->user->identity->username;
+    }
+
     /**
      * @inheritdoc
      */

@@ -10,6 +10,7 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use yii\helpers\Url;
+use app\models\User;
 
 
 
@@ -71,7 +72,38 @@ AppAsset::register($this);
                with font-awesome or any other icon font library -->
         
 
-          
+
+          <?php
+             if(!Yii::$app->user->getIsGuest()){
+                $user = User::find(Yii::$app->user->id)->one();
+          ?>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+                Hi, <?= $user->username ?>
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview" style="display: none;">
+              <li class="nav-item">
+                <a href="<?php echo  Url::to(['/site/logout']); ?>" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Logout</p>
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+
+          <?php
+            }
+          ?>
+
+
+          <?php
+             if(Yii::$app->user->getIsGuest()){
+          ?>
           <li class="nav-item">
             <a href="<?php echo  Url::to(['/site/login']); ?>" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
@@ -80,9 +112,13 @@ AppAsset::register($this);
               </p>
             </a>
           </li>
+          <?php
+            }
+          ?>
 
-
-
+          <?php
+             if(!Yii::$app->user->getIsGuest()){
+          ?>
           <li class="nav-item">
             <a href="<?php echo  Url::to(['/Soal/soal/index', 'id' => 1,'page' => 1]); ?>" class="nav-link">
               <i class="nav-icon fas fa-tree"></i>
@@ -91,6 +127,9 @@ AppAsset::register($this);
               </p>
             </a>
           </li>
+          <?php
+             }
+          ?>
 
 
       

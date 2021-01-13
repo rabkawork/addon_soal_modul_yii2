@@ -25,10 +25,22 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        // 'user' => [
+        //     'identityClass' => 'app\models\User',
+        //     'enableAutoLogin' => true,
+        // ],
+
         'user' => [
+            'class' => 'yii\web\User',
             'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
+            //'enableAutoLogin' => true,
         ],
+        'session' => [ // for use session in console application
+            'class' => 'yii\web\Session'
+        ],
+
+
+
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],

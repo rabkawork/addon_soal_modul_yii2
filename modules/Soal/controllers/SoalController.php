@@ -8,7 +8,13 @@ use yii\web\Response;
 use yii\data\Pagination;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-use app\modules\Soal\models\RefClass;
+
+use app\modules\Soal\models\RefClasss;
+use app\modules\Soal\models\RefJenjangs;
+use app\modules\Soal\models\RefKurikulums;
+use app\modules\Soal\models\RefTahunAjarans;
+use app\modules\Soal\models\RefLessons;
+
 use app\modules\Soal\models\SoalSubjects;
 use app\modules\Soal\models\SoalChoices;
 use app\modules\Soal\models\SoalQuestions;
@@ -95,12 +101,30 @@ class SoalController extends Controller
     {
         $model = new SoalSubjects();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $RefClass = new RefClasss(); 
+        $RefJenjangs = new RefJenjangs(); 
+        $RefKurikulums = new RefKurikulums(); 
+        $RefTahunAjarans = new RefTahunAjarans(); 
+        $RefLessons = new RefLessons(); 
+
+        $dataRefClass = RefClasss::find()->all(); 
+        $dataRefJenjangs = RefJenjangs::find()->all(); 
+        $dataRefKurikulums = RefKurikulums::find()->all(); 
+        $dataRefTahunAjarans = RefTahunAjarans::find()->all(); 
+        $dataRefLessons = RefLessons::find()->all(); 
+
+
+        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'dataRefClass' => $dataRefClass,
+            'dataRefJenjangs' => $dataRefJenjangs,
+            'dataRefKurikulums' => $dataRefKurikulums,
+            'dataRefTahunAjarans' => $dataRefTahunAjarans,
+            'dataRefLessons' => $dataRefLessons,
         ]);
     }
 
@@ -115,12 +139,30 @@ class SoalController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $RefClass = new RefClasss(); 
+        $RefJenjangs = new RefJenjangs(); 
+        $RefKurikulums = new RefKurikulums(); 
+        $RefTahunAjarans = new RefTahunAjarans(); 
+        $RefLessons = new RefLessons(); 
+
+        $dataRefClass = RefClasss::find()->all(); 
+        $dataRefJenjangs = RefJenjangs::find()->all(); 
+        $dataRefKurikulums = RefKurikulums::find()->all(); 
+        $dataRefTahunAjarans = RefTahunAjarans::find()->all(); 
+        $dataRefLessons = RefLessons::find()->all(); 
+
+
+        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'dataRefClass' => $dataRefClass,
+            'dataRefJenjangs' => $dataRefJenjangs,
+            'dataRefKurikulums' => $dataRefKurikulums,
+            'dataRefTahunAjarans' => $dataRefTahunAjarans,
+            'dataRefLessons' => $dataRefLessons,
         ]);
     }
 

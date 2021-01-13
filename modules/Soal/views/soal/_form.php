@@ -2,6 +2,16 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
+
+
+ $dataRefClass = ArrayHelper::map($dataRefClass,'id','name');
+ $dataRefJenjangs = ArrayHelper::map($dataRefJenjangs,'id','name');
+ $dataRefKurikulums = ArrayHelper::map($dataRefKurikulums,'id','name');
+ $dataRefTahunAjarans = ArrayHelper::map($dataRefTahunAjarans,'id','name');
+ $dataRefLessons = ArrayHelper::map($dataRefLessons,'id','name');
+
+
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\Soal\models\SoalSubjects */
@@ -11,23 +21,23 @@ use yii\widgets\ActiveForm;
 
               <?php $form = ActiveForm::begin(); ?>
 
-                <?= $form->field($model, 'province')->textInput() ?>
+                <?= $form->field($model, 'province')->hiddenInput()->label(false) ?>
 
-                <?= $form->field($model, 'jenjang')->textInput() ?>
+                <?= $form->field($model, 'jenjang')->dropDownList($dataRefJenjangs) ?>
 
-                <?= $form->field($model, 'class')->textInput() ?>
+                <?= $form->field($model, 'class')->dropDownList($dataRefClass) ?>
 
-                <?= $form->field($model, 'kurikulum')->textInput() ?>
+                <?= $form->field($model, 'kurikulum')->dropDownList($dataRefKurikulums) ?>
 
-                <?= $form->field($model, 'tahun_ajaran')->textInput() ?>
+                <?= $form->field($model, 'tahun_ajaran')->dropDownList($dataRefTahunAjarans) ?>
 
-                <?= $form->field($model, 'periode_soal')->textInput() ?>
+                <?= $form->field($model, 'periode_soal')->hiddenInput()->label(false) ?>
 
-                <?= $form->field($model, 'lesson')->textInput() ?>
+                <?= $form->field($model, 'lesson')->dropDownList($dataRefLessons) ?>
 
-                <?= $form->field($model, 'variant')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'variant')->hiddenInput()->label(false) ?>
 
-                <?= $form->field($model, 'multiple_choice_option')->dropDownList([ 1 => '1', 0 => '0', ], ['prompt' => '']) ?>
+                <?= $form->field($model, 'multiple_choice_option')->hiddenInput()->label(false) ?>
 
                 <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
@@ -37,17 +47,17 @@ use yii\widgets\ActiveForm;
 
                 <?= $form->field($model, 'keterangan')->textarea(['rows' => 6]) ?>
 
-                <?= $form->field($model, 'hide_in_exam')->textInput() ?>
+                <?= $form->field($model, 'hide_in_exam')->hiddenInput()->label(false) ?>
 
                 <?= $form->field($model, 'price')->textInput() ?>
 
-                <?= $form->field($model, 'cover')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'cover')->hiddenInput()->label(false) ?>
 
-                <?= $form->field($model, 'status')->dropDownList([ '0', '1', ], ['prompt' => ''])->hiddenInput()->label(false) ?>
+                <?= $form->field($model, 'status')->dropDownList([ 0 => 'Private', '1' => 'Public', ], ['prompt' => '']) ?>
 
-                <?= $form->field($model, 'language')->dropDownList([ 1 => '1', 2 => '2', ], ['prompt' => '']) ?>
+                <?= $form->field($model, 'language')->dropDownList([ 1 => 'Bahasa Indonesia', 2 => 'Bahasa Inggris', ], ['prompt' => '']) ?>
 
-                <?= $form->field($model, 'approved')->textInput() ?>
+                <?= $form->field($model, 'approved')->hiddenInput()->label(false) ?>
 
                 <?= $form->field($model, 'score_essay')->dropDownList([ '' => '', 'BOBOT' => 'BOBOT', ], ['prompt' => '']) ?>
 
