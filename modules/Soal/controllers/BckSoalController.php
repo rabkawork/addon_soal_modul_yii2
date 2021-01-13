@@ -14,36 +14,33 @@ use app\modules\Soal\models\SoalChoices;
 use app\modules\Soal\models\SoalQuestions;
 use yii\db\Query;
 use Db;
-use yii\data\ActiveDataProvider;
-use yii\web\NotFoundHttpException;
+
+use yii\base\Widget;
+use yii\web\UploadedFile;
+
 
 /**
- * SoalController implements the CRUD actions for SoalSubjects model.
+ * Default controller for the `Settings` module
  */
 class SoalController extends Controller
 {
     /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * Lists all SoalSubjects models.
-     * @return mixed
+     * Renders the index view for the module
+     * @return string
      */
     public function actionIndex()
     {
-    
+        // return $this->render('index');
+        // $query = SoalSubjects::find()
+        //        ->joinWith('RefClass', false, 'INNER JOIN')
+        //        ->joinWith('RefJenjangs', false, 'INNER JOIN')
+        //        ->joinWith('RefKurikulums', false, 'INNER JOIN') 
+        //     ->where(['SoalSubjects.status' => 1]);
+        // $countQuery = clone $query;
+        // $pages = new Pagination(['totalCount' => $countQuery->count()]);
+        // $models = $query->offset($pages->offset)->limit($pages->limit)->asArray()->all();
+
+
         $limit = 10;
         $page = Yii::$app->request->get('page');
         $from = (isset($page)) ? ($page-1)*$limit : 0; // Match according to your query string
@@ -82,46 +79,21 @@ class SoalController extends Controller
             'result' => $data,
             'pagination' => $pagination,
             'page' => $page,
-        ]);
+        ]);        
     }
 
-    /**
-     * Creates a new SoalSubjects model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
+
     public function actionCreate()
     {
-        $model = new SoalSubjects();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
     }
 
-    /**
-     * Updates an existing SoalSubjects model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
     }
+
 
 
     public function actionDel($id)
@@ -163,23 +135,4 @@ class SoalController extends Controller
 
     }
 
-
-
-
-
-    /**
-     * Finds the SoalSubjects model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return SoalSubjects the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = SoalSubjects::findOne($id)) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
-    }
 }
