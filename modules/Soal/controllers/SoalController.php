@@ -50,6 +50,7 @@ class SoalController extends Controller
                         ref_jenjangs.`name` AS txt_jenjang,
                         ref_kurikulums.`name` AS txt_kurikulum,
                         ref_classs.`name` AS txt_class,
+                        ref_tahun_ajarans.`name` AS txt_tahun_ajaran,
                         ref_lessons.`name` AS txt_lesson')
                 ->from('soal_subjects')
                 ->join('inner JOIN', 'ref_classs',
@@ -62,6 +63,8 @@ class SoalController extends Controller
                     'soal_subjects.kurikulum = ref_kurikulums.id')
                 ->join('inner JOIN', 'ref_tahun_ajarans', 
                     'soal_subjects.tahun_ajaran = ref_tahun_ajarans.id')
+                ->join('left JOIN', 'user', 
+                    'soal_subjects.user_added = user.id')
                 ->where('soal_subjects.hidden = 0 LIMIT '.$from.','.$limit);
 
 
