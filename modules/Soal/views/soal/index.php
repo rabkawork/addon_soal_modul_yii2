@@ -82,7 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
                       <td><?php echo $value['txt_tahun_ajaran']; ?></td>
                       <td><?php echo $value['date_added']; ?></td>
                       <td><?php echo $value['status'] == 0 ? '<span class="badge bg-warning">Private</span>' : '<span class="badge bg-success">Public</span>'; ?></td>
-                      <td></td>
+                      <td><?php echo $value['username']; ?></td>
                       <td>Rp. <?php echo number_format($value['price']);  ?></td>
                       <td style="width: 30px"><a href="#" data-toggle="modal" data-target="#confirm-delete" class="btn btn-danger"><i class="fa fa-trash"></i></a><a href="<?php echo  Url::to(['/Soal/soal/update', 'id' => $value['id']]); ?>" class="btn btn-primary"><i class="fa fa-edit"></i></a></td>
                     </tr>

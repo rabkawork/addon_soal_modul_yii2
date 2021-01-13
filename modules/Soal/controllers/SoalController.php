@@ -54,7 +54,8 @@ class SoalController extends Controller
                         ref_kurikulums.`name` AS txt_kurikulum,
                         ref_classs.`name` AS txt_class,
                         ref_tahun_ajarans.`name` AS txt_tahun_ajaran,
-                        ref_lessons.`name` AS txt_lesson')
+                        ref_lessons.`name` AS txt_lesson,
+                        user.username as username')
                 ->from('soal_subjects')
                 ->join('inner JOIN', 'ref_classs',
                     'soal_subjects.class = ref_classs.id')      
