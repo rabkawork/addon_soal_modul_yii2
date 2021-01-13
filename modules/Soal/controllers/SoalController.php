@@ -41,12 +41,9 @@ class SoalController extends Controller
         // $models = $query->offset($pages->offset)->limit($pages->limit)->asArray()->all();
 
 
-        $limit      =   10;
-
-
+        $limit = 10;
         $page = Yii::$app->request->get('page');
-        $from       =   (isset($page)) ? ($page-1)*$limit : 0; // Match according to your query string
-
+        $from = (isset($page)) ? ($page-1)*$limit : 0; // Match according to your query string
 
         $query = new Query;
         $query->select('soal_subjects.*,
