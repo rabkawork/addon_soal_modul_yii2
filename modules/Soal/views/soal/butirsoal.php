@@ -3,6 +3,26 @@
 use yii\helpers\Html;
 
 ?>
+
+
+<style type="text/css">
+	#navbar {
+	  position: fixed; /* Make it stick/fixed */
+	}
+	#navbar a {
+	  float: left;
+	  display: block;
+	  color: white;
+	  text-align: center;
+	  padding: 15px;
+	  text-decoration: none;
+	}
+
+	#navbar a:hover {
+	  background-color: #ddd;
+	  color: black;
+	}
+</style>
 <div class="soal-subjects-update">
 
     
@@ -16,8 +36,6 @@ use yii\helpers\Html;
 		</div>
 
 		<div class="col-md-3">
-
-
 			<!-- <form class="form"> -->
 				<div class="form-group">
 					<input type="file" name="" value="">
@@ -36,29 +54,87 @@ use yii\helpers\Html;
 	</div>
 
 	<div class="row">
-	  <div class="col-md-9">
-	    <div class="card">
+	  <div class="col-md-8">
+	      <div class="card">
+	    	
+	    	<div class="data">
               <div class="card-header">
-                <h3 class="card-title">Isi Judul</h3>
-                <textarea class="form-control"></textarea>
                 <div class="form-group">
                 	<label>Pilih Mode soal</label>
 	                <select class="form-control">
-	                	<option>Pilihan Ganda</option>
+	                	<option value="1">Pilihan Ganda</option>
+	                	<option value="2">Essay</option>
 	                </select>
                 </div>
+                <div class="form-group">
+                	<label class="card-title">Isi Judul</label>
+                	<textarea class="form-control"></textarea>
+                </div>
+
+                	
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <div class="row">
-                	
-                </div>
+
+              	 <div class="form-group" id="pilgan">
+          			<div class="input-group mb-3">
+					  <div class="input-group-prepend">
+					    <span class="input-group-text"><input type="radio" /></span>
+					  </div>
+					  <input type="text" class="form-control" placeholder="Isi butir soal" aria-label="Isi butir soal" aria-describedby="basic-addon1">
+					  <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
+					</div>
+
+
+          			<div class="input-group mb-3">
+					  <div class="input-group-prepend">
+					    <span class="input-group-text"><input type="radio" /></span>
+					  </div>
+					  <input type="text" class="form-control" placeholder="Isi butir soal" aria-describedby="basic-addon1">
+					  <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
+					</div>
+
+
+          			<div class="input-group mb-3">
+					  <div class="input-group-prepend">
+					    <span class="input-group-text"><input type="radio" /></span>
+					  </div>
+					  <input type="text" class="form-control" placeholder="Isi butir soal" aria-describedby="basic-addon1">
+					  <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
+					</div>
+
+
+          			<div class="input-group mb-3">
+					  <div class="input-group-prepend">
+					    <span class="input-group-text"><input type="radio" /></span>
+					  </div>
+					  <input type="text" class="form-control" placeholder="Isi butir soal" aria-describedby="basic-addon1">
+					  <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
+					</div>
+
+
+          			<div class="input-group mb-3">
+					  <div class="input-group-prepend">
+					    <span class="input-group-text"><input type="radio" /></span>
+					  </div>
+					  <input type="text" class="form-control" placeholder="Isi butir soal" aria-describedby="basic-addon1">
+					  <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
+					</div>
+              	  </div>
+
+              	   <div class="form-group" id="essay">
+                 	 <textarea class="form-control" placeholder="Isi butir soal"></textarea>
+              	   </div>
               </div>
-            
-            </div>
+	    	</div>
+          </div>
 	  </div>
 
-
+	  <div class="col-md-1">
+  		<div id="navbar">
+		  <a class="btn btn-primary"><i class="fa fa-plus"></i></a>
+		</div>
+	  </div>
 	  <div class="col-md-3">
 	  		<div class="card">
 		      <div class="card-header bg-secondary">
