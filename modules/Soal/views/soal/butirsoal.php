@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 ?>
 
-
+<script src="<?= Yii::$app->request->baseUrl ?>/plugins/jquery/jquery.min.js"></script>
 <style type="text/css">
 	#navbar {
 	  position: fixed; /* Make it stick/fixed */
@@ -61,17 +61,15 @@ use yii\helpers\Html;
               <div class="card-header">
                 <div class="form-group">
                 	<label>Pilih Mode soal</label>
-	                <select class="form-control">
+	                <select id="pilihEssayPil" class="form-control">
 	                	<option value="1">Pilihan Ganda</option>
 	                	<option value="2">Essay</option>
 	                </select>
                 </div>
                 <div class="form-group">
                 	<label class="card-title">Isi Judul</label>
-                	<textarea class="form-control"></textarea>
-                </div>
-
-                	
+                	<textarea name="" class="form-control"></textarea>
+                </div>	
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -84,55 +82,21 @@ use yii\helpers\Html;
 					  <input type="text" class="form-control" placeholder="Isi butir soal" aria-label="Isi butir soal" aria-describedby="basic-addon1">
 					  <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
 					</div>
-
-
-          			<div class="input-group mb-3">
-					  <div class="input-group-prepend">
-					    <span class="input-group-text"><input type="radio" /></span>
-					  </div>
-					  <input type="text" class="form-control" placeholder="Isi butir soal" aria-describedby="basic-addon1">
-					  <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
-					</div>
-
-
-          			<div class="input-group mb-3">
-					  <div class="input-group-prepend">
-					    <span class="input-group-text"><input type="radio" /></span>
-					  </div>
-					  <input type="text" class="form-control" placeholder="Isi butir soal" aria-describedby="basic-addon1">
-					  <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
-					</div>
-
-
-          			<div class="input-group mb-3">
-					  <div class="input-group-prepend">
-					    <span class="input-group-text"><input type="radio" /></span>
-					  </div>
-					  <input type="text" class="form-control" placeholder="Isi butir soal" aria-describedby="basic-addon1">
-					  <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
-					</div>
-
-
-          			<div class="input-group mb-3">
-					  <div class="input-group-prepend">
-					    <span class="input-group-text"><input type="radio" /></span>
-					  </div>
-					  <input type="text" class="form-control" placeholder="Isi butir soal" aria-describedby="basic-addon1">
-					  <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
-					</div>
               	  </div>
 
               	   <div class="form-group" id="essay">
                  	 <textarea class="form-control" placeholder="Isi butir soal"></textarea>
               	   </div>
               </div>
+
+
 	    	</div>
           </div>
 	  </div>
 
 	  <div class="col-md-1">
   		<div id="navbar">
-		  <a class="btn btn-primary"><i class="fa fa-plus"></i></a>
+		  <a class="btn btn-primary" id="tambahSoal"><i class="fa fa-plus"></i></a>
 		</div>
 	  </div>
 	  <div class="col-md-3">
@@ -205,3 +169,9 @@ use yii\helpers\Html;
 	  </div>
 	</div>
 </div>
+<script type="text/javascript">
+	
+	$("#tambahSoal").click(function(){
+		return false;
+	});
+</script>

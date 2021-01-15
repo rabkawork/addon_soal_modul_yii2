@@ -222,17 +222,28 @@ class SoalController extends Controller
         $delete->softDelete(); 
 
         echo "sukses";
-    
     }
 
 
-    public function actionDelessay($id)
+    public function actionDelSoal($id)
     {
         $delete = SoalQuestions::findOne($id);
         $delete->softDelete(); 
 
         echo "sukses";
+    }
+
+    public function actionCreateSoal($subjectId)
+    {
+        $soalQuetions = new SoalQuestions();
+        $soalQuetions->subject = $subjectId;
+        $soalQuetions->user_added = Yii::$app->user->id;
+        $soalQuetions->user_modified = Yii::$app->user->id;
+        $soalQuetions->date_added = date('Y-m-d H:i:s');
+        $soalQuetions->date_modified = date('Y-m-d H:i:s');
+        $soalQuetions->save(false);
         
+        echo $soalQuetions->id;
     }
 
 
