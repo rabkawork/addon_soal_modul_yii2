@@ -133,6 +133,38 @@ class SoalController extends Controller
     public function actionButirsoal($id)
     {
         // save data
+        // $model = $this->findModel($id);
+
+        $query = new Query;
+        $query->select('soal_subjects.*,
+                        ref_jenjangs.`name` AS txt_jenjang,
+                        ref_kurikulums.`name` AS txt_kurikulum,
+                        ref_classs.`name` AS txt_class,
+                        ref_tahun_ajarans.`name` AS txt_tahun_ajaran,
+                        ref_lessons.`name` AS txt_lesson,
+                        user.username as username')
+                ->from('soal_subjects')
+                ->join('inner JOIN', 'ref_classs',
+                    'soal_subjects.class = ref_classs.id')      
+                ->join('inner JOIN', 'ref_jenjangs', 
+                    'soal_subjects.jenjang = ref_jenjangs.id')
+                ->join('inner JOIN', 'ref_lessons', 
+                    'soal_subjects.lesson = ref_lessons.id')
+                ->join('inner JOIN', 'ref_kurikulums', 
+                    'soal_subjects.kurikulum = ref_kurikulums.id')
+                ->join('inner JOIN', 'ref_tahun_ajarans', 
+                    'soal_subjects.tahun_ajaran = ref_tahun_ajarans.id')
+                ->join('left JOIN', 'user', 
+                    'soal_subjects.user_added = user.id')
+                ->where('soal_subjects.id = '.$id);
+
+        $command = $query->createCommand();
+        $data = $command->queryOne();
+
+        return $this->render('butirsoal', [
+            'model' => $data,
+        ]);
+
     }
 
     /**
