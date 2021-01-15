@@ -38,15 +38,24 @@ use yii\helpers\Html;
 	<div class="row">
 	  <div class="col-md-9">
 	    <div class="card">
-	      <!-- <div class="card-header">
-	      </div> -->
-	      <!-- /.card-header -->
-	      <div class="card-body">
-	        <div class="table-responsive">
-	        	
-	        </div>
-	      </div>
-	    </div>
+              <div class="card-header">
+                <h3 class="card-title">Isi Judul</h3>
+                <textarea class="form-control"></textarea>
+                <div class="form-group">
+                	<label>Pilih Mode soal</label>
+	                <select class="form-control">
+	                	<option>Pilihan Ganda</option>
+	                </select>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <div class="row">
+                	
+                </div>
+              </div>
+            
+            </div>
 	  </div>
 
 
