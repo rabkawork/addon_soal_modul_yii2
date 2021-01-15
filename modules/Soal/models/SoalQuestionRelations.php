@@ -59,6 +59,7 @@ class SoalQuestionRelations extends \yii\db\ActiveRecord
             [['subject', 'question', 'ordering', 'user_added', 'user_modified', 'hidden'], 'integer'],
             [['date_added', 'date_modified'], 'safe'],
             [['file'], 'string', 'max' => 255],
+
         ];
     }
 
@@ -75,6 +76,8 @@ class SoalQuestionRelations extends \yii\db\ActiveRecord
             'description' => 'Description',
             'translate' => 'Translate',
             'file' => 'File',
+            'name' => 'Judul',
+            'lesson' => 'Mata Pelajaran',
             'ordering' => 'Ordering',
             'user_added' => 'User Added',
             'user_modified' => 'User Modified',

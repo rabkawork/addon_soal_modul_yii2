@@ -34,6 +34,8 @@ $this->params['breadcrumbs'][] = 'Update';
 	        	
 			    <?= $this->render('_form', [
 			        'model' => $model,
+            		'type'  => 'update',
+
 			        'dataRefClass' => $dataRefClass,
 		            'dataRefJenjangs' => $dataRefJenjangs,
 		            'dataRefKurikulums' => $dataRefKurikulums,

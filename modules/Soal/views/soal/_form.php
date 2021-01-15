@@ -16,6 +16,8 @@ use yii\helpers\ArrayHelper;
 /* @var $this yii\web\View */
 /* @var $model app\modules\Soal\models\SoalSubjects */
 /* @var $form yii\widgets\ActiveForm */
+
+$userId = Yii::$app->user->id;
 ?>
 
 
@@ -23,53 +25,66 @@ use yii\helpers\ArrayHelper;
 
     <?= $form->field($model, 'province')->hiddenInput()->label(false) ?>
 
-    <?= $form->field($model, 'jenjang')->dropDownList($dataRefJenjangs) ?>
+    <?= $form->field($model, 'jenjang')->dropDownList($dataRefJenjangs)->label('Jenjang') ?>
 
-    <?= $form->field($model, 'class')->dropDownList($dataRefClass) ?>
+    <?= $form->field($model, 'class')->dropDownList($dataRefClass)->label('Kelas/Jurusan') ?>
 
-    <?= $form->field($model, 'kurikulum')->dropDownList($dataRefKurikulums) ?>
+    <?= $form->field($model, 'kurikulum')->dropDownList($dataRefKurikulums)->label('Kurikulm') ?>
 
-    <?= $form->field($model, 'tahun_ajaran')->dropDownList($dataRefTahunAjarans) ?>
+    <?= $form->field($model, 'tahun_ajaran')->dropDownList($dataRefTahunAjarans)->label('Tahun Ajaran') ?>
 
-    <?= $form->field($model, 'periode_soal')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'periode_soal')->textInput()->label('Periode Soal') ?>
 
-    <?= $form->field($model, 'lesson')->dropDownList($dataRefLessons) ?>
+    <?= $form->field($model, 'lesson')->dropDownList($dataRefLessons)->label('Mata Pelajaran') ?>
 
     <?= $form->field($model, 'variant')->hiddenInput()->label(false) ?>
 
     <?= $form->field($model, 'multiple_choice_option')->hiddenInput()->label(false) ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'name')->textInput(['maxlength' => true])->label('Judul') ?>
 
-    <?= $form->field($model, 'code')->textInput() ?>
+    <?= $form->field($model, 'code')->textInput()->label('Kode') ?>
 
-    <?= $form->field($model, 'tag')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'tag')->textarea(['rows' => 6])->label('Tag') ?>
 
     <?= $form->field($model, 'keterangan')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'hide_in_exam')->hiddenInput(['value'=> 0])->label(false) ?>
 
-    <?= $form->field($model, 'price')->textInput() ?>
-
     <?= $form->field($model, 'cover')->hiddenInput()->label(false) ?>
 
-    <?= $form->field($model, 'status')->dropDownList([ 0 => 'Private', '1' => 'Public', ], ['prompt' => '']) ?>
+    <?= $form->field($model, 'language')->dropDownList([ 1 => 'Bahasa Indonesia', 2 => 'Bahasa Inggris'],['value' => !empty($model->language) ? $model->language : 1], ['prompt' => 'Pilih Bahasa'])->label('Bahasa') ?>
 
-    <?= $form->field($model, 'language')->dropDownList([ 1 => 'Bahasa Indonesia', 2 => 'Bahasa Inggris', ], ['prompt' => '']) ?>
+    <?= $form->field($model, 'status')->dropDownList([ 0 => 'Private', 1 => 'Public'], ['value' => !empty($model->status) ? $model->status : 0])->label('Share Ke') ?>
+
+
+    <?= $form->field($model, 'score_essay')->hiddenInput([ '' => '', 'BOBOT' => 'BOBOT', ], ['prompt' => ''])->label(false) ?>
 
     <?= $form->field($model, 'approved')->hiddenInput()->label(false) ?>
 
-    <?= $form->field($model, 'score_essay')->dropDownList([ '' => '', 'BOBOT' => 'BOBOT', ], ['prompt' => '']) ?>
-
     <?= $form->field($model, 'last_cached')->hiddenInput()->label(false) ?>
 
-    <?= $form->field($model, 'user_added')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'price')->hiddenInput()->label(false) ?>
 
-    <?= $form->field($model, 'user_modified')->hiddenInput()->label(false) ?>
+    <?php 
+        if($type == 'create'):
+    ?>
+        <?= $form->field($model, 'user_added')->hiddenInput(['value'=> $userId])->label(false) ?>
+        <?= $form->field($model, 'user_modified')->hiddenInput()->label(false) ?>
+    <?php 
+        else:
+    ?>
+        <?= $form->field($model, 'user_added')->hiddenInput()->label(false) ?>
+        <?= $form->field($model, 'user_modified')->hiddenInput(['value'=> $userId])->label(false) ?>
+    <?php 
+        endif;
+    ?>
 
-    <?= $form->field($model, 'date_added')->hiddenInput()->label(false) ?>
 
-    <?= $form->field($model, 'date_modified')->hiddenInput()->label(false) ?>
+
+    <?= $form->field($model, 'date_added')->hiddenInput(['value'=> date('Y-m-d H:i:s')])->label(false) ?>
+
+    <?= $form->field($model, 'date_modified')->hiddenInput(['value'=> date('Y-m-d H:i:s')])->label(false) ?>
 
     <?= $form->field($model, 'hidden')->hiddenInput(['value'=> 0])->label(false) ?>
 

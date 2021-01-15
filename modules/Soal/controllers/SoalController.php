@@ -18,6 +18,7 @@ use app\modules\Soal\models\RefLessons;
 use app\modules\Soal\models\SoalSubjects;
 use app\modules\Soal\models\SoalChoices;
 use app\modules\Soal\models\SoalQuestions;
+use app\modules\Soal\models\SoalForm;
 use yii\db\Query;
 use Db;
 use yii\data\ActiveDataProvider;
@@ -115,7 +116,7 @@ class SoalController extends Controller
 
 
         if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
-            return $this->redirect(['index', 'id' => $model->id]);
+            return $this->redirect(['butirsoal', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -128,6 +129,12 @@ class SoalController extends Controller
         ]);
     }
 
+
+    public function actionButirsoal($id)
+    {
+        // save data
+    }
+
     /**
      * Updates an existing SoalSubjects model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -138,6 +145,7 @@ class SoalController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+
 
         $RefClass = new RefClasss(); 
         $RefJenjangs = new RefJenjangs(); 
