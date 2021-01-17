@@ -21,7 +21,7 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         "plugins/fontawesome-free/css/all.min.css",
-        "http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css",
+        // "http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css",
         "dist/css/adminlte.min.css",
         "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700",
 

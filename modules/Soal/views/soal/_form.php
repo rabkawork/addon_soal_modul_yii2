@@ -22,6 +22,8 @@ $userId = Yii::$app->user->id;
 
 
   <?php $form = ActiveForm::begin(); ?>
+    <label class=""><h3><b>Judul</b></h3></label>
+    <?= $form->field($model, 'name')->textInput(['maxlength' => true,'style' => 'background-color: #81ecec;'])->label(false) ?>
 
     <?= $form->field($model, 'province')->hiddenInput()->label(false) ?>
 
@@ -41,7 +43,6 @@ $userId = Yii::$app->user->id;
 
     <?= $form->field($model, 'multiple_choice_option')->hiddenInput()->label(false) ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true])->label('Judul') ?>
 
     <?= $form->field($model, 'code')->textInput()->label('Kode') ?>
 

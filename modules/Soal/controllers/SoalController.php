@@ -247,6 +247,19 @@ class SoalController extends Controller
     }
 
 
+
+    public function actionUploadxls()
+    {
+
+    }
+
+    public function actionUploaddoc()
+    {
+
+    }
+
+    
+
     public function actionSoalpublish()
     {
 
@@ -254,6 +267,35 @@ class SoalController extends Controller
 
     public function actionSoalUpdate($id)
     {
+
+    }
+
+
+
+
+    public function actionPublish($id = '')
+    {
+        if(Yii::$app->user->getIsGuest()){
+            return $this->redirect(['/site/login']);        
+        }
+
+        $dropdownList = ['0' => 'Gratis', '1' => 'Berbayar'];
+
+        $model = new Publish();
+
+        if (Yii::$app->request->isPost) {
+
+            $model->load(\Yii::$app->request->post());          
+            if ($model->validate()) {   
+                $content = SoalSubjects::findOne($id);
+                $content->harga = $model->harga;
+                $content->save(false);
+                return $this->redirect(['/Soal/soal/index','id' => $id]);   
+
+            }
+        }
+
+        return $this->render('publish', ['model' => $model,'dropdownList' => $dropdownList]);
 
     }
 
