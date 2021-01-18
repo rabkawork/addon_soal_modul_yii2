@@ -1,5 +1,5 @@
 <?php
-namespace app\modules\Presentasi\models;
+namespace app\modules\Soal\models;
 
 use yii\base\Model;
 

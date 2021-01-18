@@ -35,14 +35,13 @@ $userId = Yii::$app->user->id;
 
     <?= $form->field($model, 'tahun_ajaran')->dropDownList($dataRefTahunAjarans)->label('Tahun Ajaran') ?>
 
-    <?= $form->field($model, 'periode_soal')->textInput()->label('Periode Soal') ?>
+    <?= $form->field($model, 'periode_soal')->hiddenInput()->label(false) ?>
 
     <?= $form->field($model, 'lesson')->dropDownList($dataRefLessons)->label('Mata Pelajaran') ?>
 
     <?= $form->field($model, 'variant')->hiddenInput()->label(false) ?>
 
     <?= $form->field($model, 'multiple_choice_option')->hiddenInput()->label(false) ?>
-
 
     <?= $form->field($model, 'code')->textInput()->label('Kode') ?>
 

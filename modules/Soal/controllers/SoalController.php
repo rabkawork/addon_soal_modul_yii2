@@ -14,6 +14,7 @@ use app\modules\Soal\models\RefJenjangs;
 use app\modules\Soal\models\RefKurikulums;
 use app\modules\Soal\models\RefTahunAjarans;
 use app\modules\Soal\models\RefLessons;
+use app\modules\Soal\models\Publish;
 
 use app\modules\Soal\models\SoalSubjects;
 use app\modules\Soal\models\SoalChoices;
@@ -246,34 +247,40 @@ class SoalController extends Controller
         echo $soalQuetions->id;
     }
 
+    // public function actionUploadxls()
+    // {
+    // }
 
-
-    public function actionUploadxls()
-    {
-
-    }
-
-    public function actionUploaddoc()
-    {
-
-    }
-
+    // public function actionUploaddoc()
+    // {
+    // }
     
 
-    public function actionSoalpublish()
+    public function actionSoalPublish($id)
     {
+        echo "<pre>";
 
+
+        $query = new Query;
+        $query->from('soal_questions')
+        ->select('id')
+        ->where('soal_questions.subject = ' . $id.' and soal_questions.hidden = 0');
+
+        $command = $query->createCommand();
+        $data = $command->queryAll();
+
+        $post = \Yii::$app->request->post();
+        var_dump($_FILES);
+        
+        foreach ($data as $key => $value) {
+            
+        }
+        exit();
     }
 
-    public function actionSoalUpdate($id)
-    {
-
-    }
 
 
-
-
-    public function actionPublish($id = '')
+    public function actionPublishSoal($id = '')
     {
         if(Yii::$app->user->getIsGuest()){
             return $this->redirect(['/site/login']);        
@@ -298,9 +305,6 @@ class SoalController extends Controller
         return $this->render('publish', ['model' => $model,'dropdownList' => $dropdownList]);
 
     }
-
-
-
 
 
     /**
