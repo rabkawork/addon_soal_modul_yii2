@@ -614,28 +614,18 @@ class SoalController extends Controller
 
     public function actionSoalPublish($id)
     {
-        // $query = new Query;
-        // $query->from('soal_questions')
-        // ->select('id')
-        // ->where('soal_questions.subject = ' . $id.' and soal_questions.hidden = 0');
-        
-        // $command = $query->createCommand();
-        // $data = $command->queryAll();
         $connection = \Yii::$app->db;
-
         $post  = \Yii::$app->request->post();
         $files = $_FILES; 
-        echo "<pre>";
-        var_dump($post);
         
         foreach ($post['opsiActive'] as $key => $value) {
 
             $connection->createCommand()
-            ->update('soal_questions', ['type' => (int) $post['pilihanEssay-'.$value] == 1 ? 'MULTIPLE_CHOICE' : 'ESSAY'], 'id = '.$value)
+            ->update('soal_questions', ['type' => (int) $post['pilihanEssay-'.$value] == 1 ? 'MULTIPLE_CHOICE' : 'ESSAY','ordering' => $post['ordering-'.$value]], 'id = '.$value)
             ->execute();
 
             $connection->createCommand()
-            ->update('soal_question_relations', ['description' => $post['judul-'.$value]], 'subject = '.$value)
+            ->update('soal_question_relations', ['description' => $post['judul-'.$value]], 'question = '.$value)
             ->execute();
 
             if((int) $post['pilihanEssay-'.$value] == 1)
@@ -643,9 +633,20 @@ class SoalController extends Controller
                 
                 // ini nanti di kasih query jika pernah nginput tinggal di update
 
+                $soal = SoalChoices::find()->where('question = '.$value.' and hidden = 0')->orderBy([
+                    'ordering' => 'DESC'     
+                    ])->asArray()->all();
+                
+
                 // ini untuk posis create data
                 foreach($post['SoaljawabanPilGab-'.$value] as $key => $soaljawaban){
-                    $SoalChoices = new SoalChoices();
+
+                    if(!empty($soal[$key]['id'])){
+                        $SoalChoices = SoalChoices::findOne($soal[$key]['id']);
+                    }
+                    else{
+                        $SoalChoices = new SoalChoices();
+                    }
                     $pilihan = 0;
                     if($post['jawabanPilGab-'.$value] == "A")
                     {
@@ -663,7 +664,10 @@ class SoalController extends Controller
                     else if($post['jawabanPilGab-'.$value] == "E"){
                         $pilihan = 4;
                     }
-                    $SoalChoices->question = $id;
+
+
+                 
+                    $SoalChoices->question = $value;
                     $SoalChoices->hidden = 0;
                     $SoalChoices->is_answer = $key == $pilihan ? 1 : 0;
                     $SoalChoices->ordering = $key;
@@ -673,13 +677,40 @@ class SoalController extends Controller
                     $SoalChoices->date_modified = date('Y-m-d H:i:s');
                     $SoalChoices->save(false);
 
-                    $SoalChoiceRelations = new SoalChoiceRelations();
 
-                    $SoalChoiceRelations->question = $id;
+
+                    if(!empty($soal[$key]['id'])){
+                        $SoalChoiceRelations = SoalChoiceRelations::findOne(['choice' => $soal[$key]['id']]);
+                    }
+                    else{
+                        $SoalChoiceRelations = new SoalChoiceRelations();
+                    }
+
+            
+                
+                    $SoalChoiceRelations->question = $value;
                     $SoalChoiceRelations->choice = $SoalChoices->id;
                     $SoalChoiceRelations->description = $soaljawaban;
                     $SoalChoiceRelations->translate = "-";
-                    $SoalChoiceRelations->file = "-";
+
+
+                    if(!empty($_FILES['photo-'.$value.'-'.($key+1)])){
+                        $destFile = \Yii::$app->basePath."/web/uploads/";
+                        $uniquesavename=time().uniqid(rand());
+                        $path = explode('.',$_FILES['photo-'.$value.'-'.($key+1)]['name'][0]);
+                        $ext = end($path);
+                        $destFile = $imagePath . $uniquesavename . '.'.$ext;
+                        $filename = $_FILES['photo-'.$value.'-'.($key+1)]["tmp_name"][0];
+                        list($width, $height) = getimagesize( $filename );       
+                        move_uploaded_file($filename,  $destFile);
+                        $SoalChoiceRelations->file = $filename;
+
+                    }
+                    else{
+                        $SoalChoiceRelations->file = "-";
+                    }
+
+
                     $SoalChoiceRelations->hidden = 0;
 
                     $SoalChoiceRelations->ordering = $key;
@@ -689,7 +720,6 @@ class SoalController extends Controller
                     $SoalChoiceRelations->date_modified = date('Y-m-d H:i:s');
                     $SoalChoiceRelations->save(false);
 
-
                 }
 
 
@@ -697,11 +727,23 @@ class SoalController extends Controller
             else
             {    
                 $connection->createCommand()
-                ->update('soal_question_relations', ['answer' => $post['jawabanEssay-'.$value]], 'subject = '.$value)
+                ->update('soal_question_relations', ['answer' => $post['jawabanEssay-'.$value]], 'question = '.$value)
                 ->execute();
             }
 
-            // $SoalExplanationRelations = new SoalExplanationRelations(); 
+
+            $connection->createCommand()
+            ->update('soal_explaination_relations', ['description' => $post['pembahasan-'.$value]], 'question = '.$value)
+            ->execute();
+
+
+
+            echo "<pre>";
+            var_dump($post);
+            var_dump($files);
+            exit();
+
+
             // $SoalAttachment = new SoalAttachment(); 
             // $SoalAttachmentQuestions = new SoalAttachmentQuestions(); 
             // $SoalAttachmentRelations = new SoalAttachmentRelations(); 
