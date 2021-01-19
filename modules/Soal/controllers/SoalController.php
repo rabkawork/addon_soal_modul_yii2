@@ -482,7 +482,7 @@ class SoalController extends Controller
             ->where('soal_attachments.subject = '.$id.' and  soal_attachments.hidden = 0')->asArray()->all();
 
         }
-       
+        
 
         return $this->render('butirsoal', [
             'model' => $data[0],
@@ -542,7 +542,7 @@ class SoalController extends Controller
     }
 
 
-    public function actionDelpilgan($id)
+    public function actionDelPilgan($id)
     {
         $delete = SoalChoices::findOne($id);
         $delete->softDelete(); 

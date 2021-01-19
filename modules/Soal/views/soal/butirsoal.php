@@ -75,6 +75,126 @@ use yii\widgets\ActiveForm;
 	<div class="row">
 		<div class="col-md-9">
 			<div class="card" id="isiDataAppend">
+
+				<?php
+					foreach ($listSoal as $key => $value) {
+				?>	
+						<div class="data-<?php echo $value['id']; ?>">
+							<div class="card-header">
+								<div class="row">
+									<input type="hidden" value="<?php echo $value['id']; ?>" name="opsiActive[]" />
+									<div class="col-md-6">
+
+										<label>Pilih Mode soal</label>
+										<select id="pilihEssayPil" onchange="getval(this,<?php echo $value['id']; ?>);" name="pilihanEssay-<?php echo $value['id']; ?>" class="form-control">
+											<option value="1" <?php $value['type'] == 'MULTIPLE_CHOICE' ? 'selected' : '' ?>>Pilihan Ganda</option>
+											<option value="2" <?php $value['type'] == 'ESSAY' ? 'selected' : '' ?>>Essay</option>
+										</select>
+
+									</div>
+
+									<div class="col-md-6">
+										<label>Urutan soal</label>
+										<input type="text" class="form-control" name="ordering-<?php echo $value['id']; ?>" value="<?php echo $value['ordering']; ?>" />
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="card-title">Pertanyaan</label>
+									<br />
+									<br />
+									<textarea name="judul-<?php echo $value['id']; ?>" id="judul-<?php echo $value['id']; ?>" rows="10" cols="80"><?php echo $value['relations_questions']['description']; ?></textarea>
+								</div>	
+								
+							</div>
+							<!-- /.card-header -->
+							<div class="card-body">
+
+								<div class="form-group" id="pilgan-<?php echo $value['id']; ?>">
+
+
+									<?php 
+										foreach ($value['choices'] as $x => $choiceData) {
+											$number = $x + 1;
+
+											$huruf  = '';
+											if($x == 0){
+												$huruf = 'A';
+											}
+											else if($x == 1){
+												$huruf = 'B';
+											}
+											else if($x == 2){
+												$huruf = 'C';
+											}
+											else if($x == 3){
+												$huruf = 'D';
+											}
+											else if($x == 4){
+												$huruf = 'E';
+											}
+									?>
+									<div class="input-group mb-3 dvi-<?php echo $value['id']; ?>-<?php echo $number; ?>">
+										<div class="input-group-prepend">
+											<span class="input-group-text"><input type="radio" name="jawabanPilGab-<?php echo $value['id']; ?>[]" value="<?php echo $huruf; ?>" /><?php echo $huruf; ?></span>
+										</div>
+										<input type="text" name="SoaljawabanPilGab-<?php echo $value['id']; ?>[]" class="form-control" placeholder="Opsi" aria-label="Isi butir soal" aria-describedby="basic-addon1" value="<?php echo $choiceData['description'] ?>">
+										
+										
+										<input type="file" class="form-control" name="photo-<?php echo $value['id']; ?>-<?php echo $number; ?>[]" />
+
+										<a class="btn btn-danger"  onclick="return delHideDb(this,'<?php echo $value['id']; ?>','<?php echo $number; ?>','<?php echo $choiceData['id']; ?>');"><i class="fa fa-trash"></i></a>
+
+									</div>
+
+									<?php
+										}
+									?>
+
+
+								</div>
+
+								<div class="form-group" id="essay-<?php echo $value['id']; ?>" style="display:none;">
+									<textarea class="form-control" name="jawabanEssay-<?php echo $value['id']; ?>" placeholder="Isi jawaban soal"><?php echo $value['relations_questions']['description']; ?></textarea>
+								</div>
+
+
+								<div class="form-group">
+										<textarea name="pembahasan-<?php echo $value['id']; ?>" class="form-control" placeholder="Pembahasan :"><?php echo $value['explaination_relations']['description']; ?></textarea>
+								</div>
+								
+								
+								<div class="form-group">
+									<label for="">Attachment</label>
+									<input type="file" class="form-control" name="file-<?php echo $value['id']; ?>-1[]" />
+								</div>
+
+
+								<div class="form-group">
+										<a onclick="return del('<?php echo $value['id']; ?>');" class="btn btn-danger"><i class="fa fa-trash"></i> Hapus Soal</a>
+								</div>
+							</div>
+		    			</div>
+
+						<script type="text/javascript">
+							
+							ClassicEditor.create(document.querySelector("#judul-<?php echo $value['id']; ?>"), {
+									math: {
+										outputType: 'span'
+									}
+								})
+								.then(editor => {
+									window.editor = editor;
+									editor.model.document.on('change:data', () => {
+										// getEditorData();
+									});
+								})
+								.catch(error => {
+									// console.error( 'There was a problem initializing the editor.', error );
+								});
+						</script>
+				<?php
+					}
+				?>
 			</div>
 
 			<textarea name="editor" style="display:none;" id="editor" rows="10" cols="80">
@@ -397,6 +517,15 @@ use yii\widgets\ActiveForm;
 
 	function delHide(sel, subjectId, urutan) {
 		$(".dvi-" + subjectId + "-" + urutan).remove();
+		return false;
+	}
+
+	function delHideDb(sel, subjectId, urutan,dbId) {
+
+
+		$.post("<?php echo Url::to(['/Soal/soal/del-pilgan']); ?>&id=" + dbId, function(data, status) {
+			$(".dvi-" + subjectId + "-" + urutan).remove();
+		});
 		return false;
 	}
 
