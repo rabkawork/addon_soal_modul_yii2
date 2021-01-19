@@ -27,6 +27,8 @@ use app\modules\Soal\models\SoalAttachment;
 use app\modules\Soal\models\SoalAttachmentQuestions;
 use app\modules\Soal\models\SoalAttachmentRelations;
 
+use app\modules\Soal\models\UploadDoc;
+use app\modules\Soal\models\UploadExcel;
 
 use app\modules\Soal\models\SoalForm;
 use yii\db\Query;
@@ -37,7 +39,7 @@ use yii\web\NotFoundHttpException;
 use linslin\yii2\curl;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
+use yii\web\UploadedFile;
 /**
  * SoalController implements the CRUD actions for SoalSubjects model.
  */
@@ -172,11 +174,178 @@ class SoalController extends Controller
                     'soal_subjects.user_added = user.id')
                 ->where('soal_subjects.id = '.$id);
 
+        $uploadDoc = new UploadDoc();
+        $uploadExcel = new UploadExcel();
+
+
+        if ($uploadDoc->load(Yii::$app->request->post()) && $uploadDoc->validate()){ 
+            $curl = new curl\Curl();
+            $response = $curl->setOption(
+                CURLOPT_POSTFIELDS, 
+                http_build_query(array(
+                    // 'url' => 'https://socdn.soalonline.com/cdn1/soal_sample.docx',
+                    'url' => $uploadDoc->url,
+                )
+            ))
+            ->post('http://128.199.189.95:3434/import_doc/detect/');
+            
+
+            $data = json_decode($response);
+
+            
+            echo "<pre>";
+            var_dump($data);
+            exit();
+            
+        }
+
+
+        if (Yii::$app->request->isPost) {
+            $uploadExcel->file = UploadedFile::getInstance($uploadExcel, 'file');
+
+            if ($uploadExcel->file && $uploadExcel->validate()) {                
+                // $uploadExcel->file->saveAs('uploads/' . $uploadExcel->file->baseName . '.' . $uploadExcel->file->extension);
+                $extension =$uploadExcel->file->extension;
+                if($extension=='xlsx'){
+                    $inputFileType = 'Xlsx';
+                }else{
+                    $inputFileType = 'Xls';
+                }
+                $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputFileType);
+                $reader->setLoadSheetsOnly(true);
+                $spreadsheet = $reader->load($uploadExcel->file->tempName);
+                $worksheet = $spreadsheet->getActiveSheet();
+                $highestRow = $worksheet->getHighestRow();
+                $highestColumn = $worksheet->getHighestColumn();
+                $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
+                
+
+                $success = 0;
+                //inilah looping untuk membaca cell dalam file excel,perkolom
+                for ($row = 3; $row <= $highestRow; ++$row) { 
+                    
+                    $kolom2 = $worksheet->getCellByColumnAndRow(2, $row)->getValue(); 
+                    // $kolom3 = $worksheet->getCellByColumnAndRow(3, $row)->getValue(); 
+                    // $kolom4 = $worksheet->getCellByColumnAndRow(4, $row)->getValue(); 
+                    // $kolom5 = $worksheet->getCellByColumnAndRow(5, $row)->getValue(); 
+                    // $kolom6 = $worksheet->getCellByColumnAndRow(6, $row)->getValue(); 
+                    $kolom7 = $worksheet->getCellByColumnAndRow(7, $row)->getValue(); 
+                    $kolom8 = $worksheet->getCellByColumnAndRow(8, $row)->getValue(); 
+
+
+                    if(!empty($kolom2) && !empty($kolom7) && !empty($kolom8))
+                    {
+
+                        $soalQuetions = new SoalQuestions();
+                        $soalQuetions->subject = $id;
+                        $soalQuetions->ordering    = 0;
+                        $soalQuetions->bobot       = 0;
+                        $soalQuetions->audio_question    = '-';
+                        $soalQuetions->audio_explanation = '-';
+                        $soalQuetions->photo_reviewed    = 0;
+                        $soalQuetions->katex_reviewed    = 0;
+                        $soalQuetions->hidden    = 0;
+                
+                        $soalQuetions->user_added = Yii::$app->user->id;
+                        $soalQuetions->user_modified = Yii::$app->user->id;
+                        $soalQuetions->date_added = date('Y-m-d H:i:s');
+                        $soalQuetions->date_modified = date('Y-m-d H:i:s');
+                        $soalQuetions->save(false);
+                
+                        
+                        $soalQuetionRelations = new SoalQuestionRelations();
+                        $soalQuetionRelations->subject = $id;
+                        $soalQuetionRelations->answer      = "";
+                        $soalQuetionRelations->question    = $soalQuetions->id;
+                        $soalQuetionRelations->description      = $kolom2;
+                        $soalQuetionRelations->translate        = "";
+                        $soalQuetionRelations->file        = "";
+                        $soalQuetionRelations->hidden    = 0;
+                        $soalQuetionRelations->ordering    = 0;
+                
+                        $soalQuetionRelations->user_added = Yii::$app->user->id;
+                        $soalQuetionRelations->user_modified = Yii::$app->user->id;
+                        $soalQuetionRelations->date_added = date('Y-m-d H:i:s');
+                        $soalQuetionRelations->date_modified = date('Y-m-d H:i:s');
+                        $soalQuetionRelations->save(false);
+                
+                
+                        
+                        
+                        $SoalExplanationRelations = new SoalExplainationRelations();
+                        $SoalExplanationRelations->subject = $id;
+                        $SoalExplanationRelations->question    = $soalQuetions->id;
+                        $SoalExplanationRelations->description      = $kolom8;
+                        $SoalExplanationRelations->translate        = "";
+                        $SoalExplanationRelations->file        = "";
+                        $SoalExplanationRelations->hidden    = 0;
+                        $SoalExplanationRelations->ordering    = 0;
+                
+                        $SoalExplanationRelations->user_added = Yii::$app->user->id;
+                        $SoalExplanationRelations->user_modified = Yii::$app->user->id;
+                        $SoalExplanationRelations->date_added = date('Y-m-d H:i:s');
+                        $SoalExplanationRelations->date_modified = date('Y-m-d H:i:s');
+                        $SoalExplanationRelations->save(false);
+    
+                        $b = 0;
+                        for ($i=3; $i <= 6; $i++) { 
+                            $kolom = $worksheet->getCellByColumnAndRow($i, $row)->getValue(); 
+                            
+    
+                            if(!empty($kolom)){
+    
+                                $SoalChoices = new SoalChoices();
+                                
+                                $SoalChoices->question = $soalQuetions->id;
+                                $SoalChoices->hidden = 0;
+                                $SoalChoices->is_answer = $i == 3 ? 1 : 0;
+                                $SoalChoices->ordering = $b;
+                                $SoalChoices->user_added = Yii::$app->user->id;
+                                $SoalChoices->user_modified = Yii::$app->user->id;
+                                $SoalChoices->date_added = date('Y-m-d H:i:s');
+                                $SoalChoices->date_modified = date('Y-m-d H:i:s');
+                                $SoalChoices->save(false);
+            
+                                $SoalChoiceRelations = new SoalChoiceRelations();
+            
+                                $SoalChoiceRelations->question = $id;
+                                $SoalChoiceRelations->choice = $SoalChoices->id;
+                                $SoalChoiceRelations->description = $kolom;
+                                $SoalChoiceRelations->translate = "-";
+                                $SoalChoiceRelations->file = "-";
+                                $SoalChoiceRelations->hidden = 0;
+            
+                                $SoalChoiceRelations->ordering = $b;
+                                $SoalChoiceRelations->user_added = Yii::$app->user->id;
+                                $SoalChoiceRelations->user_modified = Yii::$app->user->id;
+                                $SoalChoiceRelations->date_added = date('Y-m-d H:i:s');
+                                $SoalChoiceRelations->date_modified = date('Y-m-d H:i:s');
+                                $SoalChoiceRelations->save(false);
+    
+                                $b++;
+                            }
+                        }
+
+                        $success++;
+                    }
+                }
+
+                if($success > 0) {
+                    \Yii::$app->session->setFlash('success', "Import Excel success.");
+                }
+
+
+            }
+        }
+
+
         $command = $query->createCommand();
         $data = $command->queryOne();
 
         return $this->render('butirsoal', [
             'model' => $data,
+            'uploadDoc' => $uploadDoc,
+            'uploadExcel' => $uploadExcel,
         ]);
 
     }
@@ -282,8 +451,6 @@ class SoalController extends Controller
         $soalQuetionRelations->date_modified = date('Y-m-d H:i:s');
         $soalQuetionRelations->save(false);
 
-
-        
         
         $SoalExplanationRelations = new SoalExplainationRelations();
         $SoalExplanationRelations->subject = $subjectId;
@@ -301,36 +468,6 @@ class SoalController extends Controller
         $SoalExplanationRelations->save(false);
         echo $soalQuetions->id;
     }
-
-    public function actionUploadXls($id)
-    {
-
-    }
-
-    public function actionUploadDoc($id)
-    {
-        $curl = new curl\Curl();
-        $response = $curl->setOption(
-            CURLOPT_POSTFIELDS, 
-            http_build_query(array(
-                'url' => 'https://socdn.soalonline.com/cdn1/soal_sample.docx',
-            )
-        ))
-        ->post('http://128.199.189.95:3434/import_doc/detect/');
-        // $ch = curl_init();
-        // curl_setopt($ch, CURLOPT_URL,"http://128.199.189.95:3434/import_doc/detect/");
-        // curl_setopt($ch, CURLOPT_POST, 1);
-        // curl_setopt($ch, CURLOPT_POSTFIELDS,
-        //             "url=https://socdn.soalonline.com/cdn1/soal_sample.docx");
-        // // Receive server response ...
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        // $server_output = curl_exec($ch);
-        // curl_close ($ch);
-        // error_reporting(0);
-        echo "<pre>";
-        var_dump(json_decode($response));
-    }
-    
 
     public function actionSoalPublish($id)
     {

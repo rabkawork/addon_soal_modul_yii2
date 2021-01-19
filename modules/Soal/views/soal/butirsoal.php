@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\ActiveForm;
 
 ?>
 
@@ -32,6 +33,17 @@ use yii\helpers\Url;
 	}
 </style>
 
+
+<?php if (\Yii::$app->session->hasFlash('success')): ?>
+    <div class="alert alert-success alert-dismissable">
+         <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+         <h4><i class="icon fa fa-check"></i>Saved!</h4>
+         <?= \Yii::$app->session->getFlash('success') ?>
+    </div>
+<?php endif; ?>
+
+
+
 <form action="<?php echo Yii::$app->getUrlManager()->getBaseUrl() . Url::to(['/Soal/soal/soal-publish']); ?>&id=<?= $model['id'] ?>" method="post" enctype="multipart/form-data">
 	<!-- <div class="soal-subjects-update"> -->
 
@@ -49,10 +61,10 @@ use yii\helpers\Url;
 
 		<div class="col-md-3">
 			<div class="form-group">
-				<a class="btn btn-primary" data-toggle="modal" data-target="#modalDocs"><i class="fa fa-file-excel-o"></i> Upload (XLS)</a>
+				<a class="btn btn-primary" data-toggle="modal" data-target="#modalDocs"><i class="fa fa-file-excel-o"></i> Upload (DOC)</a>
 			</div>
 			<div class="form-group">
-				<a class="btn btn-primary" data-toggle="modal" data-target="#modalExcels"><i class="fa fa-file-excel-o"></i> Upload (Doc)</a>
+				<a class="btn btn-primary" data-toggle="modal" data-target="#modalExcels"><i class="fa fa-file-excel-o"></i> Upload (XLS)</a>
 			</div>
 			<div class="form-group">
 				<button class="btn btn-primary"><i class="fa fa-accept"></i> Publish</button>
@@ -152,10 +164,6 @@ use yii\helpers\Url;
 </form>
 <!-- </div> -->
 
-<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalDocs">
-	Launch demo modal
-</button> -->
-
 <!-- Modal -->
 <div class="modal fade" id="modalDocs" tabindex="-1" role="dialog" aria-labelledby="exampleModalDocs" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
@@ -167,16 +175,18 @@ use yii\helpers\Url;
 				</button>
 			</div>
 			<div class="modal-body">
-				<form action="#" class="form">
+				<?php $form2 = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
 					<div class="form-group">
-						<label for="">URL (CDN)</label>
-						<input type="text" class="form-control" placeholder="URL" id="textUrl" />
+						<!-- <label for="">URL (CDN)</label>
+						<input type="text" class="form-control" placeholder="URL" id="textUrl" /> -->
+						<?= $form2->field($uploadDoc, 'url')->textInput()->label('URL') ?>
 					</div>
-				</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" id="ActionUploadDocs">Uplaod Docs</button>
+				<!-- <button type="button" class="btn btn-primary" id="ActionUploadDocs">Uplaod Docs</button> -->
+				<?= Html::submitButton('Upload Doc', ['class' => 'btn btn-success']) ?> 
+				<?php ActiveForm::end(); ?>
 			</div>
 		</div>
 	</div>
@@ -186,22 +196,39 @@ use yii\helpers\Url;
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLongTitle">Upload Document (doc)</h5>
+				<h5 class="modal-title" id="exampleModalLongTitle">Upload Document (Excel)</h5>
+				
+				
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
+
+				
 			</div>
 			<div class="modal-body">
-				<form class="form">
+				<!-- <form class="form"> -->
+
+
+
+				
+
+
+				<?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
 					<div class="form-group">
-						<label for="">Upload Excel (.xlsx)</label>
-						<input type="file" class="form-control" />
+						<!-- <label for="">Upload Excel (.xlsx)</label>
+						<input type="file" class="form-control" /> -->
+						<?= $form->field($uploadExcel, 'file')->fileInput() ?>
 					</div>
 			</div>
 			<div class="modal-footer">
+
+				<a href="<?php echo Yii::$app->request->baseUrl; ?>/template_xls.xlsx" class="btn btn-warning">
+				<i class="fa fa-file-excel-o"></i>Template Excel</a>
+
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" id="ActionUploadDocs">Save changes</button>
-				</form>
+				<!-- <button type="button" class="btn btn-primary" id="ActionUploadDocs">Save changes</button>-->	
+				<?= Html::submitButton('Upload Excel', ['class' => 'btn btn-success']) ?> 
+				<?php ActiveForm::end(); ?>
 			</div>
 		</div>
 	</div>
