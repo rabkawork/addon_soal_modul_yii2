@@ -684,12 +684,12 @@ class SoalController extends Controller
                     }
                     else{
                         $SoalChoiceRelations = new SoalChoiceRelations();
+                        $SoalChoiceRelations->choice = $SoalChoices->id;
                     }
 
             
                 
                     $SoalChoiceRelations->question = $value;
-                    $SoalChoiceRelations->choice = $SoalChoices->id;
                     $SoalChoiceRelations->description = $soaljawaban;
                     $SoalChoiceRelations->translate = "-";
 
@@ -703,8 +703,7 @@ class SoalController extends Controller
                         $filename = $_FILES['photo-'.$value.'-'.($key+1)]["tmp_name"][0];
                         list($width, $height) = getimagesize( $filename );       
                         move_uploaded_file($filename,  $destFile);
-                        $SoalChoiceRelations->file = $filename;
-
+                        $SoalChoiceRelations->file = $_FILES['photo-'.$value.'-'.($key+1)]['name'][0];
                     }
                     else{
                         $SoalChoiceRelations->file = "-";
@@ -738,15 +737,67 @@ class SoalController extends Controller
 
 
 
-            echo "<pre>";
-            var_dump($post);
-            var_dump($files);
-            exit();
+            $count = SoalAttachments::find(['subject' => $id])->count();
 
 
-            // $SoalAttachment = new SoalAttachment(); 
-            // $SoalAttachmentQuestions = new SoalAttachmentQuestions(); 
-            // $SoalAttachmentRelations = new SoalAttachmentRelations(); 
+            if($count > 0){
+                $SoalAttachments = SoalAttachments::findOne(['subject' => $id]);
+            }
+            else{
+                $SoalAttachments = new SoalAttachments();
+                $SoalAttachments->subject = $id;
+            }
+
+            $SoalAttachments->hidden = 0;
+            $SoalAttachments->user_added = Yii::$app->user->id;
+            $SoalAttachments->user_modified = Yii::$app->user->id;
+            $SoalAttachments->date_added = date('Y-m-d H:i:s');
+            $SoalAttachments->date_modified = date('Y-m-d H:i:s');
+            $SoalAttachments->save(false);
+
+            $attachmentId = $SoalAttachments->id;
+
+            $count = SoalAttachmentRelations::find(['attachment' => $attachmentId])->count();
+            if($count > 0){
+                $SoalAttachmentsRelations = SoalAttachmentRelations::findOne(['attachment' => $attachmentId]);
+            }
+            else{
+                $SoalAttachmentsRelations = new SoalAttachmentRelations();
+                $SoalAttachmentsRelations->attachment = $id;
+            }
+
+            if(!empty($_FILES['file-'.$value.'-1'])){
+                $destFile = \Yii::$app->basePath."/web/uploads/";
+                $uniquesavename=time().uniqid(rand());
+                $path = explode('.',$_FILES['file-'.$value.'-1']['name'][0]);
+                $ext = end($path);
+                $destFile = $imagePath . $uniquesavename . '.'.$ext;
+                $filename = $_FILES['file-'.$value.'-1']["tmp_name"][0];
+                list($width, $height) = getimagesize( $filename );       
+                move_uploaded_file($filename,  $destFile);
+                $SoalAttachmentsRelations->file = $_FILES['file-'.$value.'-1']['name'][0];
+            }
+            else{
+                $SoalAttachmentsRelations->file = "-";
+            }
+
+
+            $SoalAttachmentsRelations->description = "";
+            $SoalAttachmentsRelations->translate = "";
+            $SoalAttachmentsRelations->ordering = 0;
+            $SoalAttachmentsRelations->hidden = 0;
+            $SoalAttachmentsRelations->user_added = Yii::$app->user->id;
+            $SoalAttachmentsRelations->user_modified = Yii::$app->user->id;
+            $SoalAttachmentsRelations->date_added = date('Y-m-d H:i:s');
+            $SoalAttachmentsRelations->date_modified = date('Y-m-d H:i:s');
+            $SoalAttachmentsRelations->save(false);
+
+            // echo "<pre>";
+            // var_dump($post);
+            // var_dump($files);
+            // exit();
+            \Yii::$app->session->setFlash('success', "Soal berhasil di simpan");
+            return $this->redirect(['/Soal/soal/publish-soal','id' => $id]);        
 
             
 
@@ -769,9 +820,14 @@ class SoalController extends Controller
 
             $model->load(\Yii::$app->request->post());          
             if ($model->validate()) {   
-                $content = SoalSubjects::findOne($id);
-                $content->harga = $model->harga;
-                $content->save(false);
+
+
+                $save = SoalSubjects::findOne($id);
+                $save->price = $model->harga;
+                $save->save(false);
+
+                \Yii::$app->session->setFlash('success', "Soal berhasil di publish");
+
                 return $this->redirect(['/Soal/soal/index','id' => $id]);   
 
             }

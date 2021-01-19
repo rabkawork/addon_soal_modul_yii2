@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\ListView;
 use yii\widgets\LinkPager;
 use yii\helpers\Url;
+use app\modules\Soal\models\SoalQuestions;
+
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
@@ -11,6 +13,13 @@ $this->title = 'Daftar Soal';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="soal-subjects-index">
+  <?php if (\Yii::$app->session->hasFlash('success')): ?>
+      <div class="alert alert-success alert-dismissable">
+          <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+          <h4><i class="icon fa fa-check"></i>Saved!</h4>
+          <?= \Yii::$app->session->getFlash('success') ?>
+      </div>
+  <?php endif; ?>
 
 
 
@@ -47,6 +56,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
                   <?php
                     foreach ($result as $key => $value) {
+
+
+                      
+                    $countsoal = SoalQuestions::find()->where(['subject' => $value['id'],'hidden' => 0])->count();
+
+
                   ?>
 
 
@@ -74,7 +89,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                   <tr>
                       <td><?php echo $value['name']; ?> Tags <?php echo $value['tag']; ?></td>
-                      <td><?php echo $value['jumlah_soal']; ?></td>
+                      <td><?php echo $countsoal; ?></td>
                       <td><?php echo $value['txt_lesson']; ?></td>
                       <td><?php echo $value['txt_class']; ?></td>
                       <td><?php echo $value['txt_jenjang']; ?></td>
