@@ -23,7 +23,7 @@ use app\modules\Soal\models\SoalQuestions;
 use app\modules\Soal\models\SoalQuestionRelations;
 
 use app\modules\Soal\models\SoalExplainationRelations;
-use app\modules\Soal\models\SoalAttachment;
+use app\modules\Soal\models\SoalAttachments;
 use app\modules\Soal\models\SoalAttachmentQuestions;
 use app\modules\Soal\models\SoalAttachmentRelations;
 
@@ -149,30 +149,9 @@ class SoalController extends Controller
     public function actionButirsoal($id)
     {
         // save data
-        // $model = $this->findModel($id);
+    
 
-        $query = new Query;
-        $query->select('soal_subjects.*,
-                        ref_jenjangs.`name` AS txt_jenjang,
-                        ref_kurikulums.`name` AS txt_kurikulum,
-                        ref_classs.`name` AS txt_class,
-                        ref_tahun_ajarans.`name` AS txt_tahun_ajaran,
-                        ref_lessons.`name` AS txt_lesson,
-                        user.username as username')
-                ->from('soal_subjects')
-                ->join('inner JOIN', 'ref_classs',
-                    'soal_subjects.class = ref_classs.id')      
-                ->join('inner JOIN', 'ref_jenjangs', 
-                    'soal_subjects.jenjang = ref_jenjangs.id')
-                ->join('inner JOIN', 'ref_lessons', 
-                    'soal_subjects.lesson = ref_lessons.id')
-                ->join('inner JOIN', 'ref_kurikulums', 
-                    'soal_subjects.kurikulum = ref_kurikulums.id')
-                ->join('inner JOIN', 'ref_tahun_ajarans', 
-                    'soal_subjects.tahun_ajaran = ref_tahun_ajarans.id')
-                ->join('left JOIN', 'user', 
-                    'soal_subjects.user_added = user.id')
-                ->where('soal_subjects.id = '.$id);
+
 
         $uploadDoc = new UploadDoc();
         $uploadExcel = new UploadExcel();
@@ -461,13 +440,55 @@ class SoalController extends Controller
         }
 
 
+        $query = new Query;
+        $query->select('soal_subjects.*,
+                               ref_jenjangs.`name` AS txt_jenjang,
+                               ref_kurikulums.`name` AS txt_kurikulum,
+                               ref_classs.`name` AS txt_class,
+                               ref_tahun_ajarans.`name` AS txt_tahun_ajaran,
+                               ref_lessons.`name` AS txt_lesson,
+                               user.username as username')
+                       ->from('soal_subjects')
+                       ->join('inner JOIN', 'ref_classs',
+                           'soal_subjects.class = ref_classs.id')
+                       ->join('inner JOIN', 'ref_jenjangs',
+                           'soal_subjects.jenjang = ref_jenjangs.id')
+                       ->join('inner JOIN', 'ref_lessons',
+                           'soal_subjects.lesson = ref_lessons.id')
+                       ->join('inner JOIN', 'ref_kurikulums',
+                           'soal_subjects.kurikulum = ref_kurikulums.id')
+                       ->join('inner JOIN', 'ref_tahun_ajarans',
+                           'soal_subjects.tahun_ajaran = ref_tahun_ajarans.id')
+                       ->join('left JOIN', 'user',
+                           'soal_subjects.user_added = user.id')
+                       ->where('soal_subjects.id = '.$id);
+        
+
+
         $command = $query->createCommand();
-        $data = $command->queryOne();
+        $data = $command->queryAll();
+
+        $listSoalSubjects = SoalQuestions::find()->where('subject = '.$id.' and  hidden = 0')->asArray()->all();
+        foreach ($listSoalSubjects as $key => $value) {
+            $listSoalSubjects[$key]['relations_questions'] = SoalQuestionRelations::find()->where('question = '.$value['id'].' and  hidden = 0')->asArray()->one();
+            $listSoalSubjects[$key]['explaination_relations'] = SoalExplainationRelations::find()->where('question = '.$value['id'].' and  hidden = 0')->asArray()->one();
+            $listSoalSubjects[$key]['choices'] = SoalChoices::find()
+                                    ->select('soal_choices.*,soal_choice_relations.description')
+                                    ->innerJoin('soal_choice_relations', 'soal_choice_relations.choice = soal_choices.id')
+                                    ->where('soal_choices.question = '.$value['id'].' and  soal_choices.hidden = 0')->asArray()->all();
+            $listSoalSubjects[$key]['attachments'] = SoalAttachments::find()
+            ->select('soal_attachments.*,soal_attachment_relations.*')
+            ->innerJoin('soal_attachment_relations', 'soal_attachment_relations.attachment = soal_attachments.id')
+            ->where('soal_attachments.subject = '.$id.' and  soal_attachments.hidden = 0')->asArray()->all();
+
+        }
+       
 
         return $this->render('butirsoal', [
-            'model' => $data,
+            'model' => $data[0],
             'uploadDoc' => $uploadDoc,
             'uploadExcel' => $uploadExcel,
+            'listSoal' => $listSoalSubjects
         ]);
 
     }
