@@ -22,11 +22,21 @@ use app\modules\Soal\models\SoalChoiceRelations;
 use app\modules\Soal\models\SoalQuestions;
 use app\modules\Soal\models\SoalQuestionRelations;
 
+use app\modules\Soal\models\SoalExplainationRelations;
+use app\modules\Soal\models\SoalAttachment;
+use app\modules\Soal\models\SoalAttachmentQuestions;
+use app\modules\Soal\models\SoalAttachmentRelations;
+
+
 use app\modules\Soal\models\SoalForm;
 use yii\db\Query;
 use Db;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
+
+use linslin\yii2\curl;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 /**
  * SoalController implements the CRUD actions for SoalSubjects model.
@@ -258,6 +268,7 @@ class SoalController extends Controller
         
         $soalQuetionRelations = new SoalQuestionRelations();
         $soalQuetionRelations->subject = $subjectId;
+        $soalQuetionRelations->answer      = "";
         $soalQuetionRelations->question    = $soalQuetions->id;
         $soalQuetionRelations->description      = "";
         $soalQuetionRelations->translate        = "";
@@ -270,24 +281,59 @@ class SoalController extends Controller
         $soalQuetionRelations->date_added = date('Y-m-d H:i:s');
         $soalQuetionRelations->date_modified = date('Y-m-d H:i:s');
         $soalQuetionRelations->save(false);
+
+
+        
+        
+        $SoalExplanationRelations = new SoalExplainationRelations();
+        $SoalExplanationRelations->subject = $subjectId;
+        $SoalExplanationRelations->question    = $soalQuetions->id;
+        $SoalExplanationRelations->description      = "";
+        $SoalExplanationRelations->translate        = "";
+        $SoalExplanationRelations->file        = "";
+        $SoalExplanationRelations->hidden    = 0;
+        $SoalExplanationRelations->ordering    = 0;
+
+        $SoalExplanationRelations->user_added = Yii::$app->user->id;
+        $SoalExplanationRelations->user_modified = Yii::$app->user->id;
+        $SoalExplanationRelations->date_added = date('Y-m-d H:i:s');
+        $SoalExplanationRelations->date_modified = date('Y-m-d H:i:s');
+        $SoalExplanationRelations->save(false);
         echo $soalQuetions->id;
     }
 
-    public function actionUploadxls()
+    public function actionUploadXls($id)
     {
 
     }
 
-    public function actionUploaddoc()
+    public function actionUploadDoc($id)
     {
-
+        $curl = new curl\Curl();
+        $response = $curl->setOption(
+            CURLOPT_POSTFIELDS, 
+            http_build_query(array(
+                'url' => 'https://socdn.soalonline.com/cdn1/soal_sample.docx',
+            )
+        ))
+        ->post('http://128.199.189.95:3434/import_doc/detect/');
+        // $ch = curl_init();
+        // curl_setopt($ch, CURLOPT_URL,"http://128.199.189.95:3434/import_doc/detect/");
+        // curl_setopt($ch, CURLOPT_POST, 1);
+        // curl_setopt($ch, CURLOPT_POSTFIELDS,
+        //             "url=https://socdn.soalonline.com/cdn1/soal_sample.docx");
+        // // Receive server response ...
+        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // $server_output = curl_exec($ch);
+        // curl_close ($ch);
+        // error_reporting(0);
+        echo "<pre>";
+        var_dump(json_decode($response));
     }
     
 
     public function actionSoalPublish($id)
     {
-
-
         // $query = new Query;
         // $query->from('soal_questions')
         // ->select('id')
@@ -374,6 +420,14 @@ class SoalController extends Controller
                 ->update('soal_question_relations', ['answer' => $post['jawabanEssay-'.$value]], 'subject = '.$value)
                 ->execute();
             }
+
+            // $SoalExplanationRelations = new SoalExplanationRelations(); 
+            // $SoalAttachment = new SoalAttachment(); 
+            // $SoalAttachmentQuestions = new SoalAttachmentQuestions(); 
+            // $SoalAttachmentRelations = new SoalAttachmentRelations(); 
+
+            
+
         }
     }
 
