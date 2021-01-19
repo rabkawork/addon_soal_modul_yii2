@@ -191,11 +191,133 @@ class SoalController extends Controller
             
 
             $data = json_decode($response);
+       
+            if($data->success == true){
+                foreach($data->soal as $key => $value){
+                    if(!empty($value->soal) && !empty($value->kunci) && !empty($value->opsi)){
+                        
+                        $soalQuetions = new SoalQuestions();
+                        $soalQuetions->subject = $id;
+                        $soalQuetions->ordering    = 0;
+                        $soalQuetions->bobot       = 0;
+                        $soalQuetions->audio_question    = '-';
+                        $soalQuetions->audio_explanation = '-';
+                        $soalQuetions->photo_reviewed    = 0;
+                        $soalQuetions->katex_reviewed    = 0;
+                        $soalQuetions->hidden    = 0;
+                
+                        $soalQuetions->user_added = Yii::$app->user->id;
+                        $soalQuetions->user_modified = Yii::$app->user->id;
+                        $soalQuetions->date_added = date('Y-m-d H:i:s');
+                        $soalQuetions->date_modified = date('Y-m-d H:i:s');
+                        $soalQuetions->save(false);
+                
+                        
+                        $soalQuetionRelations = new SoalQuestionRelations();
+                        $soalQuetionRelations->subject = $id;
+                        $soalQuetionRelations->answer      = "";
+                        $soalQuetionRelations->question    = $soalQuetions->id;
+                        $soalQuetionRelations->description      = $value->soal;
+                        $soalQuetionRelations->translate        = "";
+                        $soalQuetionRelations->file        = "";
+                        $soalQuetionRelations->hidden    = 0;
+                        $soalQuetionRelations->ordering    = 0;
+                
+                        $soalQuetionRelations->user_added = Yii::$app->user->id;
+                        $soalQuetionRelations->user_modified = Yii::$app->user->id;
+                        $soalQuetionRelations->date_added = date('Y-m-d H:i:s');
+                        $soalQuetionRelations->date_modified = date('Y-m-d H:i:s');
+                        $soalQuetionRelations->save(false);
+                
+                
+                        
+                        
+                        $SoalExplanationRelations = new SoalExplainationRelations();
+                        $SoalExplanationRelations->subject = $id;
+                        $SoalExplanationRelations->question    = $soalQuetions->id;
+                        $SoalExplanationRelations->description      = "";
+                        $SoalExplanationRelations->translate        = "";
+                        $SoalExplanationRelations->file        = "";
+                        $SoalExplanationRelations->hidden    = 0;
+                        $SoalExplanationRelations->ordering    = 0;
+                
+                        $SoalExplanationRelations->user_added = Yii::$app->user->id;
+                        $SoalExplanationRelations->user_modified = Yii::$app->user->id;
+                        $SoalExplanationRelations->date_added = date('Y-m-d H:i:s');
+                        $SoalExplanationRelations->date_modified = date('Y-m-d H:i:s');
+                        $SoalExplanationRelations->save(false);
 
-            
-            echo "<pre>";
-            var_dump($data);
-            exit();
+
+
+                        
+                        $SoalChoices = new SoalChoices();
+                                
+                        $SoalChoices->question = $soalQuetions->id;
+                        $SoalChoices->hidden = 0;
+                        $SoalChoices->is_answer = 1;
+                        $SoalChoices->ordering = 0;
+                        $SoalChoices->user_added = Yii::$app->user->id;
+                        $SoalChoices->user_modified = Yii::$app->user->id;
+                        $SoalChoices->date_added = date('Y-m-d H:i:s');
+                        $SoalChoices->date_modified = date('Y-m-d H:i:s');
+                        $SoalChoices->save(false);
+    
+                        $SoalChoiceRelations = new SoalChoiceRelations();
+    
+                        $SoalChoiceRelations->question = $id;
+                        $SoalChoiceRelations->choice = $SoalChoices->id;
+                        $SoalChoiceRelations->description = $value->kunci;
+                        $SoalChoiceRelations->translate = "-";
+                        $SoalChoiceRelations->file = "-";
+                        $SoalChoiceRelations->hidden = 0;
+    
+                        $SoalChoiceRelations->ordering = 0;
+                        $SoalChoiceRelations->user_added = Yii::$app->user->id;
+                        $SoalChoiceRelations->user_modified = Yii::$app->user->id;
+                        $SoalChoiceRelations->date_added = date('Y-m-d H:i:s');
+                        $SoalChoiceRelations->date_modified = date('Y-m-d H:i:s');
+                        $SoalChoiceRelations->save(false);
+
+                        foreach ($value->opsi as $numb => $dt) {
+                            
+                            $SoalChoices = new SoalChoices();
+                                
+                            $SoalChoices->question = $soalQuetions->id;
+                            $SoalChoices->hidden = 0;
+                            $SoalChoices->is_answer = 0;
+                            $SoalChoices->ordering = ($key + 1);
+                            $SoalChoices->user_added = Yii::$app->user->id;
+                            $SoalChoices->user_modified = Yii::$app->user->id;
+                            $SoalChoices->date_added = date('Y-m-d H:i:s');
+                            $SoalChoices->date_modified = date('Y-m-d H:i:s');
+                            $SoalChoices->save(false);
+        
+                            $SoalChoiceRelations = new SoalChoiceRelations();
+        
+                            $SoalChoiceRelations->question = $id;
+                            $SoalChoiceRelations->choice = $SoalChoices->id;
+                            $SoalChoiceRelations->description = $dt;
+                            $SoalChoiceRelations->translate = "-";
+                            $SoalChoiceRelations->file = "-";
+                            $SoalChoiceRelations->hidden = 0;
+        
+                            $SoalChoiceRelations->ordering = ($key + 1);
+                            $SoalChoiceRelations->user_added = Yii::$app->user->id;
+                            $SoalChoiceRelations->user_modified = Yii::$app->user->id;
+                            $SoalChoiceRelations->date_added = date('Y-m-d H:i:s');
+                            $SoalChoiceRelations->date_modified = date('Y-m-d H:i:s');
+                            $SoalChoiceRelations->save(false);
+                            
+                        }
+
+
+                    }
+                }
+
+                \Yii::$app->session->setFlash('success', "Import Document (docx) success.");
+            }
+        
+    
             
         }
 
