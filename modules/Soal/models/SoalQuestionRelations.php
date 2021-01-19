@@ -14,6 +14,7 @@ use Yii;
  * @property int $subject
  * @property int $question
  * @property string $description
+ * @property string $answer
  * @property string $translate
  * @property string $file
  * @property int $ordering
@@ -54,7 +55,7 @@ class SoalQuestionRelations extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'description', 'translate'], 'string'],
+            [['type', 'description','answer', 'translate'], 'string'],
             [['subject', 'question', 'description', 'translate', 'file', 'ordering', 'user_added', 'user_modified', 'date_added', 'date_modified', 'hidden'], 'required'],
             [['subject', 'question', 'ordering', 'user_added', 'user_modified', 'hidden'], 'integer'],
             [['date_added', 'date_modified'], 'safe'],
@@ -74,6 +75,7 @@ class SoalQuestionRelations extends \yii\db\ActiveRecord
             'subject' => 'Subject',
             'question' => 'Question',
             'description' => 'Description',
+            'answer' => 'Answer',
             'translate' => 'Translate',
             'file' => 'File',
             'name' => 'Judul',

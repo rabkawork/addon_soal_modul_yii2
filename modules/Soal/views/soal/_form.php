@@ -25,7 +25,7 @@ $userId = Yii::$app->user->id;
     <label class=""><h3><b>Judul</b></h3></label>
     <?= $form->field($model, 'name')->textInput(['maxlength' => true,'style' => 'background-color: #81ecec;'])->label(false) ?>
 
-    <?= $form->field($model, 'province')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'province')->hiddenInput(['value' => 0])->label(false) ?>
 
     <?= $form->field($model, 'jenjang')->dropDownList($dataRefJenjangs)->label('Jenjang') ?>
 
@@ -35,13 +35,13 @@ $userId = Yii::$app->user->id;
 
     <?= $form->field($model, 'tahun_ajaran')->dropDownList($dataRefTahunAjarans)->label('Tahun Ajaran') ?>
 
-    <?= $form->field($model, 'periode_soal')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'periode_soal')->hiddenInput(['value' => 0])->label(false) ?>
 
     <?= $form->field($model, 'lesson')->dropDownList($dataRefLessons)->label('Mata Pelajaran') ?>
 
-    <?= $form->field($model, 'variant')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'variant')->hiddenInput(['value' => 0])->label(false) ?>
 
-    <?= $form->field($model, 'multiple_choice_option')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'multiple_choice_option')->hiddenInput(['value' => 'A'])->label(false) ?>
 
     <?= $form->field($model, 'code')->textInput()->label('Kode') ?>
 
@@ -53,24 +53,24 @@ $userId = Yii::$app->user->id;
 
     <?= $form->field($model, 'cover')->hiddenInput()->label(false) ?>
 
-    <?= $form->field($model, 'language')->dropDownList([ 1 => 'Bahasa Indonesia', 2 => 'Bahasa Inggris'],['value' => !empty($model->language) ? $model->language : 1], ['prompt' => 'Pilih Bahasa'])->label('Bahasa') ?>
+    <?= $form->field($model, 'language')->dropDownList([ 'ID' => 'Bahasa Indonesia', 'ENG' => 'Bahasa Inggris'],['value' => !empty($model->language) ? $model->language : 1], ['prompt' => 'Pilih Bahasa'])->label('Bahasa') ?>
 
-    <?= $form->field($model, 'status')->dropDownList([ 0 => 'Private', 1 => 'Public'], ['value' => !empty($model->status) ? $model->status : 0])->label('Share Ke') ?>
+    <?= $form->field($model, 'status')->dropDownList([ 'PRIVATE' => 'PRIVATE', 'PUBLIC' => 'PUBLIC','TRYOUT' => 'TRYOUT'], ['value' => !empty($model->status) ? $model->status : 0])->label('Share Ke') ?>
 
 
     <?= $form->field($model, 'score_essay')->hiddenInput([ '' => '', 'BOBOT' => 'BOBOT', ], ['prompt' => ''])->label(false) ?>
 
-    <?= $form->field($model, 'approved')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'approved')->hiddenInput(['value' => 0])->label(false) ?>
 
-    <?= $form->field($model, 'last_cached')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'last_cached')->hiddenInput(['value' => date('Y-m-d H:i:s')])->label(false) ?>
 
-    <?= $form->field($model, 'price')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'price')->hiddenInput(['value' => 0])->label(false) ?>
 
     <?php 
         if($type == 'create'):
     ?>
         <?= $form->field($model, 'user_added')->hiddenInput(['value'=> $userId])->label(false) ?>
-        <?= $form->field($model, 'user_modified')->hiddenInput()->label(false) ?>
+        <?= $form->field($model, 'user_modified')->hiddenInput(['value'=> $userId])->label(false) ?>
     <?php 
         else:
     ?>

@@ -18,7 +18,10 @@ use app\modules\Soal\models\Publish;
 
 use app\modules\Soal\models\SoalSubjects;
 use app\modules\Soal\models\SoalChoices;
+use app\modules\Soal\models\SoalChoiceRelations;
 use app\modules\Soal\models\SoalQuestions;
+use app\modules\Soal\models\SoalQuestionRelations;
+
 use app\modules\Soal\models\SoalForm;
 use yii\db\Query;
 use Db;
@@ -238,44 +241,140 @@ class SoalController extends Controller
     {
         $soalQuetions = new SoalQuestions();
         $soalQuetions->subject = $subjectId;
+        $soalQuetions->ordering    = 0;
+        $soalQuetions->bobot       = 0;
+        $soalQuetions->audio_question    = '-';
+        $soalQuetions->audio_explanation = '-';
+        $soalQuetions->photo_reviewed    = 0;
+        $soalQuetions->katex_reviewed    = 0;
+        $soalQuetions->hidden    = 0;
+
         $soalQuetions->user_added = Yii::$app->user->id;
         $soalQuetions->user_modified = Yii::$app->user->id;
         $soalQuetions->date_added = date('Y-m-d H:i:s');
         $soalQuetions->date_modified = date('Y-m-d H:i:s');
         $soalQuetions->save(false);
+
         
+        $soalQuetionRelations = new SoalQuestionRelations();
+        $soalQuetionRelations->subject = $subjectId;
+        $soalQuetionRelations->question    = $soalQuetions->id;
+        $soalQuetionRelations->description      = "";
+        $soalQuetionRelations->translate        = "";
+        $soalQuetionRelations->file        = "";
+        $soalQuetionRelations->hidden    = 0;
+        $soalQuetionRelations->ordering    = 0;
+
+        $soalQuetionRelations->user_added = Yii::$app->user->id;
+        $soalQuetionRelations->user_modified = Yii::$app->user->id;
+        $soalQuetionRelations->date_added = date('Y-m-d H:i:s');
+        $soalQuetionRelations->date_modified = date('Y-m-d H:i:s');
+        $soalQuetionRelations->save(false);
         echo $soalQuetions->id;
     }
 
-    // public function actionUploadxls()
-    // {
-    // }
+    public function actionUploadxls()
+    {
 
-    // public function actionUploaddoc()
-    // {
-    // }
+    }
+
+    public function actionUploaddoc()
+    {
+
+    }
     
 
     public function actionSoalPublish($id)
     {
-        echo "<pre>";
 
 
-        $query = new Query;
-        $query->from('soal_questions')
-        ->select('id')
-        ->where('soal_questions.subject = ' . $id.' and soal_questions.hidden = 0');
-
-        $command = $query->createCommand();
-        $data = $command->queryAll();
-
-        $post = \Yii::$app->request->post();
-        var_dump($_FILES);
+        // $query = new Query;
+        // $query->from('soal_questions')
+        // ->select('id')
+        // ->where('soal_questions.subject = ' . $id.' and soal_questions.hidden = 0');
         
-        foreach ($data as $key => $value) {
-            
+        // $command = $query->createCommand();
+        // $data = $command->queryAll();
+        $connection = \Yii::$app->db;
+
+        $post  = \Yii::$app->request->post();
+        $files = $_FILES; 
+        echo "<pre>";
+        var_dump($post);
+        
+        foreach ($post['opsiActive'] as $key => $value) {
+
+            $connection->createCommand()
+            ->update('soal_questions', ['type' => (int) $post['pilihanEssay-'.$value] == 1 ? 'MULTIPLE_CHOICE' : 'ESSAY'], 'id = '.$value)
+            ->execute();
+
+            $connection->createCommand()
+            ->update('soal_question_relations', ['description' => $post['judul-'.$value]], 'subject = '.$value)
+            ->execute();
+
+            if((int) $post['pilihanEssay-'.$value] == 1)
+            {
+                
+                // ini nanti di kasih query jika pernah nginput tinggal di update
+
+                // ini untuk posis create data
+                foreach($post['SoaljawabanPilGab-'.$value] as $key => $soaljawaban){
+                    $SoalChoices = new SoalChoices();
+                    $pilihan = 0;
+                    if($post['jawabanPilGab-'.$value] == "A")
+                    {
+                        $pilihan = 0;
+                    }
+                    else if($post['jawabanPilGab-'.$value] == "B"){
+                        $pilihan = 1;
+                    }
+                    else if($post['jawabanPilGab-'.$value] == "C"){
+                        $pilihan = 2;
+                    }
+                    else if($post['jawabanPilGab-'.$value] == "D"){
+                        $pilihan = 3;
+                    }
+                    else if($post['jawabanPilGab-'.$value] == "E"){
+                        $pilihan = 4;
+                    }
+                    $SoalChoices->question = $id;
+                    $SoalChoices->hidden = 0;
+                    $SoalChoices->is_answer = $key == $pilihan ? 1 : 0;
+                    $SoalChoices->ordering = $key;
+                    $SoalChoices->user_added = Yii::$app->user->id;
+                    $SoalChoices->user_modified = Yii::$app->user->id;
+                    $SoalChoices->date_added = date('Y-m-d H:i:s');
+                    $SoalChoices->date_modified = date('Y-m-d H:i:s');
+                    $SoalChoices->save(false);
+
+                    $SoalChoiceRelations = new SoalChoiceRelations();
+
+                    $SoalChoiceRelations->question = $id;
+                    $SoalChoiceRelations->choice = $SoalChoices->id;
+                    $SoalChoiceRelations->description = $soaljawaban;
+                    $SoalChoiceRelations->translate = "-";
+                    $SoalChoiceRelations->file = "-";
+                    $SoalChoiceRelations->hidden = 0;
+
+                    $SoalChoiceRelations->ordering = $key;
+                    $SoalChoiceRelations->user_added = Yii::$app->user->id;
+                    $SoalChoiceRelations->user_modified = Yii::$app->user->id;
+                    $SoalChoiceRelations->date_added = date('Y-m-d H:i:s');
+                    $SoalChoiceRelations->date_modified = date('Y-m-d H:i:s');
+                    $SoalChoiceRelations->save(false);
+
+
+                }
+
+
+            }       
+            else
+            {    
+                $connection->createCommand()
+                ->update('soal_question_relations', ['answer' => $post['jawabanEssay-'.$value]], 'subject = '.$value)
+                ->execute();
+            }
         }
-        exit();
     }
 
 

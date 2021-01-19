@@ -232,12 +232,22 @@ use yii\helpers\Url;
 			$("#isiDataAppend").append(`
 				<div class="data-` + data + `">
 	              <div class="card-header">
-	                <div class="form-group">
-	                	<label>Pilih Mode soal</label>
-		                <select id="pilihEssayPil" onchange="getval(this,` + data + `);" name="pilihanEssay-` + data + `" class="form-control">
-		                	<option value="1">Pilihan Ganda</option>
-		                	<option value="2">Essay</option>
-		                </select>
+	                <div class="row">
+						<input type="hidden" value="`+data+`" name="opsiActive[]" />
+		                <div class="col-md-6">
+
+		                	<label>Pilih Mode soal</label>
+			                <select id="pilihEssayPil" onchange="getval(this,` + data + `);" name="pilihanEssay-` + data + `" class="form-control">
+			                	<option value="1">Pilihan Ganda</option>
+			                	<option value="2">Essay</option>
+			                </select>
+
+	                	</div>
+
+		                <div class="col-md-6">
+		                	<label>Urutan soal</label>
+	                		<input type="text" class="form-control" name="ordering-`+data+`" value="" />
+	                	</div>
 	                </div>
 	                <div class="form-group">
 	                	<label class="card-title">Pertanyaan</label>
@@ -245,6 +255,7 @@ use yii\helpers\Url;
 	                	<br />
 	                	<textarea name="judul-` + data + `" id="judul-` + data + `" rows="10" cols="80">` + $("#editor").text() + `</textarea>
 	                </div>	
+	                
 	              </div>
 	              <!-- /.card-header -->
 	              <div class="card-body">
@@ -255,8 +266,12 @@ use yii\helpers\Url;
 						    <span class="input-group-text"><input type="radio" name="jawabanPilGab-` + data + `[]" value="A" />A</span>
 						  </div>
 						  <input type="text" name="SoaljawabanPilGab-` + data + `[]" class="form-control" placeholder="Opsi" aria-label="Isi butir soal" aria-describedby="basic-addon1">
-						  <input type="file" class="form-control" name="file-` + data + `-1[]" />
+						  
+						  
+						  <input type="file" class="form-control" name="photo-` + data + `-1[]" />
+
 						  <a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','1');"><i class="fa fa-trash"></i></a>
+
 						</div>
 
 						<div class="input-group mb-3 dvi-` + data + `-2">
@@ -264,9 +279,10 @@ use yii\helpers\Url;
 						    <span class="input-group-text"><input type="radio" name="jawabanPilGab-` + data + `[]" value="B" />B</span>
 						  </div>
 						  <input type="text" name="SoaljawabanPilGab-` + data + `[]" class="form-control" placeholder="Opsi" aria-label="Isi butir soal" aria-describedby="basic-addon1">
-						  <input type="file" class="form-control" name="file-` + data + `-2[]" />
 
+						  <input type="file" class="form-control" name="photo-` + data + `-2[]" />
 						  <a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','2');"><i class="fa fa-trash"></i></a>
+
 						</div>
 
 
@@ -275,9 +291,10 @@ use yii\helpers\Url;
 						    <span class="input-group-text"><input type="radio" name="jawabanPilGab-` + data + `[]" value="C" />C</span>
 						  </div>
 						  <input type="text" name="SoaljawabanPilGab-` + data + `[]" class="form-control" placeholder="Opsi" aria-label="Isi butir soal" aria-describedby="basic-addon1">
-						  <input type="file" class="form-control" name="file-` + data + `-3[]" />
 
+						  <input type="file" class="form-control" name="photo-` + data + `-3[]" />
 						  <a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','3');"><i class="fa fa-trash"></i></a>
+
 						</div>
 
 
@@ -286,19 +303,24 @@ use yii\helpers\Url;
 						    <span class="input-group-text"><input type="radio" name="jawabanPilGab-` + data + `[]" value="D" />D</span>
 						  </div>
 						  <input type="text" name="SoaljawabanPilGab-` + data + `[]" class="form-control" placeholder="Opsi" aria-label="Isi butir soal" aria-describedby="basic-addon1">
-						  <input type="file" class="form-control" name="file-` + data + `-4[]" />
+
+						  <input type="file" class="form-control" name="photo-` + data + `-4[]" />
 
 						  <a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','4');"><i class="fa fa-trash"></i></a>
+
 						</div>
 
 						<div class="input-group mb-3 dvi-` + data + `-5">
 						  <div class="input-group-prepend">
 						    <span class="input-group-text"><input type="radio" name="jawabanPilGab-` + data + `[]" value="E" />E</span>
 						  </div>
-						  <input type="text" class="form-control" placeholder="Opsi" aria-label="Isi butir soal" aria-describedby="basic-addon1">
-						  <input type="file" class="form-control" name="file-` + data + `-5[]" />
+						  <input type="text" name="SoaljawabanPilGab-` + data + `[]" class="form-control" placeholder="Opsi" aria-label="Isi butir soal" aria-describedby="basic-addon1">
+
+						  <input type="file" class="form-control" name="photo-` + data + `-5[]" />
 
 						  <a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','5');"><i class="fa fa-trash"></i></a>
+
+
 						</div>
 
 	              	  </div>
@@ -310,7 +332,14 @@ use yii\helpers\Url;
 
 	              	   <div class="form-group">
 	              			<textarea name="pembahasan-` + data + `" class="form-control" placeholder="Pembahasan :"></textarea>
-	              	   </div>
+					   </div>
+					
+					   
+					   <div class="form-group">
+					   	  <label for="">Attachment</label>
+						  <input type="file" class="form-control" name="file-` + data + `-1[]" />
+					   </div>
+
 
 	              	   <div class="form-group">
 	              	   		<a onclick="return del(` + data + `);" class="btn btn-danger"><i class="fa fa-trash"></i> Hapus Soal</a>
