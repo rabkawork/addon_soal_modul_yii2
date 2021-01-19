@@ -820,10 +820,10 @@ class SoalController extends Controller
             $SoalExplanationRelations->date_modified = date('Y-m-d H:i:s');
             $SoalExplanationRelations->save(false);
 
-            echo "<pre>";
-            var_dump($post);
-            var_dump($files);
-            exit();
+            // echo "<pre>";
+            // var_dump($post);
+            // var_dump($files);
+            // exit();
             \Yii::$app->session->setFlash('success', "Soal berhasil di simpan");
             return $this->redirect(['/Soal/soal/publish-soal','id' => $id]);        
 
