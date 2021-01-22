@@ -10,7 +10,7 @@ use yii\base\Model;
 class UploadDoc extends Model
 {
 
-    public $url;
+    public $file;
 
     /**
      * @return array the validation rules.
@@ -18,7 +18,9 @@ class UploadDoc extends Model
     public function rules()
     {
         return [
-            [['url'], 'required'],
+            // [['url'], 'required'],
+            [['file'], 'file', 'skipOnEmpty' => false, 'extensions' => 'docx'],
+
         ];
     }
 

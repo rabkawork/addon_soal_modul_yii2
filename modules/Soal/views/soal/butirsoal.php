@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use kartik\file\FileInput;
 
 ?>
 
@@ -31,6 +32,9 @@ use yii\widgets\ActiveForm;
 		background-color: #ddd;
 		color: black;
 	}
+
+
+
 </style>
 
 
@@ -83,6 +87,11 @@ use yii\widgets\ActiveForm;
 							<div class="card-header">
 								<div class="row">
 									<input type="hidden" value="<?php echo $value['id']; ?>" name="opsiActive[]" />
+
+									<div class="col-md-6">
+										<label>Urutan soal</label>
+										<input type="text" class="form-control" name="ordering-<?php echo $value['id']; ?>" value="<?php echo $value['ordering']; ?>" />
+									</div>
 									<div class="col-md-6">
 
 										<label>Pilih Mode soal</label>
@@ -92,11 +101,6 @@ use yii\widgets\ActiveForm;
 										</select>
 
 									</div>
-
-									<div class="col-md-6">
-										<label>Urutan soal</label>
-										<input type="text" class="form-control" name="ordering-<?php echo $value['id']; ?>" value="<?php echo $value['ordering']; ?>" />
-									</div>
 								</div>
 								<div class="form-group">
 									<label class="card-title">Pertanyaan</label>
@@ -105,6 +109,13 @@ use yii\widgets\ActiveForm;
 									<textarea name="judul-<?php echo $value['id']; ?>" id="judul-<?php echo $value['id']; ?>" rows="10" cols="80"><?php echo $value['relations_questions']['description']; ?></textarea>
 								</div>	
 								
+
+								<div class="form-group">
+									<label for="">Attachment Pertanyaan</label>
+									<input type="file"  name="attachmentjudul-<?php echo $value['id']; ?>[]" multiple />
+								</div>
+
+
 							</div>
 							<!-- /.card-header -->
 							<div class="card-body">
@@ -133,17 +144,32 @@ use yii\widgets\ActiveForm;
 												$huruf = 'E';
 											}
 									?>
-									<div class="input-group mb-3 dvi-<?php echo $value['id']; ?>-<?php echo $number; ?>">
+									<!-- <div class="input-group mb-3 dvi-<?php echo $value['id']; ?>-<?php echo $number; ?>">
 										<div class="input-group-prepend">
 											<span class="input-group-text"><input type="radio" name="jawabanPilGab-<?php echo $value['id']; ?>[]" value="<?php echo $huruf; ?>" /><?php echo $huruf; ?></span>
 										</div>
 										<input type="text" name="SoaljawabanPilGab-<?php echo $value['id']; ?>[]" class="form-control" placeholder="Opsi" aria-label="Isi butir soal" aria-describedby="basic-addon1" value="<?php echo $choiceData['description'] ?>">
 										
 										
-										<input type="file" class="form-control" name="photo-<?php echo $value['id']; ?>-<?php echo $number; ?>[]" />
+										<input type="file"  name="photo-<?php echo $value['id']; ?>-<?php echo $number; ?>[]" />
 
 										<a class="btn btn-danger"  onclick="return delHideDb(this,'<?php echo $value['id']; ?>','<?php echo $number; ?>','<?php echo $choiceData['id']; ?>');"><i class="fa fa-trash"></i></a>
 
+									</div> -->
+
+
+									<div class="input-group mb-3 dvi-<?php echo $value['id']; ?>-<?php echo $number; ?>">
+										<div class="input-group-prepend">
+											<span class="input-group-text"><input type="radio" name="jawabanPilGab-<?php echo $value['id']; ?>[]" value="<?php echo $huruf; ?>" /><?php echo $huruf; ?></span>
+										</div>
+										<textarea name="SoaljawabanPilGab-<?php echo $value['id']; ?>[]" class="form-control" placeholder="Opsi"><?php echo $choiceData['description'] ?></textarea>		
+
+										
+										<div class="input-group-prepend">
+											<span class="input-group-text"> <input type="file"   name="photo-<?php echo $value['id']; ?>-<?php echo $number; ?>[]" /></span>
+											<span class="input-group-text">
+										<a class="btn btn-danger"  onclick="return delHideDb(this,'<?php echo $value['id']; ?>','<?php echo $number; ?>','<?php echo $choiceData['id']; ?>');"><i class="fa fa-trash"></i></a></span>
+										</div>				   
 									</div>
 
 									<?php
@@ -164,8 +190,8 @@ use yii\widgets\ActiveForm;
 								
 								
 								<div class="form-group">
-									<label for="">Attachment</label>
-									<input type="file" class="form-control" name="file-<?php echo $value['id']; ?>-1[]" />
+									<label for="">Attachment Pembahasan</label>
+									<input type="file"  name="file-<?php echo $value['id']; ?>-1[]" />
 								</div>
 
 
@@ -211,6 +237,8 @@ use yii\widgets\ActiveForm;
 		<div class="col-md-1">
 			<div id="navbar">
 				<a class="btn btn-primary" id="tambahSoal"><i class="fa fa-plus"></i></a>
+				<br />
+				<a class="btn btn-warning" data-toggle="modal" data-target="#uploadSoalLama" id="btnUploadSoalLama"><i class="fa fa-upload"></i></a>
 			</div>
 		</div>
 		<div class="col-md-2">
@@ -284,6 +312,38 @@ use yii\widgets\ActiveForm;
 </form>
 <!-- </div> -->
 
+<div class="modal fade" id="uploadSoalLama" tabindex="-1" role="dialog" aria-labelledby="exampleuploadSoalLama" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLongTitle">Import Soal Public</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<table class="table table-sm">
+						<tr>
+							<th scope="col">Judul</th>
+							<th scope="col">Jumlah Soal</th>
+							<th scope="col">Action</th>
+						</tr>
+						<tbody id="dataSoalPublic">
+						
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
 <!-- Modal -->
 <div class="modal fade" id="modalDocs" tabindex="-1" role="dialog" aria-labelledby="exampleModalDocs" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
@@ -297,9 +357,20 @@ use yii\widgets\ActiveForm;
 			<div class="modal-body">
 				<?php $form2 = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
 					<div class="form-group">
+
+
+					<input type="hidden" name="check" value="doc" />
+
 						<!-- <label for="">URL (CDN)</label>
 						<input type="text" class="form-control" placeholder="URL" id="textUrl" /> -->
-						<?= $form2->field($uploadDoc, 'url')->textInput()->label('URL') ?>
+						<?php /// $form2->field($uploadDoc, 'file')->fileInput() 
+
+								echo $form2->field($uploadDoc, 'file')->widget(FileInput::classname(), [
+									// 'options' => ['accept' => 'image/*'],
+								]); 
+						?>
+
+						
 					</div>
 			</div>
 			<div class="modal-footer">
@@ -334,10 +405,17 @@ use yii\widgets\ActiveForm;
 
 
 				<?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
+
+
+					<input type="hidden" name="check" value="excel" />
 					<div class="form-group">
 						<!-- <label for="">Upload Excel (.xlsx)</label>
-						<input type="file" class="form-control" /> -->
-						<?= $form->field($uploadExcel, 'file')->fileInput() ?>
+						<input type="file"  /> -->
+						<?php  //$form->field($uploadExcel, 'file')->fileInput() ?>
+
+						<?php echo  $form->field($uploadExcel, 'file')->widget(FileInput::classname(), [
+									// 'options' => ['accept' => 'image/*'],
+							]);  ?>
 					</div>
 			</div>
 			<div class="modal-footer">
@@ -371,7 +449,41 @@ use yii\widgets\ActiveForm;
 	}
 
 
+	function imporsoal(id)
+	{
+		$.get("<?php echo Url::to(['/Soal/soal/select-soal']); ?>&id=<?php echo $model['id']; ?>&subject="+id, function(data, status) {
+			if(data == "sukses"){
+				alert('sukses import soal')
+				window.location.reload();
+			}
+		});
+	}
 
+	$("#btnUploadSoalLama").click(function(){
+
+		$.ajax({
+			dataType: 'json',
+			url: '<?php echo Url::to(['/Soal/soal/show-soal']); ?>',
+			data: "",
+			method: "GET",
+			success: function(data){
+				// console.log(data['data']);
+				var strData = '';
+				$("#dataSoalPublic").empty();
+				for (let index = 0; index < data['data'].length; index++) {
+					strData += `<tr>
+						<td>`+data['data'][index]['name']+`</td>
+						<td>`+data['data'][index]['jumlah_soal']+`</td>
+						<td><a data-id="`+data['data'][index]['id']+`" class="btn btn-success importSoal" onclick="return imporsoal('`+data['data'][index]['id']+`');">Import</a></td>
+					</tr>`;
+				}
+				$("#dataSoalPublic").append(strData);
+			}
+		});
+
+
+	});	
+	
 	$("#tambahSoal").click(function() {
 		// return false;
 		$.post("<?php echo Url::to(['/Soal/soal/create-soal', 'subjectId' => $model['id']]); ?>", function(data, status) {
@@ -381,6 +493,11 @@ use yii\widgets\ActiveForm;
 	              <div class="card-header">
 	                <div class="row">
 						<input type="hidden" value="`+data+`" name="opsiActive[]" />
+
+		                <div class="col-md-6">
+		                	<label>Urutan soal</label>
+	                		<input type="text" class="form-control" name="ordering-`+data+`" value="" />
+	                	</div>
 		                <div class="col-md-6">
 
 		                	<label>Pilih Mode soal</label>
@@ -390,11 +507,6 @@ use yii\widgets\ActiveForm;
 			                </select>
 
 	                	</div>
-
-		                <div class="col-md-6">
-		                	<label>Urutan soal</label>
-	                		<input type="text" class="form-control" name="ordering-`+data+`" value="" />
-	                	</div>
 	                </div>
 	                <div class="form-group">
 	                	<label class="card-title">Pertanyaan</label>
@@ -402,6 +514,11 @@ use yii\widgets\ActiveForm;
 	                	<br />
 	                	<textarea name="judul-` + data + `" id="judul-` + data + `" rows="10" cols="80">` + $("#editor").text() + `</textarea>
 	                </div>	
+
+					<div class="form-group">
+					   	  <label for="">Attachment Pertanyaan</label>
+						  <input type="file"  name="attachmentjudul-` + data + `[]" multiple />
+					</div>
 	                
 	              </div>
 	              <!-- /.card-header -->
@@ -412,23 +529,24 @@ use yii\widgets\ActiveForm;
 						  <div class="input-group-prepend">
 						    <span class="input-group-text"><input type="radio" name="jawabanPilGab-` + data + `[]" value="A" />A</span>
 						  </div>
-						  <input type="text" name="SoaljawabanPilGab-` + data + `[]" class="form-control" placeholder="Opsi" aria-label="Isi butir soal" aria-describedby="basic-addon1">
-						  
-						  
-						  <input type="file" class="form-control" name="photo-` + data + `-1[]" />
+						  <textarea name="SoaljawabanPilGab-` + data + `[]" class="form-control" placeholder="Opsi"></textarea>		
 
-						  <a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','1');"><i class="fa fa-trash"></i></a>
-
+						  
+						  <div class="input-group-prepend">
+							<span class="input-group-text"> <input type="file"   name="photo-` + data + `-1[]" /></span>
+							<span class="input-group-text"><a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','1');"><i class="fa fa-trash"></i></a></span>
+						  </div>				   
 						</div>
 
 						<div class="input-group mb-3 dvi-` + data + `-2">
 						  <div class="input-group-prepend">
 						    <span class="input-group-text"><input type="radio" name="jawabanPilGab-` + data + `[]" value="B" />B</span>
 						  </div>
-						  <input type="text" name="SoaljawabanPilGab-` + data + `[]" class="form-control" placeholder="Opsi" aria-label="Isi butir soal" aria-describedby="basic-addon1">
-
-						  <input type="file" class="form-control" name="photo-` + data + `-2[]" />
-						  <a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','2');"><i class="fa fa-trash"></i></a>
+						  <textarea name="SoaljawabanPilGab-` + data + `[]" class="form-control" placeholder="Opsi"></textarea>
+						  <div class="input-group-prepend">
+							<span class="input-group-text"> <input type="file"   name="photo-` + data + `-2[]" /></span>
+							<span class="input-group-text"><a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','2');"><i class="fa fa-trash"></i></a></span>
+						  </div>				  
 
 						</div>
 
@@ -437,10 +555,11 @@ use yii\widgets\ActiveForm;
 						  <div class="input-group-prepend">
 						    <span class="input-group-text"><input type="radio" name="jawabanPilGab-` + data + `[]" value="C" />C</span>
 						  </div>
-						  <input type="text" name="SoaljawabanPilGab-` + data + `[]" class="form-control" placeholder="Opsi" aria-label="Isi butir soal" aria-describedby="basic-addon1">
-
-						  <input type="file" class="form-control" name="photo-` + data + `-3[]" />
-						  <a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','3');"><i class="fa fa-trash"></i></a>
+						  <textarea name="SoaljawabanPilGab-` + data + `[]" class="form-control" placeholder="Opsi"></textarea>
+						  <div class="input-group-prepend">
+							<span class="input-group-text"> <input type="file"   name="photo-` + data + `-3[]" /></span>
+							<span class="input-group-text"><a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','3');"><i class="fa fa-trash"></i></a></span>
+						  </div>				  
 
 						</div>
 
@@ -449,11 +568,11 @@ use yii\widgets\ActiveForm;
 						  <div class="input-group-prepend">
 						    <span class="input-group-text"><input type="radio" name="jawabanPilGab-` + data + `[]" value="D" />D</span>
 						  </div>
-						  <input type="text" name="SoaljawabanPilGab-` + data + `[]" class="form-control" placeholder="Opsi" aria-label="Isi butir soal" aria-describedby="basic-addon1">
-
-						  <input type="file" class="form-control" name="photo-` + data + `-4[]" />
-
-						  <a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','4');"><i class="fa fa-trash"></i></a>
+						  <textarea name="SoaljawabanPilGab-` + data + `[]" class="form-control" placeholder="Opsi"></textarea>
+						  <div class="input-group-prepend">
+							<span class="input-group-text"> <input type="file"   name="photo-` + data + `-4[]" /></span>
+							<span class="input-group-text"><a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','4');"><i class="fa fa-trash"></i></a></span>
+						  </div>				  
 
 						</div>
 
@@ -461,11 +580,11 @@ use yii\widgets\ActiveForm;
 						  <div class="input-group-prepend">
 						    <span class="input-group-text"><input type="radio" name="jawabanPilGab-` + data + `[]" value="E" />E</span>
 						  </div>
-						  <input type="text" name="SoaljawabanPilGab-` + data + `[]" class="form-control" placeholder="Opsi" aria-label="Isi butir soal" aria-describedby="basic-addon1">
-
-						  <input type="file" class="form-control" name="photo-` + data + `-5[]" />
-
-						  <a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','5');"><i class="fa fa-trash"></i></a>
+						  <textarea name="SoaljawabanPilGab-` + data + `[]" class="form-control" placeholder="Opsi"></textarea>
+						  <div class="input-group-prepend">
+							<span class="input-group-text"> <input type="file"   name="photo-` + data + `-5[]" /></span>
+							<span class="input-group-text"><a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','5');"><i class="fa fa-trash"></i></a></span>
+						  </div>				  
 
 
 						</div>
@@ -474,6 +593,8 @@ use yii\widgets\ActiveForm;
 
 	              	   <div class="form-group" id="essay-` + data + `" style="display:none;">
 	                 	 <textarea class="form-control" name="jawabanEssay-` + data + `" placeholder="Isi jawaban soal"></textarea>
+						  <label for="">Attachment Soal Essay</label>
+						 <input type="file"   name="photoEssay-` + data + `[]" multiple />
 	              	   </div>
 
 
@@ -483,8 +604,8 @@ use yii\widgets\ActiveForm;
 					
 					   
 					   <div class="form-group">
-					   	  <label for="">Attachment</label>
-						  <input type="file" class="form-control" name="file-` + data + `-1[]" />
+					   	  <label for="">Attachment Pembahasan</label>
+						  <input type="file"  name="file-` + data + `-1[]" multiple />
 					   </div>
 
 
