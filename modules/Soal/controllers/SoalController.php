@@ -493,13 +493,13 @@ class SoalController extends Controller
             $listSoalSubjects[$key]['relations_questions'] = SoalQuestionRelations::find()->where('question = '.$value['id'].' and  hidden = 0')->asArray()->one();
             $listSoalSubjects[$key]['explaination_relations'] = SoalExplainationRelations::find()->where('question = '.$value['id'].' and  hidden = 0')->asArray()->one();
             $listSoalSubjects[$key]['choices'] = SoalChoices::find()
-                                    ->select('soal_choices.*,soal_choice_relations.description')
+                                    ->select('soal_choices.*,soal_choice_relations.description,soal_choice_relations.file')
                                     ->innerJoin('soal_choice_relations', 'soal_choice_relations.choice = soal_choices.id')
                                     ->where('soal_choices.question = '.$value['id'].' and  soal_choices.hidden = 0')->asArray()->all();
             $listSoalSubjects[$key]['attachments'] = SoalAttachments::find()
             ->select('soal_attachments.*,soal_attachment_relations.*')
             ->innerJoin('soal_attachment_relations', 'soal_attachment_relations.attachment = soal_attachments.id')
-            ->where('soal_attachments.subject = '.$id.' and  soal_attachments.hidden = 0')->asArray()->all();
+            ->where('soal_attachments.subject = '.$id.' and  soal_attachments.hidden = 0')->asArray()->one();
 
         }
         
@@ -768,19 +768,22 @@ class SoalController extends Controller
         $post  = \Yii::$app->request->post();
         $files = $_FILES; 
 
-        // echo "<pre>";
-        // var_dump($post);
-        // exit();
 
         foreach ($post['opsiActive'] as $key => $value) {
 
             $connection->createCommand()
-            ->update('soal_questions', ['type' => (int) $post['pilihanEssay-'.$value] == 1 ? 'MULTIPLE_CHOICE' : 'ESSAY','ordering' => $post['ordering-'.$value]], 'id = '.$value)
+            ->update('soal_questions', ['type' => (int) $post['pilihanEssay-'.$value] == 1 ? 'MULTIPLE_CHOICE' : 'ESSAY','ordering' => !empty($post['ordering-'.$value]) ? $post['ordering-'.$value] : 0], 'id = '.$value)
             ->execute();
 
             $connection->createCommand()
             ->update('soal_question_relations', ['description' => $post['judul-'.$value]], 'question = '.$value)
             ->execute();
+
+
+    
+            $image = array('jpg','jpeg','png','gif');
+            $audio = array('mp3','wav','mp4');
+    
 
             if((int) $post['pilihanEssay-'.$value] == 1)
             {
@@ -839,6 +842,20 @@ class SoalController extends Controller
                     if($SoalChoiceRelationsCount != NULL){
                         $SoalChoiceRelations = SoalChoiceRelations::findOne(['question' => $value, 'choice' => $SoalChoiceRelationsCount->id]);
                         $SoalChoiceRelations->description = $soaljawaban;
+
+
+                        if(!empty($_FILES['photo-'.$value.'-'.($key+1)]['tmp_name'][0])){
+                            $destFile = \Yii::$app->basePath."/web/uploads/";
+                            $uniquesavename=time().uniqid(rand());
+                            $path = explode('.',$_FILES['photo-'.$value.'-'.($key+1)]['name'][0]);
+                            $ext = end($path);
+                            $destFile = $destFile. $uniquesavename . '.'.$ext;
+                            $filename = $_FILES['photo-'.$value.'-'.($key+1)]["tmp_name"][0];
+                            // list($width, $height) = getimagesize( $filename );       
+                            move_uploaded_file($filename,  $destFile);
+                            $SoalChoiceRelations->file = $uniquesavename . '.'.$ext;
+                        }
+                        
                     }
                     else{
                         $SoalChoiceRelations = new SoalChoiceRelations();
@@ -846,24 +863,26 @@ class SoalController extends Controller
                         $SoalChoiceRelations->question = $value;
                         $SoalChoiceRelations->description = $soaljawaban;
                         $SoalChoiceRelations->translate = "-";
+                        if(!empty($_FILES['photo-'.$value.'-'.($key+1)]['tmp_name'][0])){
+                            $destFile = \Yii::$app->basePath."/web/uploads/";
+                            $uniquesavename=time().uniqid(rand());
+                            $path = explode('.',$_FILES['photo-'.$value.'-'.($key+1)]['name'][0]);
+                            $ext = end($path);
+                            $destFile = $destFile. $uniquesavename . '.'.$ext;
+                            $filename = $_FILES['photo-'.$value.'-'.($key+1)]["tmp_name"][0];
+                            // list($width, $height) = getimagesize( $filename );       
+                            move_uploaded_file($filename,  $destFile);
+                            $SoalChoiceRelations->file = $uniquesavename . '.'.$ext;
+                        }
+                        else{
+                            $SoalChoiceRelations->file = "-";
+                        }
                     }
 
 
 
-                    if(!empty($_FILES['photo-'.$value.'-'.($key+1)]['tmp_name'][0])){
-                        $destFile = \Yii::$app->basePath."/web/uploads/";
-                        $uniquesavename=time().uniqid(rand());
-                        $path = explode('.',$_FILES['photo-'.$value.'-'.($key+1)]['name'][0]);
-                        $ext = end($path);
-                        $destFile = $imagePath . $uniquesavename . '.'.$ext;
-                        $filename = $_FILES['photo-'.$value.'-'.($key+1)]["tmp_name"][0];
-                        // list($width, $height) = getimagesize( $filename );       
-                        move_uploaded_file($filename,  $destFile);
-                        $SoalChoiceRelations->file = $_FILES['photo-'.$value.'-'.($key+1)]['name'][0];
-                    }
-                    else{
-                        $SoalChoiceRelations->file = "-";
-                    }
+
+
 
 
                     $SoalChoiceRelations->hidden = 0;
@@ -892,7 +911,7 @@ class SoalController extends Controller
             ->execute();
 
 
-         
+            
             $count = SoalAttachments::findOne(['subject' => $id]);
 
 
@@ -916,28 +935,71 @@ class SoalController extends Controller
             $count = SoalAttachmentRelations::findOne(['attachment' => $attachmentId]);
             if($count != NULL){
                 $SoalAttachmentsRelations = SoalAttachmentRelations::findOne(['attachment' => $attachmentId]);
+                
+                
+                if(!empty($_FILES['attachmentjudul-'.$value]['tmp_name'][0])){
+                    $destFile = \Yii::$app->basePath."/web/uploads/";
+                    $uniquesavename=time().uniqid(rand());
+                    $path = explode('.',$_FILES['attachmentjudul-'.$value]['name'][0]);
+                    $ext = end($path);
+                    $destFile = $destFile. $uniquesavename . '.'.$ext;
+                    $filename = $_FILES['attachmentjudul-'.$value]["tmp_name"][0];
+                    // list($width, $height) = getimagesize( $filename );       
+                    move_uploaded_file($filename,  $destFile);
+                    $SoalAttachmentsRelations->file = $uniquesavename . '.'.$ext;
+                }
+
+                if(!empty($_FILES['attachmentaudio-'.$value]['tmp_name'][0])){
+                    $destFile = \Yii::$app->basePath."/web/uploads/";
+                    $uniquesavename=time().uniqid(rand());
+                    $path = explode('.',$_FILES['attachmentaudio-'.$value]['name'][0]);
+                    $ext = end($path);
+                    $destFile = $destFile. $uniquesavename . '.'.$ext;
+                    $filename = $_FILES['attachmentaudio-'.$value]["tmp_name"][0];
+                    // list($width, $height) = getimagesize( $filename );       
+                    move_uploaded_file($filename,  $destFile);
+                    $SoalAttachmentsRelations->audio = $uniquesavename . '.'.$ext;
+                }
+
             }
             else{
                 $SoalAttachmentsRelations = new SoalAttachmentRelations();
                 $SoalAttachmentsRelations->attachment = $id;
+    
+                if(!empty($_FILES['attachmentjudul-'.$value]['tmp_name'][0])){
+                    $destFile = \Yii::$app->basePath."/web/uploads/";
+                    $uniquesavename=time().uniqid(rand());
+                    $path = explode('.',$_FILES['attachmentjudul-'.$value]['name'][0]);
+                    $ext = end($path);
+                    $destFile = $destFile. $uniquesavename . '.'.$ext;
+                    $filename = $_FILES['attachmentjudul-'.$value]["tmp_name"][0];
+                    // list($width, $height) = getimagesize( $filename );       
+                    move_uploaded_file($filename,  $destFile);
+                    $SoalAttachmentsRelations->file = $uniquesavename . '.'.$ext;
+                }
+                else{
+                    $SoalAttachmentsRelations->file = "-";
+                }
+    
+                
+                
+                if(!empty($_FILES['attachmentaudio-'.$value]['tmp_name'][0])){
+                    $destFile = \Yii::$app->basePath."/web/uploads/";
+                    $uniquesavename=time().uniqid(rand());
+                    $path = explode('.',$_FILES['attachmentaudio-'.$value]['name'][0]);
+                    $ext = end($path);
+                    $destFile = $destFile. $uniquesavename . '.'.$ext;
+                    $filename = $_FILES['attachmentaudio-'.$value]["tmp_name"][0];
+                    // list($width, $height) = getimagesize( $filename );       
+                    move_uploaded_file($filename,  $destFile);
+                    $SoalAttachmentsRelations->audio = $uniquesavename . '.'.$ext;
+                }
+                else{
+                    $SoalAttachmentsRelations->audio = "-";
+                }
             }
 
-            if(!empty($_FILES['file-'.$value.'-1']['tmp_name'][0])){
-                $destFile = \Yii::$app->basePath."/web/uploads/";
-                $uniquesavename=time().uniqid(rand());
-                $path = explode('.',$_FILES['file-'.$value.'-1']['name'][0]);
-                $ext = end($path);
-                $destFile = $imagePath . $uniquesavename . '.'.$ext;
-                $filename = $_FILES['file-'.$value.'-1']["tmp_name"][0];
-                // list($width, $height) = getimagesize( $filename );       
-                move_uploaded_file($filename,  $destFile);
-                $SoalAttachmentsRelations->file = $_FILES['file-'.$value.'-1']['name'][0];
-            }
-            else{
-                $SoalAttachmentsRelations->file = "-";
-            }
-
-
+            
             $SoalAttachmentsRelations->description = "";
             $SoalAttachmentsRelations->translate = "";
             $SoalAttachmentsRelations->ordering = 0;
@@ -956,6 +1018,36 @@ class SoalController extends Controller
 
             if($SoalExplanationRelationsCount != NULL){
                 $SoalExplanationRelations = SoalExplainationRelations::findOne(['question' => $value, 'subject' => $id]);
+
+                
+    
+                if(!empty($_FILES['file-'.$value.'-1']['tmp_name'][0])){
+                    $destFile = \Yii::$app->basePath."/web/uploads/";
+                    $uniquesavename=time().uniqid(rand());
+                    $path = explode('.',$_FILES['file-'.$value.'-1']['name'][0]);
+                    $ext = end($path);
+                    $destFile = $destFile. $uniquesavename . '.'.$ext;
+                    $filename = $_FILES['file-'.$value.'-1']["tmp_name"][0];
+                    // list($width, $height) = getimagesize( $filename );       
+                    move_uploaded_file($filename,  $destFile);
+                    $SoalExplanationRelations->file = $uniquesavename . '.'.$ext;
+                }
+                
+    
+    
+                
+                if(!empty($_FILES['audio-'.$value.'-1']['tmp_name'][0])){
+                    $destFile = \Yii::$app->basePath."/web/uploads/";
+                    $uniquesavename=time().uniqid(rand());
+                    $path = explode('.',$_FILES['audio-'.$value.'-1']['name'][0]);
+                    $ext = end($path);
+                    $destFile = $destFile. $uniquesavename . '.'.$ext;
+                    $filename = $_FILES['audio-'.$value.'-1']["tmp_name"][0];
+                    // list($width, $height) = getimagesize( $filename );       
+                    move_uploaded_file($filename,  $destFile);
+                    $SoalExplanationRelations->audio = $uniquesavename . '.'.$ext;
+                }
+                
             }
             else{
                 $SoalExplanationRelations = new SoalExplainationRelations();
@@ -963,10 +1055,43 @@ class SoalController extends Controller
                 $SoalExplanationRelations->question    = $value;
                 $SoalExplanationRelations->description      = $post['pembahasan-'.$value];
 
+    
+                if(!empty($_FILES['file-'.$value.'-1']['tmp_name'][0])){
+                    $destFile = \Yii::$app->basePath."/web/uploads/";
+                    $uniquesavename=time().uniqid(rand());
+                    $path = explode('.',$_FILES['file-'.$value.'-1']['name'][0]);
+                    $ext = end($path);
+                    $destFile = $destFile. $uniquesavename . '.'.$ext;
+                    $filename = $_FILES['file-'.$value.'-1']["tmp_name"][0];
+                    // list($width, $height) = getimagesize( $filename );       
+                    move_uploaded_file($filename,  $destFile);
+                    $SoalExplanationRelations->file = $uniquesavename . '.'.$ext;
+                }
+                else{
+                    $SoalExplanationRelations->file = "-";
+                }
+    
+    
+                
+                if(!empty($_FILES['audio-'.$value.'-1']['tmp_name'][0])){
+                    $destFile = \Yii::$app->basePath."/web/uploads/";
+                    $uniquesavename=time().uniqid(rand());
+                    $path = explode('.',$_FILES['audio-'.$value.'-1']['name'][0]);
+                    $ext = end($path);
+                    $destFile = $destFile. $uniquesavename . '.'.$ext;
+                    $filename = $_FILES['audio-'.$value.'-1']["tmp_name"][0];
+                    // list($width, $height) = getimagesize( $filename );       
+                    move_uploaded_file($filename,  $destFile);
+                    $SoalExplanationRelations->audio = $uniquesavename . '.'.$ext;
+                }
+                else{
+                    $SoalExplanationRelations->audio = "-";
+                }
             }
             $SoalExplanationRelations->translate        = "";
-            $SoalExplanationRelations->file        = "";
-            $SoalExplanationRelations->hidden    = 0;
+            // $SoalExplanationRelations->file        = "";
+
+            $SoalExplanationRelations->hidden      = 0;
             $SoalExplanationRelations->ordering    = 0;
     
             $SoalExplanationRelations->user_added = Yii::$app->user->id;
@@ -975,10 +1100,6 @@ class SoalController extends Controller
             $SoalExplanationRelations->date_modified = date('Y-m-d H:i:s');
             $SoalExplanationRelations->save(false);
 
-            // echo "<pre>";
-            // var_dump($post);
-            // var_dump($files);
-            // exit();
             \Yii::$app->session->setFlash('success', "Soal berhasil di simpan");
             return $this->redirect(['/Soal/soal/publish-soal','id' => $id]);        
 

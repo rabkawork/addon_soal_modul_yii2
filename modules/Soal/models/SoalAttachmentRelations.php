@@ -15,6 +15,7 @@ use Yii;
  * @property string $description
  * @property string $translate
  * @property string $file
+ * @property string $audio
  * @property int $ordering
  * @property int $user_added
  * @property int $user_modified
@@ -54,7 +55,7 @@ class SoalAttachmentRelations extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'description', 'translate'], 'string'],
+            [['type', 'description', 'translate','audio'], 'string'],
             [['attachment', 'description', 'translate', 'file', 'ordering', 'user_added', 'user_modified', 'date_added', 'date_modified', 'hidden'], 'required'],
             [['attachment', 'ordering', 'user_added', 'user_modified', 'hidden'], 'integer'],
             [['date_added', 'date_modified'], 'safe'],

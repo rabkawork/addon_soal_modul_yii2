@@ -109,18 +109,61 @@ use kartik\file\FileInput;
 									<textarea name="judul-<?php echo $value['id']; ?>" id="judul-<?php echo $value['id']; ?>" rows="10" cols="80"><?php echo $value['relations_questions']['description']; ?></textarea>
 								</div>	
 								
-
+								<!-- 
 								<div class="form-group">
 									<label for="">Attachment Pertanyaan</label>
 									<input type="file"  name="attachmentjudul-<?php echo $value['id']; ?>[]" multiple />
+								</div> -->
+			
+								<div class="form-group">
+									<label for="">Lampiran Pertanyaan Gambar</label>
+									<input type="file"  name="attachmentjudul-<?php echo $value['id']; ?>[]"  />
 								</div>
+								<div class="form-group">
+									<label for="">Lampiran Pertanyaan Audio</label>
+									<input type="file"  name="attachmentaudio-<?php echo $value['id']; ?>[]"  />
+								</div>
+
+
+								<div class="input-group">
+
+										<?php 
+											if($value['attachments']['file'] != "-" && !empty($value['attachments']['file'])):
+										?>
+										<div class="col-md-2">
+										
+											<img src="<?php echo \Yii::$app->request->baseUrl."/" ?>uploads/<?php echo $value['attachments']['file']; ?>" class="img-thumbnail" >
+										
+										</div>
+										<?php
+											endif;
+										?>
+
+
+										
+										<?php 
+											if($value['attachments']['audio'] != "-" && !empty($value['attachments']['audio'])):
+										?>
+										<a href="<?php echo \Yii::$app->request->baseUrl."/" ?>uploads/<?php echo $value['attachments']['audio']; ?>"><?php echo $value['attachments']['audio']; ?></a>
+
+										<?php
+											endif;
+										?>
+									
+								</div>
+	
+
+								
+								
+
+								
 
 
 							</div>
 							<!-- /.card-header -->
 							<div class="card-body">
 
-								<div class="form-group" id="pilgan-<?php echo $value['id']; ?>">
+								<div class="form-group" id="pilgan-<?php echo $value['id']; ?>"  <?php $value['type'] == 'MULTIPLE_CHOICE' ? '' : 'style="display:none;"' ?>>
 
 
 									<?php 
@@ -171,7 +214,20 @@ use kartik\file\FileInput;
 										<a class="btn btn-danger"  onclick="return delHideDb(this,'<?php echo $value['id']; ?>','<?php echo $number; ?>','<?php echo $choiceData['id']; ?>');"><i class="fa fa-trash"></i></a></span>
 										</div>				   
 									</div>
+									
 
+									
+									<?php 
+											if($choiceData['file'] != "-" && !empty($choiceData['file'])):
+								    ?>
+									<div class="input-group mb-3">
+										<div class="col-md-2">
+											<img src="<?php echo \Yii::$app->request->baseUrl."/" ?>uploads/<?php echo $choiceData['file']; ?>" class="img-thumbnail" >
+										</div>
+									</div>
+									<?php
+											endif;
+									?>
 									<?php
 										}
 									?>
@@ -179,22 +235,55 @@ use kartik\file\FileInput;
 
 								</div>
 
-								<div class="form-group" id="essay-<?php echo $value['id']; ?>" style="display:none;">
+								<div class="form-group" id="essay-<?php echo $value['id']; ?>" <?php $value['type'] == 'ESSAY' ? '' : 'style="display:none;"' ?>>
 									<textarea class="form-control" name="jawabanEssay-<?php echo $value['id']; ?>" placeholder="Isi jawaban soal"><?php echo $value['relations_questions']['description']; ?></textarea>
 								</div>
 
 
 								<div class="form-group">
-										<textarea name="pembahasan-<?php echo $value['id']; ?>" class="form-control" placeholder="Pembahasan :"><?php echo $value['explaination_relations']['description']; ?></textarea>
+										<textarea id="pembahasan-<?php echo $value['id']; ?>" name="pembahasan-<?php echo $value['id']; ?>" class="form-control" placeholder="Pembahasan :"><?php echo $value['explaination_relations']['description']; ?></textarea>
 								</div>
 								
-								
+<!-- 								
 								<div class="form-group">
 									<label for="">Attachment Pembahasan</label>
 									<input type="file"  name="file-<?php echo $value['id']; ?>-1[]" />
+								</div> -->
+
+								
+								<div class="form-group">
+									<label for="">Upload Pembahasan Photo</label>
+									<input type="file"  name="file-<?php echo $value['id']; ?>-1[]"  />
 								</div>
 
+								<div class="form-group">
+										<label for="">Upload Pembahasan Audio</label>
+										<input type="file"  name="audio-<?php echo $value['id']; ?>-1[]"  />
+								</div>
 
+								
+								<div class="input-group mb-3">
+										<?php 
+											if($value['explaination_relations']['file'] != "-" && !empty($value['explaination_relations']['file'])):
+										?>
+										<div class="col-md-2">
+											<img src="<?php echo \Yii::$app->request->baseUrl."/" ?>uploads/<?php echo $value['explaination_relations']['file']; ?>" class="img-thumbnail" >
+										</div>
+										<?php
+											endif;
+										?>
+
+										<?php 
+											if($value['explaination_relations']['audio'] != "-" && !empty($value['explaination_relations']['audio'])):
+										?>
+										<a href="<?php echo \Yii::$app->request->baseUrl."/" ?>uploads/<?php echo $value['explaination_relations']['audio']; ?>"><?php echo $value['explaination_relations']['audio']; ?></a>
+
+										<?php
+											endif;
+										?>
+									
+								</div>
+								
 								<div class="form-group">
 										<a onclick="return del('<?php echo $value['id']; ?>');" class="btn btn-danger"><i class="fa fa-trash"></i> Hapus Soal</a>
 								</div>
@@ -204,6 +293,23 @@ use kartik\file\FileInput;
 						<script type="text/javascript">
 							
 							ClassicEditor.create(document.querySelector("#judul-<?php echo $value['id']; ?>"), {
+									math: {
+										outputType: 'span'
+									}
+								})
+								.then(editor => {
+									window.editor = editor;
+									editor.model.document.on('change:data', () => {
+										// getEditorData();
+									});
+								})
+								.catch(error => {
+									// console.error( 'There was a problem initializing the editor.', error );
+								});
+
+
+								
+							ClassicEditor.create(document.querySelector("#pembahasan-<?php echo $value['id']; ?>"), {
 									math: {
 										outputType: 'span'
 									}
@@ -316,7 +422,7 @@ use kartik\file\FileInput;
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLongTitle">Import Soal Public</h5>
+				<h5 class="modal-title" id="exampleModalLongTitle">Ambil soal dari judul soal lain</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -516,8 +622,12 @@ use kartik\file\FileInput;
 	                </div>	
 
 					<div class="form-group">
-					   	  <label for="">Attachment Pertanyaan</label>
-						  <input type="file"  name="attachmentjudul-` + data + `[]" multiple />
+					   	  <label for="">Lampiran Pertanyaan Gambar</label>
+						  <input type="file"  name="attachmentjudul-` + data + `[]"  />
+					</div>
+					<div class="form-group">
+						  <label for="">Lampiran Pertanyaan Audio</label>
+						  <input type="file"  name="attachmentaudio-` + data + `[]"  />
 					</div>
 	                
 	              </div>
@@ -533,6 +643,7 @@ use kartik\file\FileInput;
 
 						  
 						  <div class="input-group-prepend">
+							
 							<span class="input-group-text"> <input type="file"   name="photo-` + data + `-1[]" /></span>
 							<span class="input-group-text"><a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','1');"><i class="fa fa-trash"></i></a></span>
 						  </div>				   
@@ -544,6 +655,7 @@ use kartik\file\FileInput;
 						  </div>
 						  <textarea name="SoaljawabanPilGab-` + data + `[]" class="form-control" placeholder="Opsi"></textarea>
 						  <div class="input-group-prepend">
+						
 							<span class="input-group-text"> <input type="file"   name="photo-` + data + `-2[]" /></span>
 							<span class="input-group-text"><a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','2');"><i class="fa fa-trash"></i></a></span>
 						  </div>				  
@@ -599,13 +711,18 @@ use kartik\file\FileInput;
 
 
 	              	   <div class="form-group">
-	              			<textarea name="pembahasan-` + data + `" class="form-control" placeholder="Pembahasan :"></textarea>
+	              			<textarea name="pembahasan-` + data + `" id="pembahasan-` + data + `" class="form-control"  placeholder="Pembahasan :"></textarea>
 					   </div>
 					
 					   
 					   <div class="form-group">
-					   	  <label for="">Attachment Pembahasan</label>
-						  <input type="file"  name="file-` + data + `-1[]" multiple />
+					   	  <label for="">Upload Pembahasan Photo</label>
+						  <input type="file"  name="file-` + data + `-1[]"  />
+					   </div>
+
+					   <div class="form-group">
+							<label for="">Upload Pembahasan Audio</label>
+							<input type="file"  name="audio-` + data + `-1[]"  />
 					   </div>
 
 
@@ -615,6 +732,22 @@ use kartik\file\FileInput;
 	              </div>
 		    	</div>
 			`);
+
+			ClassicEditor.create(document.querySelector("#pembahasan-" + data), {
+					math: {
+						outputType: 'span'
+					}
+				})
+				.then(editor => {
+					window.editor = editor;
+					editor.model.document.on('change:data', () => {
+						// getEditorData();
+					});
+				})
+				.catch(error => {
+					// console.error( 'There was a problem initializing the editor.', error );
+				});
+
 
 			ClassicEditor.create(document.querySelector("#judul-" + data), {
 					math: {
@@ -637,24 +770,35 @@ use kartik\file\FileInput;
 	});
 
 	function delHide(sel, subjectId, urutan) {
-		$(".dvi-" + subjectId + "-" + urutan).remove();
+
+		var answer = window.confirm("anda yakin akan menghapus data ?");
+		if (answer) {
+			$(".dvi-" + subjectId + "-" + urutan).remove();
+		}
+
+
 		return false;
 	}
 
 	function delHideDb(sel, subjectId, urutan,dbId) {
 
-
-		$.post("<?php echo Url::to(['/Soal/soal/del-pilgan']); ?>&id=" + dbId, function(data, status) {
-			$(".dvi-" + subjectId + "-" + urutan).remove();
-		});
+		
+		var answer = window.confirm("anda yakin akan menghapus data ?");
+		if (answer) {
+			$.post("<?php echo Url::to(['/Soal/soal/del-pilgan']); ?>&id=" + dbId, function(data, status) {
+				$(".dvi-" + subjectId + "-" + urutan).remove();
+			});
+		}
 		return false;
 	}
 
 	function del(id) {
-
-		$.post("<?php echo Url::to(['/Soal/soal/del-soal']); ?>&id=" + id, function(data, status) {
-			$(".data-" + id).remove();
-		});
+		var answer = window.confirm("anda yakin akan menghapus data ?");
+		if (answer) {
+			$.post("<?php echo Url::to(['/Soal/soal/del-soal']); ?>&id=" + id, function(data, status) {
+				$(".data-" + id).remove();
+			});
+		}
 		return false;
 	}
 </script>

@@ -88,7 +88,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
                   <tr>
-                      <td><?php echo $value['name']; ?> Tags <?php echo $value['tag']; ?></td>
+                      <td><a href="<?php echo  Url::to(['/Soal/soal/butirsoal','id' => $value['id']]); ?>"> <?php echo $value['name']; ?> </a> Tags <?php echo $value['tag']; ?></td>
                       <td><?php echo $countsoal; ?></td>
                       <td><?php echo $value['txt_lesson']; ?></td>
                       <td><?php echo $value['txt_class']; ?></td>
