@@ -159,7 +159,7 @@ class SoalController extends Controller
 
 
         $post =  \Yii::$app->request->post();
-
+  
         if (Yii::$app->request->isPost) {
             
             if($post['check'] == 'doc'){
@@ -187,13 +187,15 @@ class SoalController extends Controller
 
 
                         if($data->success == true){
+                            $countExisting = SoalQuestions::find()->where('subject = '.$id.' and  hidden = 0')->count();
+                            $b = $countExisting > 0 ? 1 : $countExisting;
 
                             foreach($data->soal as $key => $value){
                                 if(!empty($value->soal) && !empty($value->kunci) && !empty($value->opsi)){
                                     
                                     $soalQuetions = new SoalQuestions();
                                     $soalQuetions->subject = $id;
-                                    $soalQuetions->ordering    = 0;
+                                    $soalQuetions->ordering    = $b;
                                     $soalQuetions->bobot       = 0;
                                     $soalQuetions->audio_question    = '-';
                                     $soalQuetions->audio_explanation = '-';
@@ -216,7 +218,7 @@ class SoalController extends Controller
                                     $soalQuetionRelations->translate        = "";
                                     $soalQuetionRelations->file        = "";
                                     $soalQuetionRelations->hidden    = 0;
-                                    $soalQuetionRelations->ordering    = 0;
+                                    $soalQuetionRelations->ordering    = $b;
                             
                                     $soalQuetionRelations->user_added = Yii::$app->user->id;
                                     $soalQuetionRelations->user_modified = Yii::$app->user->id;
@@ -307,11 +309,15 @@ class SoalController extends Controller
             
             
                                 }
+                                $b++;
                             }
             
                             \Yii::$app->session->setFlash('success', "Import Document (docx) success.");
                         }
                     }
+
+                    return $this->redirect(['/Soal/soal/butirsoal','id' => $id]);        
+
                 }
             }
         }
@@ -342,6 +348,11 @@ class SoalController extends Controller
     
                     $success = 0;
                     //inilah looping untuk membaca cell dalam file excel,perkolom
+
+                    $countExisting = SoalQuestions::find()->where('subject = '.$id.' and  hidden = 0')->count();
+                    $c = $countExisting > 0 ? 1 : $countExisting;
+
+
                     for ($row = 3; $row <= $highestRow; ++$row) { 
                         
                         $kolom2 = $worksheet->getCellByColumnAndRow(2, $row)->getValue(); 
@@ -358,7 +369,7 @@ class SoalController extends Controller
     
                             $soalQuetions = new SoalQuestions();
                             $soalQuetions->subject = $id;
-                            $soalQuetions->ordering    = 0;
+                            $soalQuetions->ordering    = $c;
                             $soalQuetions->bobot       = 0;
                             $soalQuetions->audio_question    = '-';
                             $soalQuetions->audio_explanation = '-';
@@ -381,7 +392,7 @@ class SoalController extends Controller
                             $soalQuetionRelations->translate        = "";
                             $soalQuetionRelations->file        = "";
                             $soalQuetionRelations->hidden    = 0;
-                            $soalQuetionRelations->ordering    = 0;
+                            $soalQuetionRelations->ordering    = $c;
                     
                             $soalQuetionRelations->user_added = Yii::$app->user->id;
                             $soalQuetionRelations->user_modified = Yii::$app->user->id;
@@ -445,7 +456,9 @@ class SoalController extends Controller
                                     $b++;
                                 }
                             }
-    
+                            
+
+                            $c++;
                             $success++;
                         }
                     }
@@ -453,6 +466,10 @@ class SoalController extends Controller
                     if($success > 0) {
                         \Yii::$app->session->setFlash('success', "Import Excel success.");
                     }
+
+
+                    return $this->redirect(['/Soal/soal/butirsoal','id' => $id]);        
+
     
     
                 }
@@ -655,6 +672,8 @@ class SoalController extends Controller
         
         
         $listSoalSubjects = SoalQuestions::find()->where('subject = '.$subject.' and  hidden = 0')->asArray()->all();
+        $countExisting = SoalQuestions::find()->where('subject = '.$id.' and  hidden = 0')->count();
+        $b = $countExisting > 0 ? 1 : $countExisting;
         foreach ($listSoalSubjects as $key => $value) {
             $listSoalSubjects[$key]['relations_questions'] = SoalQuestionRelations::find()->where('question = '.$value['id'].' and  hidden = 0')->asArray()->one();
             $listSoalSubjects[$key]['explaination_relations'] = SoalExplainationRelations::find()->where('question = '.$value['id'].' and  hidden = 0')->asArray()->one();
@@ -667,7 +686,7 @@ class SoalController extends Controller
             $soalQuetions = new SoalQuestions();
             $soalQuetions->subject           = $id;
             $soalQuetions->type              = !empty($value['type']) ? $value['type'] : "";
-            $soalQuetions->ordering          = $key;
+            $soalQuetions->ordering          = $b;
             $soalQuetions->bobot             = !empty($value['bobot']) ? $value['bobot'] : "";
             $soalQuetions->audio_question    = !empty($value['audio_question']) ? $value['audio_question'] : "-";
             $soalQuetions->audio_explanation = !empty($value['audio_explanation']) ? $value['audio_explanation'] : "-";
@@ -691,7 +710,7 @@ class SoalController extends Controller
             $soalQuetionRelations->translate   = !empty($listSoalSubjects[$key]['relations_questions']["translate"]) ? $listSoalSubjects[$key]['relations_questions']["translate"] : "";
             $soalQuetionRelations->file        = !empty($listSoalSubjects[$key]['relations_questions']["file"]) ? $listSoalSubjects[$key]['relations_questions']["file"] : "";
             $soalQuetionRelations->hidden      = 0;
-            $soalQuetionRelations->ordering    = $key;
+            $soalQuetionRelations->ordering    = $b;
 
             $soalQuetionRelations->user_added = Yii::$app->user->id;
             $soalQuetionRelations->user_modified = Yii::$app->user->id;
@@ -723,14 +742,15 @@ class SoalController extends Controller
 
             if($value['type'] == 'MULTIPLE_CHOICE')
             {
+                $c = 1;
                 foreach($listSoalSubjects[$key]['choices'] as $key => $soaljawaban){
 
                     $SoalChoices = new SoalChoices();
-                    $SoalChoices->question = $id;
+                    $SoalChoices->question = $soalQuetions->id;
                     
                     $SoalChoices->hidden        = 0;
                     $SoalChoices->is_answer     = $soaljawaban['is_answer'];
-                    $SoalChoices->ordering      = $key;
+                    $SoalChoices->ordering      = $c;
                     $SoalChoices->user_added    = Yii::$app->user->id;
                     $SoalChoices->user_modified = Yii::$app->user->id;
                     $SoalChoices->date_added    = date('Y-m-d H:i:s');
@@ -740,21 +760,22 @@ class SoalController extends Controller
 
                     $SoalChoiceRelations = new SoalChoiceRelations();
                     $SoalChoiceRelations->choice = $SoalChoices->id;
-                    $SoalChoiceRelations->question = $id;
+                    $SoalChoiceRelations->question = $soalQuetions->id;;
                     $SoalChoiceRelations->description = $soaljawaban['description'];
                     $SoalChoiceRelations->translate = "-";
                     $SoalChoiceRelations->file = "-";
                     $SoalChoiceRelations->hidden = 0;
 
-                    $SoalChoiceRelations->ordering = $key;
+                    $SoalChoiceRelations->ordering = $c;
                     $SoalChoiceRelations->user_added = Yii::$app->user->id;
                     $SoalChoiceRelations->user_modified = Yii::$app->user->id;
                     $SoalChoiceRelations->date_added = date('Y-m-d H:i:s');
                     $SoalChoiceRelations->date_modified = date('Y-m-d H:i:s');
                     $SoalChoiceRelations->save(false);  
-
-                }
+                    $c++;
+                }   
             }
+            $b++;
         }
 
         echo "sukses";

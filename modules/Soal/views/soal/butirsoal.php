@@ -103,7 +103,7 @@ use kartik\file\FileInput;
 
 									<div class="col-md-6">
 										<label>Urutan soal</label>
-										<input type="text" class="form-control" name="ordering-<?php echo $value['id']; ?>" value="<?php echo (int) $value['ordering'] == 0 ? $value['ordering'] : $b; ?>" />
+										<input type="text" class="form-control" name="ordering-<?php echo $value['id']; ?>" value="<?php echo $b; ?>" />
 									</div>
 									<div class="col-md-6">
 
