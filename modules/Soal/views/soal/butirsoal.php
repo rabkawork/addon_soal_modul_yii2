@@ -33,6 +33,25 @@ use kartik\file\FileInput;
 		color: black;
 	}
 
+	.btn-file {
+	    position: relative;
+		overflow: hidden;
+	}
+	.btn-file input[type=file] {
+		position: absolute;
+		top: 0;
+		right: 0;
+		min-width: 100%;
+		min-height: 100%;
+		font-size: 100px;
+		text-align: right;
+		filter: alpha(opacity=0);
+		opacity: 0;
+		outline: none;   
+		cursor: inherit;
+		display: block;
+	}
+
 
 
 </style>
@@ -117,11 +136,16 @@ use kartik\file\FileInput;
 			
 								<div class="form-group">
 									<label for="">Lampiran Pertanyaan Gambar</label>
-									<input type="file"  name="attachmentjudul-<?php echo $value['id']; ?>[]"  />
+									<span class="btn btn-default btn-file">
+										<i class="fa fa-upload" aria-hidden="true"></i>  <input type="file"  name="attachmentjudul-<?php echo $value['id']; ?>[]"  />
+									</span>
 								</div>
 								<div class="form-group">
 									<label for="">Lampiran Pertanyaan Audio</label>
-									<input type="file"  name="attachmentaudio-<?php echo $value['id']; ?>[]"  />
+									<span class="btn btn-default btn-file">
+										<i class="fa fa-upload" aria-hidden="true"></i> 
+										<input type="file"  name="attachmentaudio-<?php echo $value['id']; ?>[]"  />
+									</span>
 								</div>
 
 
@@ -163,7 +187,7 @@ use kartik\file\FileInput;
 							<!-- /.card-header -->
 							<div class="card-body">
 
-								<div class="form-group" id="pilgan-<?php echo $value['id']; ?>"  <?php $value['type'] == 'MULTIPLE_CHOICE' ? '' : 'style="display:none;"' ?>>
+								<div class="form-group" id="pilgan-<?php echo $value['id']; ?>"  <?php echo  $value['type'] == 'MULTIPLE_CHOICE' ? '' : 'style="display:none;"' ?>>
 
 
 									<?php 
@@ -187,18 +211,7 @@ use kartik\file\FileInput;
 												$huruf = 'E';
 											}
 									?>
-									<!-- <div class="input-group mb-3 dvi-<?php echo $value['id']; ?>-<?php echo $number; ?>">
-										<div class="input-group-prepend">
-											<span class="input-group-text"><input type="radio" name="jawabanPilGab-<?php echo $value['id']; ?>[]" value="<?php echo $huruf; ?>" /><?php echo $huruf; ?></span>
-										</div>
-										<input type="text" name="SoaljawabanPilGab-<?php echo $value['id']; ?>[]" class="form-control" placeholder="Opsi" aria-label="Isi butir soal" aria-describedby="basic-addon1" value="<?php echo $choiceData['description'] ?>">
-										
-										
-										<input type="file"  name="photo-<?php echo $value['id']; ?>-<?php echo $number; ?>[]" />
-
-										<a class="btn btn-danger"  onclick="return delHideDb(this,'<?php echo $value['id']; ?>','<?php echo $number; ?>','<?php echo $choiceData['id']; ?>');"><i class="fa fa-trash"></i></a>
-
-									</div> -->
+									
 
 
 									<div class="input-group mb-3 dvi-<?php echo $value['id']; ?>-<?php echo $number; ?>">
@@ -209,7 +222,12 @@ use kartik\file\FileInput;
 
 										
 										<div class="input-group-prepend">
-											<span class="input-group-text"> <input type="file"   name="photo-<?php echo $value['id']; ?>-<?php echo $number; ?>[]" /></span>
+											<span class="input-group-text"> 
+											<span class="btn btn-default btn-file">
+												<i class="fa fa-upload" aria-hidden="true"></i> 
+												<input type="file"   name="photo-<?php echo $value['id']; ?>-<?php echo $number; ?>[]" />
+											</span>
+											</span>
 											<span class="input-group-text">
 										<a class="btn btn-danger"  onclick="return delHideDb(this,'<?php echo $value['id']; ?>','<?php echo $number; ?>','<?php echo $choiceData['id']; ?>');"><i class="fa fa-trash"></i></a></span>
 										</div>				   
@@ -235,7 +253,7 @@ use kartik\file\FileInput;
 
 								</div>
 
-								<div class="form-group" id="essay-<?php echo $value['id']; ?>" <?php $value['type'] == 'ESSAY' ? '' : 'style="display:none;"' ?>>
+								<div class="form-group" id="essay-<?php echo $value['id']; ?>" <?php echo $value['type'] == 'ESSAY' ? '' : 'style="display:none;"' ?>>
 									<textarea class="form-control" name="jawabanEssay-<?php echo $value['id']; ?>" placeholder="Isi jawaban soal"><?php echo $value['relations_questions']['description']; ?></textarea>
 								</div>
 
@@ -253,12 +271,20 @@ use kartik\file\FileInput;
 								
 								<div class="form-group">
 									<label for="">Upload Pembahasan Photo</label>
-									<input type="file"  name="file-<?php echo $value['id']; ?>-1[]"  />
+
+									<span class="btn btn-default btn-file">
+												<i class="fa fa-upload" aria-hidden="true"></i> 
+
+											<input type="file"  name="file-<?php echo $value['id']; ?>-1[]"  />
+									</span>
 								</div>
 
 								<div class="form-group">
 										<label for="">Upload Pembahasan Audio</label>
-										<input type="file"  name="audio-<?php echo $value['id']; ?>-1[]"  />
+										<span class="btn btn-default btn-file">
+												<i class="fa fa-upload" aria-hidden="true"></i> 
+												<input type="file"  name="audio-<?php echo $value['id']; ?>-1[]"  />
+										</span>
 								</div>
 
 								
@@ -623,11 +649,17 @@ use kartik\file\FileInput;
 
 					<div class="form-group">
 					   	  <label for="">Lampiran Pertanyaan Gambar</label>
-						  <input type="file"  name="attachmentjudul-` + data + `[]"  />
+							 <span class="btn btn-default btn-file">
+												<i class="fa fa-upload" aria-hidden="true"></i> 
+						 <input type="file"  name="attachmentjudul-` + data + `[]"  />
+							</span>
 					</div>
 					<div class="form-group">
 						  <label for="">Lampiran Pertanyaan Audio</label>
+						  <span class="btn btn-default btn-file">
+												<i class="fa fa-upload" aria-hidden="true"></i> 
 						  <input type="file"  name="attachmentaudio-` + data + `[]"  />
+						  </span>
 					</div>
 	                
 	              </div>
@@ -644,7 +676,13 @@ use kartik\file\FileInput;
 						  
 						  <div class="input-group-prepend">
 							
-							<span class="input-group-text"> <input type="file"   name="photo-` + data + `-1[]" /></span>
+							<span class="input-group-text"> 
+							<span class="btn btn-default btn-file">
+												<i class="fa fa-upload" aria-hidden="true"></i> 
+								<input type="file"   name="photo-` + data + `-1[]" />
+							</span>
+							
+							</span>
 							<span class="input-group-text"><a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','1');"><i class="fa fa-trash"></i></a></span>
 						  </div>				   
 						</div>
@@ -656,7 +694,13 @@ use kartik\file\FileInput;
 						  <textarea name="SoaljawabanPilGab-` + data + `[]" class="form-control" placeholder="Opsi"></textarea>
 						  <div class="input-group-prepend">
 						
-							<span class="input-group-text"> <input type="file"   name="photo-` + data + `-2[]" /></span>
+							<span class="input-group-text"> 
+								<span class="btn btn-default btn-file">
+												<i class="fa fa-upload" aria-hidden="true"></i> 
+
+								<input type="file"   name="photo-` + data + `-2[]" />
+								</span>
+							</span>
 							<span class="input-group-text"><a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','2');"><i class="fa fa-trash"></i></a></span>
 						  </div>				  
 
@@ -669,7 +713,12 @@ use kartik\file\FileInput;
 						  </div>
 						  <textarea name="SoaljawabanPilGab-` + data + `[]" class="form-control" placeholder="Opsi"></textarea>
 						  <div class="input-group-prepend">
-							<span class="input-group-text"> <input type="file"   name="photo-` + data + `-3[]" /></span>
+							<span class="input-group-text"> 
+							<span class="btn btn-default btn-file">
+												<i class="fa fa-upload" aria-hidden="true"></i> 
+								<input type="file"   name="photo-` + data + `-3[]" />
+							</span>
+							</span>
 							<span class="input-group-text"><a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','3');"><i class="fa fa-trash"></i></a></span>
 						  </div>				  
 
@@ -682,7 +731,12 @@ use kartik\file\FileInput;
 						  </div>
 						  <textarea name="SoaljawabanPilGab-` + data + `[]" class="form-control" placeholder="Opsi"></textarea>
 						  <div class="input-group-prepend">
-							<span class="input-group-text"> <input type="file"   name="photo-` + data + `-4[]" /></span>
+							<span class="input-group-text"> 
+							<span class="btn btn-default btn-file">
+												<i class="fa fa-upload" aria-hidden="true"></i> 
+								<input type="file"   name="photo-` + data + `-4[]" />
+								</span>
+								</span>
 							<span class="input-group-text"><a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','4');"><i class="fa fa-trash"></i></a></span>
 						  </div>				  
 
@@ -694,7 +748,12 @@ use kartik\file\FileInput;
 						  </div>
 						  <textarea name="SoaljawabanPilGab-` + data + `[]" class="form-control" placeholder="Opsi"></textarea>
 						  <div class="input-group-prepend">
-							<span class="input-group-text"> <input type="file"   name="photo-` + data + `-5[]" /></span>
+							<span class="input-group-text"> 
+								<span class="btn btn-default btn-file">
+												<i class="fa fa-upload" aria-hidden="true"></i> 
+									<input type="file"   name="photo-` + data + `-5[]" />
+								</span>
+							</span>
 							<span class="input-group-text"><a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','5');"><i class="fa fa-trash"></i></a></span>
 						  </div>				  
 
@@ -717,12 +776,18 @@ use kartik\file\FileInput;
 					   
 					   <div class="form-group">
 					   	  <label for="">Upload Pembahasan Photo</label>
-						  <input type="file"  name="file-` + data + `-1[]"  />
+							 <span class="btn btn-default btn-file">
+												<i class="fa fa-upload" aria-hidden="true"></i> 
+												<input type="file"  name="file-` + data + `-1[]"  />
+							 </span>
 					   </div>
 
 					   <div class="form-group">
 							<label for="">Upload Pembahasan Audio</label>
-							<input type="file"  name="audio-` + data + `-1[]"  />
+							<span class="btn btn-default btn-file">
+												<i class="fa fa-upload" aria-hidden="true"></i> 
+												<input type="file"  name="audio-` + data + `-1[]"  />
+							</span>
 					   </div>
 
 
