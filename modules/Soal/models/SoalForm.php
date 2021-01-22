@@ -50,7 +50,8 @@ class SoalForm extends Model
             [['last_cached', 'date_added', 'date_modified'], 'safe'],
             [['variant', 'code'], 'string', 'max' => 32],
             [['name', 'cover'], 'string', 'max' => 255],
-            [['name', 'code', 'keterangan'], 'required'],
+            // [['name', 'code', 'keterangan'], 'required'],
+            [['name',], 'required'],
 
         ];
     }

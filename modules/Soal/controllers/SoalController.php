@@ -167,8 +167,8 @@ class SoalController extends Controller
                 if ($uploadDoc->file && $uploadDoc->validate()){ 
                     $fileUpload = 'uploads/'. time(). $uploadDoc->file->baseName . '.' . $uploadDoc->file->extension;
                     $uploadDoc->file->saveAs($fileUpload);
-                    $urlDoc = Url::base(true).\Yii::$app->request->baseUrl."/".$fileUpload;
-                    
+                    $urlDoc = Url::base(true)."/".$fileUpload;
+
                     $curl = new curl\Curl();
                     $response = $curl->setOption(
                         CURLOPT_POSTFIELDS, 
@@ -767,7 +767,7 @@ class SoalController extends Controller
         $connection = \Yii::$app->db;
         $post  = \Yii::$app->request->post();
         $files = $_FILES; 
-
+   
 
         foreach ($post['opsiActive'] as $key => $value) {
 
@@ -1100,12 +1100,16 @@ class SoalController extends Controller
             $SoalExplanationRelations->date_modified = date('Y-m-d H:i:s');
             $SoalExplanationRelations->save(false);
 
-            \Yii::$app->session->setFlash('success', "Soal berhasil di simpan");
-            return $this->redirect(['/Soal/soal/publish-soal','id' => $id]);        
 
             
 
         }
+
+    
+        \Yii::$app->session->setFlash('success', "Soal berhasil di simpan");
+        return $this->redirect(['/Soal/soal/publish-soal','id' => $id]);        
+
+        
     }
 
 

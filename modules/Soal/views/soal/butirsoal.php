@@ -8,6 +8,7 @@ use kartik\file\FileInput;
 ?>
 
 <script src="<?= Yii::$app->request->baseUrl ?>/plugins/jquery/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 <script src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/mhchem.min.js"></script>
@@ -82,26 +83,19 @@ use kartik\file\FileInput;
 			</div>
 		</div>
 
-		<div class="col-md-3">
-			<div class="form-group">
-				<a class="btn btn-primary" data-toggle="modal" data-target="#modalDocs"><i class="fa fa-file-excel-o"></i> Upload (DOC)</a>
-			</div>
-			<div class="form-group">
-				<a class="btn btn-primary" data-toggle="modal" data-target="#modalExcels"><i class="fa fa-file-excel-o"></i> Upload (XLS)</a>
-			</div>
-			<div class="form-group">
-				<button class="btn btn-primary"><i class="fa fa-accept"></i> Publish</button>
-			</div>
-		</div>
+	
 	</div>
 
 	<div class="row">
 		<div class="col-md-9">
-			<div class="card" id="isiDataAppend">
+			<div  id="isiDataAppend">
 
 				<?php
+
+					$b = 1;
 					foreach ($listSoal as $key => $value) {
 				?>	
+					<div class="card">
 						<div class="data-<?php echo $value['id']; ?>">
 							<div class="card-header">
 								<div class="row">
@@ -109,7 +103,7 @@ use kartik\file\FileInput;
 
 									<div class="col-md-6">
 										<label>Urutan soal</label>
-										<input type="text" class="form-control" name="ordering-<?php echo $value['id']; ?>" value="<?php echo $value['ordering']; ?>" />
+										<input type="text" class="form-control" name="ordering-<?php echo $value['id']; ?>" value="<?php echo (int) $value['ordering'] == 0 ? $value['ordering'] : $b; ?>" />
 									</div>
 									<div class="col-md-6">
 
@@ -128,22 +122,19 @@ use kartik\file\FileInput;
 									<textarea name="judul-<?php echo $value['id']; ?>" id="judul-<?php echo $value['id']; ?>" rows="10" cols="80"><?php echo $value['relations_questions']['description']; ?></textarea>
 								</div>	
 								
-								<!-- 
-								<div class="form-group">
-									<label for="">Attachment Pertanyaan</label>
-									<input type="file"  name="attachmentjudul-<?php echo $value['id']; ?>[]" multiple />
-								</div> -->
+						
 			
 								<div class="form-group">
-									<label for="">Lampiran Pertanyaan Gambar</label>
-									<span class="btn btn-default btn-file">
-										<i class="fa fa-upload" aria-hidden="true"></i>  <input type="file"  name="attachmentjudul-<?php echo $value['id']; ?>[]"  />
+									<!-- <label for="">Lampiran Pertanyaan Gambar</label> -->
+									<span class="btn btn-default btn-file"> 
+										<i class="fa fa-upload" aria-hidden="true"></i> Photo
+										<input type="file"  name="attachmentjudul-<?php echo $value['id']; ?>[]"  />
 									</span>
-								</div>
-								<div class="form-group">
-									<label for="">Lampiran Pertanyaan Audio</label>
+								<!-- </div>
+								<div class="form-group"> -->
+									<!-- <label for="">Lampiran Pertanyaan Audio</label> -->
 									<span class="btn btn-default btn-file">
-										<i class="fa fa-upload" aria-hidden="true"></i> 
+										<i class="fa fa-upload" aria-hidden="true"></i> Audio
 										<input type="file"  name="attachmentaudio-<?php echo $value['id']; ?>[]"  />
 									</span>
 								</div>
@@ -175,7 +166,7 @@ use kartik\file\FileInput;
 										?>
 									
 								</div>
-	
+
 
 								
 								
@@ -237,7 +228,7 @@ use kartik\file\FileInput;
 									
 									<?php 
 											if($choiceData['file'] != "-" && !empty($choiceData['file'])):
-								    ?>
+									?>
 									<div class="input-group mb-3">
 										<div class="col-md-2">
 											<img src="<?php echo \Yii::$app->request->baseUrl."/" ?>uploads/<?php echo $choiceData['file']; ?>" class="img-thumbnail" >
@@ -262,27 +253,23 @@ use kartik\file\FileInput;
 										<textarea id="pembahasan-<?php echo $value['id']; ?>" name="pembahasan-<?php echo $value['id']; ?>" class="form-control" placeholder="Pembahasan :"><?php echo $value['explaination_relations']['description']; ?></textarea>
 								</div>
 								
-<!-- 								
-								<div class="form-group">
-									<label for="">Attachment Pembahasan</label>
-									<input type="file"  name="file-<?php echo $value['id']; ?>-1[]" />
-								</div> -->
+
 
 								
 								<div class="form-group">
-									<label for="">Upload Pembahasan Photo</label>
+									<!-- <label for="">Upload Pembahasan Photo</label> -->
 
 									<span class="btn btn-default btn-file">
-												<i class="fa fa-upload" aria-hidden="true"></i> 
+												<i class="fa fa-upload" aria-hidden="true"></i> Photo
 
 											<input type="file"  name="file-<?php echo $value['id']; ?>-1[]"  />
 									</span>
-								</div>
+								<!-- </div>
 
-								<div class="form-group">
-										<label for="">Upload Pembahasan Audio</label>
+								<div class="form-group"> -->
+										<!-- <label for="">Upload Pembahasan Audio</label> -->
 										<span class="btn btn-default btn-file">
-												<i class="fa fa-upload" aria-hidden="true"></i> 
+												<i class="fa fa-upload" aria-hidden="true"></i> Audio
 												<input type="file"  name="audio-<?php echo $value['id']; ?>-1[]"  />
 										</span>
 								</div>
@@ -314,7 +301,7 @@ use kartik\file\FileInput;
 										<a onclick="return del('<?php echo $value['id']; ?>');" class="btn btn-danger"><i class="fa fa-trash"></i> Hapus Soal</a>
 								</div>
 							</div>
-		    			</div>
+						</div>
 
 						<script type="text/javascript">
 							
@@ -350,7 +337,9 @@ use kartik\file\FileInput;
 									// console.error( 'There was a problem initializing the editor.', error );
 								});
 						</script>
+					</div>
 				<?php
+						$b++;
 					}
 				?>
 			</div>
@@ -373,13 +362,29 @@ use kartik\file\FileInput;
 				<a class="btn btn-warning" data-toggle="modal" data-target="#uploadSoalLama" id="btnUploadSoalLama"><i class="fa fa-upload"></i></a>
 			</div>
 		</div>
+
+
+		
+
+
 		<div class="col-md-2">
+			<div class="card">
+				<a class="btn btn-primary" data-toggle="modal" data-target="#modalDocs"><i class="fa fa-file-excel-o"></i> Upload (DOC)</a>
+			</div>
+			<div class="card">
+				<a class="btn btn-primary" data-toggle="modal" data-target="#modalExcels"><i class="fa fa-file-excel-o"></i> Upload (XLS)</a>
+			</div>
+			<div class="card">
+				<button class="btn btn-primary"><i class="fa fa-accept"></i> Publish</button>
+			</div>					
 			<div class="card">
 				<div class="card-header bg-secondary">
 					General Info
 				</div>
 				<!-- /.card-header -->
 				<div class="card-body">
+
+
 					<div class="col-sm-12">
 						<span><strong>Subject</strong></span>
 						<br />
@@ -569,6 +574,9 @@ use kartik\file\FileInput;
 
 
 <script type="text/javascript">
+
+
+	
 	function getval(sel, getId) {
 		// console.log(sel.value + " " + getId);
 		if (sel.value == 1) {
@@ -615,20 +623,23 @@ use kartik\file\FileInput;
 
 
 	});	
+	var c = parseInt('<?php echo $b; ?>');
 	
 	$("#tambahSoal").click(function() {
 		// return false;
+
+
 		$.post("<?php echo Url::to(['/Soal/soal/create-soal', 'subjectId' => $model['id']]); ?>", function(data, status) {
 
 			$("#isiDataAppend").append(`
-				<div class="data-` + data + `">
+			<div class="card"><div class="data-` + data + `">
 	              <div class="card-header">
 	                <div class="row">
 						<input type="hidden" value="`+data+`" name="opsiActive[]" />
 
 		                <div class="col-md-6">
 		                	<label>Urutan soal</label>
-	                		<input type="text" class="form-control" name="ordering-`+data+`" value="" />
+	                		<input type="text" class="form-control" name="ordering-`+data+`" value="`+c+`" />
 	                	</div>
 		                <div class="col-md-6">
 
@@ -648,16 +659,13 @@ use kartik\file\FileInput;
 	                </div>	
 
 					<div class="form-group">
-					   	  <label for="">Lampiran Pertanyaan Gambar</label>
 							 <span class="btn btn-default btn-file">
-												<i class="fa fa-upload" aria-hidden="true"></i> 
+												<i class="fa fa-upload" aria-hidden="true"></i> Photo
 						 <input type="file"  name="attachmentjudul-` + data + `[]"  />
 							</span>
-					</div>
-					<div class="form-group">
-						  <label for="">Lampiran Pertanyaan Audio</label>
+			
 						  <span class="btn btn-default btn-file">
-												<i class="fa fa-upload" aria-hidden="true"></i> 
+												<i class="fa fa-upload" aria-hidden="true"></i> Audio
 						  <input type="file"  name="attachmentaudio-` + data + `[]"  />
 						  </span>
 					</div>
@@ -775,17 +783,13 @@ use kartik\file\FileInput;
 					
 					   
 					   <div class="form-group">
-					   	  <label for="">Upload Pembahasan Photo</label>
 							 <span class="btn btn-default btn-file">
-												<i class="fa fa-upload" aria-hidden="true"></i> 
+												<i class="fa fa-upload" aria-hidden="true"></i> Photo
 												<input type="file"  name="file-` + data + `-1[]"  />
 							 </span>
-					   </div>
-
-					   <div class="form-group">
-							<label for="">Upload Pembahasan Audio</label>
+					 
 							<span class="btn btn-default btn-file">
-												<i class="fa fa-upload" aria-hidden="true"></i> 
+												<i class="fa fa-upload" aria-hidden="true"></i> Audio
 												<input type="file"  name="audio-` + data + `-1[]"  />
 							</span>
 					   </div>
@@ -796,7 +800,11 @@ use kartik\file\FileInput;
 	              	   </div>
 	              </div>
 		    	</div>
+		    	</div>
 			`);
+
+			
+			c++;
 
 			ClassicEditor.create(document.querySelector("#pembahasan-" + data), {
 					math: {
