@@ -862,7 +862,6 @@ class SoalController extends Controller
                     $SoalChoiceRelationsCount = SoalChoiceRelations::findOne(['question' => $value, 'choice' => $SoalChoices->id]);
                     if($SoalChoiceRelationsCount != NULL){
                         $SoalChoiceRelations = SoalChoiceRelations::findOne(['question' => $value, 'choice' => $SoalChoiceRelationsCount->id]);
-                        $SoalChoiceRelations->description = !empty($soaljawaban) ? $soaljawaban : '-';
 
 
                         if(!empty($_FILES['photo-'.$value.'-'.($key+1)]['tmp_name'][0])){
@@ -882,7 +881,7 @@ class SoalController extends Controller
                         $SoalChoiceRelations = new SoalChoiceRelations();
                         $SoalChoiceRelations->choice = $SoalChoices->id;
                         $SoalChoiceRelations->question = $value;
-                        $SoalChoiceRelations->description = $soaljawaban;
+                        // $SoalChoiceRelations->description = $soaljawaban;
                         $SoalChoiceRelations->translate = "-";
                         if(!empty($_FILES['photo-'.$value.'-'.($key+1)]['tmp_name'][0])){
                             $destFile = \Yii::$app->basePath."/web/uploads/";
@@ -899,13 +898,8 @@ class SoalController extends Controller
                             $SoalChoiceRelations->file = "-";
                         }
                     }
-
-
-
-
-
-
-
+                    $SoalChoiceRelations->description = !empty($soaljawaban) ? $soaljawaban : '-';
+                
                     $SoalChoiceRelations->hidden = 0;
 
                     $SoalChoiceRelations->ordering = $key;
