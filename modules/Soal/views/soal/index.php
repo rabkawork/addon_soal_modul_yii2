@@ -22,7 +22,25 @@ $this->params['breadcrumbs'][] = $this->title;
   <?php endif; ?>
 
 
+  <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
 
+          <div class="modal-header">
+            <h4 class="modal-title" id="deleteModal">Konfirmasi</h4>
+          </div>
+
+          <div class="modal-body">
+            <p>Apakah anda yakin ingin menghapus data ? </p>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Batal</button>
+            <a href="<?php echo  Url::to(['/Soal/soal/del']); ?>" id="data-del" class="btn btn-danger btn-ok"><i class="fa fa-btn fa-trash-o"></i>Hapus</a>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="row">
       <div class="col-md-12">
         <div class="card">
@@ -37,18 +55,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 <thead>
                   <tr>
                     <!-- <th style="width: 10px">#</th> -->
-                      <th style="width: 10px">Judul</th>
-                      <th>Jumlah</th>
-                      <th>Mata Pelajaran</th>
-                      <th>Kelas/Jurusan</th>
-                      <th>Jenjang</th>
-                      <th>Kurikulum</th>
-                      <th>Tahun Ajaran</th>
-                      <th>Tanggal Input</th>
-                      <th>Status</th>
-                      <th>Creator</th>
-                      <th>Harga</th>
-                      <th>Aksi</th>
+                      <th class="text-center">Judul</th>
+                      <th class="text-center">Jumlah</th>
+                      <th class="text-center">Mata Pelajaran</th>
+                      <th class="text-center">Kelas/Jurusan</th>
+                      <th class="text-center">Jenjang</th>
+                      <th class="text-center">Kurikulum</th>
+                      <th class="text-center">Tahun Ajaran</th>
+                      <th class="text-center">Tanggal Input</th>
+                      <th class="text-center">Status</th>
+                      <th class="text-center">Creator</th>
+                      <th class="text-center">Harga</th>
+                      <th class="text-center">Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -65,25 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   ?>
 
 
-                   <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-
-                        <div class="modal-header">
-                          <h4 class="modal-title" id="deleteModal">Konfirmasi</h4>
-                        </div>
-
-                        <div class="modal-body">
-                          <p>Apakah anda yakin ingin menghapus data ? </p>
-                        </div>
-
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-primary" data-dismiss="modal">Batal</button>
-                          <a href="<?php echo  Url::to(['/Soal/soal/del', 'id' => $value['id']]); ?>" class="btn btn-danger btn-ok"><i class="fa fa-btn fa-trash-o"></i>Hapus</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  
 
 
 
@@ -99,7 +99,7 @@ $this->params['breadcrumbs'][] = $this->title;
                       <td><?php echo $value['status'] == 0 ? '<span class="badge bg-warning">Private</span>' : '<span class="badge bg-success">Public</span>'; ?></td>
                       <td><?php echo $value['username']; ?></td>
                       <td>Rp. <?php echo number_format($value['price']);  ?></td>
-                      <td style="width: 30px"><a href="#" data-toggle="modal" data-target="#confirm-delete" class="btn btn-danger"><i class="fa fa-trash"></i></a><a href="<?php echo  Url::to(['/Soal/soal/update', 'id' => $value['id']]); ?>" class="btn btn-primary"><i class="fa fa-edit"></i></a></td>
+                      <td style="width: 30px"><a href="#" onclick="return del('<?php echo $value['id']; ?>');" data-toggle="modal" data-id="<?php echo $value['id']; ?>" data-target="#confirm-delete" class="btn btn-danger"><i class="fa fa-trash"></i></a><a href="<?php echo  Url::to(['/Soal/soal/update', 'id' => $value['id']]); ?>" class="btn btn-primary"><i class="fa fa-edit"></i></a></td>
                     </tr>
                   <?php
                     }
@@ -126,5 +126,13 @@ $this->params['breadcrumbs'][] = $this->title;
       </div>
     </div>
 
+  <script type="text/javascript">
+      function del(id)
+      { 
+          var url = $("#data-del").attr('href')+"&id="+id;
+          $("#data-del").attr('href',url);
+          return false;
+      }
+  </script>
 
 </div>

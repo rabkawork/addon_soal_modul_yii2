@@ -76,7 +76,7 @@ class SoalSubjects extends \yii\db\ActiveRecord
             [['variant', 'code'], 'string', 'max' => 32],
             [['name', 'cover'], 'string', 'max' => 255],
             // [['name', 'code', 'keterangan'], 'required'],
-            [['name', 'code'], 'required'],
+            [['name'], 'required'],
             
         ];
     }
