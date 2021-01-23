@@ -405,7 +405,7 @@ use kartik\file\FileInput;
 			<div id="navbar">
 				<a class="btn btn-primary" id="tambahSoal"><i class="fa fa-plus"></i></a>
 				<br />
-				<a class="btn btn-warning" data-toggle="modal" data-target="#uploadSoalLama" id="btnUploadSoalLama"><i class="fa fa-upload"></i></a>
+				
 			</div>
 		</div>
 
@@ -421,7 +421,13 @@ use kartik\file\FileInput;
 				<a class="btn btn-primary" data-toggle="modal" data-target="#modalExcels"><i class="fa fa-file-excel-o"></i> Upload (XLS)</a>
 			</div>
 			<div class="card">
-				<button class="btn btn-primary"><i class="fa fa-accept"></i> Publish</button>
+				<a class="btn btn-primary" data-toggle="modal" data-target="#uploadSoalLama" id="btnUploadSoalLama">Import dari Soal Lain</a>
+			</div>
+			<div class="card">
+				<a class="btn btn-primary" href="<?php echo Url::to(['/Soal/soal/publish-soal','id' => $model['id']]); ?>"><i class="fa fa-accept"></i> Publish</a>
+			</div>
+			<div class="card">
+				<button class="btn btn-warning"><i class="fa fa-accept"></i> Save</button>
 			</div>					
 			<div class="card">
 				<div class="card-header bg-secondary">

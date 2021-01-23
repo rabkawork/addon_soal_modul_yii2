@@ -1126,9 +1126,14 @@ class SoalController extends Controller
 
         }
 
+        var_dump($post);
+        var_dump($files);
+
+        exit();
+
     
         \Yii::$app->session->setFlash('success', "Soal berhasil di simpan");
-        return $this->redirect(['/Soal/soal/publish-soal','id' => $id]);        
+        return $this->redirect(['/Soal/soal/butirsoal','id' => $id]);        
 
         
     }
