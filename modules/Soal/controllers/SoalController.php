@@ -826,9 +826,12 @@ class SoalController extends Controller
             
                 // ini untuk posis create data
            
-
+                $d = 1;
                 foreach($post['SoaljawabanPilGab-'.$value] as $key => $soaljawaban){
-                    if(!empty($soal[$key]['id'])){
+
+                    $count = SoalChoices::findOne($soal[$key]['id']);
+
+                    if($count != NULL){
                         $SoalChoices = SoalChoices::findOne($soal[$key]['id']);
                     }
                     else{
@@ -874,13 +877,13 @@ class SoalController extends Controller
                         $SoalChoiceRelations = SoalChoiceRelations::findOne(['question' => $value, 'choice' => $SoalChoices->id]);
 
 
-                        if(!empty($_FILES['photo-'.$value.'-'.($key+1)]['tmp_name'][0])){
+                        if(!empty($_FILES['photo-'.$value.'-'.$d]['tmp_name'][0])){
                             $destFile = \Yii::$app->basePath."/web/uploads/";
                             $uniquesavename=time().uniqid(rand());
-                            $path = explode('.',$_FILES['photo-'.$value.'-'.($key+1)]['name'][0]);
+                            $path = explode('.',$_FILES['photo-'.$value.'-'.$d]['name'][0]);
                             $ext = end($path);
                             $destFile = $destFile. $uniquesavename . '.'.$ext;
-                            $filename = $_FILES['photo-'.$value.'-'.($key+1)]["tmp_name"][0];
+                            $filename = $_FILES['photo-'.$value.'-'.$d]["tmp_name"][0];
                             // list($width, $height) = getimagesize( $filename );       
                             move_uploaded_file($filename,  $destFile);
                             $SoalChoiceRelations->file = $uniquesavename . '.'.$ext;
@@ -893,13 +896,13 @@ class SoalController extends Controller
                         $SoalChoiceRelations->question = $value;
                         // $SoalChoiceRelations->description = $soaljawaban;
                         $SoalChoiceRelations->translate = "-";
-                        if(!empty($_FILES['photo-'.$value.'-'.($key+1)]['tmp_name'][0])){
+                        if(!empty($_FILES['photo-'.$value.'-'.$d]['tmp_name'][0])){
                             $destFile = \Yii::$app->basePath."/web/uploads/";
                             $uniquesavename=time().uniqid(rand());
-                            $path = explode('.',$_FILES['photo-'.$value.'-'.($key+1)]['name'][0]);
+                            $path = explode('.',$_FILES['photo-'.$value.'-'.$d]['name'][0]);
                             $ext = end($path);
                             $destFile = $destFile. $uniquesavename . '.'.$ext;
-                            $filename = $_FILES['photo-'.$value.'-'.($key+1)]["tmp_name"][0];
+                            $filename = $_FILES['photo-'.$value.'-'.$d]["tmp_name"][0];
                             // list($width, $height) = getimagesize( $filename );       
                             move_uploaded_file($filename,  $destFile);
                             $SoalChoiceRelations->file = $uniquesavename . '.'.$ext;
@@ -918,7 +921,7 @@ class SoalController extends Controller
                     $SoalChoiceRelations->date_added = date('Y-m-d H:i:s');
                     $SoalChoiceRelations->date_modified = date('Y-m-d H:i:s');
                     $SoalChoiceRelations->save(false);  
-
+                    $b++;
                 }
 
 
