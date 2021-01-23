@@ -405,6 +405,7 @@ use kartik\file\FileInput;
 			<div id="navbar">
 				<a class="btn btn-primary" id="tambahSoal"><i class="fa fa-plus"></i></a>
 				<br />
+				<a class="btn btn-warning" id="tambahSoal"><i class="fa fa-save"></i></a>
 				
 			</div>
 		</div>
@@ -426,9 +427,9 @@ use kartik\file\FileInput;
 			<div class="card">
 				<a class="btn btn-primary" href="<?php echo Url::to(['/Soal/soal/publish-soal','id' => $model['id']]); ?>"><i class="fa fa-accept"></i> Publish</a>
 			</div>
-			<div class="card">
+			<!-- <div class="card">
 				<button class="btn btn-warning"><i class="fa fa-accept"></i> Save</button>
-			</div>					
+			</div> -->					
 			<div class="card">
 				<div class="card-header bg-secondary">
 					General Info
