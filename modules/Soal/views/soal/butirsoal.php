@@ -405,7 +405,7 @@ use kartik\file\FileInput;
 			<div id="navbar">
 				<a class="btn btn-primary" id="tambahSoal"><i class="fa fa-plus"></i></a>
 				<br />
-				<a class="btn btn-warning" id="tambahSoal"><i class="fa fa-save"></i></a>
+				<button class="btn btn-warning" id="tambahSoal"><i class="fa fa-save"></i></button>
 				
 			</div>
 		</div>
