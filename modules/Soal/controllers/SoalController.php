@@ -1126,10 +1126,6 @@ class SoalController extends Controller
 
         }
 
-        var_dump($post);
-        var_dump($files);
-
-        exit();
 
     
         \Yii::$app->session->setFlash('success', "Soal berhasil di simpan");
