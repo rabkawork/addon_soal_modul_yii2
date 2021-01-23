@@ -217,6 +217,7 @@ class SoalController extends Controller
                                     $soalQuetionRelations->description      = $value->soal;
                                     $soalQuetionRelations->translate        = "";
                                     $soalQuetionRelations->file        = "";
+
                                     $soalQuetionRelations->hidden    = 0;
                                     $soalQuetionRelations->ordering    = $b;
                             
@@ -235,6 +236,8 @@ class SoalController extends Controller
                                     $SoalExplanationRelations->description      = "";
                                     $SoalExplanationRelations->translate        = "";
                                     $SoalExplanationRelations->file        = "";
+                                    $SoalExplanationRelations->audio        = "-";
+
                                     $SoalExplanationRelations->hidden    = 0;
                                     $SoalExplanationRelations->ordering    = 0;
                             
@@ -391,6 +394,7 @@ class SoalController extends Controller
                             $soalQuetionRelations->description      = $kolom2;
                             $soalQuetionRelations->translate        = "";
                             $soalQuetionRelations->file        = "";
+
                             $soalQuetionRelations->hidden    = 0;
                             $soalQuetionRelations->ordering    = $c;
                     
@@ -409,6 +413,8 @@ class SoalController extends Controller
                             $SoalExplanationRelations->description      = $kolom8;
                             $SoalExplanationRelations->translate        = "";
                             $SoalExplanationRelations->file        = "";
+                            $SoalExplanationRelations->audio        = "-";
+
                             $SoalExplanationRelations->hidden    = 0;
                             $SoalExplanationRelations->ordering    = 0;
                     
@@ -514,11 +520,13 @@ class SoalController extends Controller
                                     ->innerJoin('soal_choice_relations', 'soal_choice_relations.choice = soal_choices.id')
                                     ->where('soal_choices.question = '.$value['id'].' and  soal_choices.hidden = 0')->asArray()->all();
             $listSoalSubjects[$key]['attachments'] = SoalAttachments::find()
-            ->select('soal_attachments.*,soal_attachment_relations.*')
-            ->innerJoin('soal_attachment_relations', 'soal_attachment_relations.attachment = soal_attachments.id')
-            ->where('soal_attachments.subject = '.$id.' and  soal_attachments.hidden = 0')->asArray()->one();
+            ->select('soal_attachments.*,soal_attachment_questions.*')
+            ->innerJoin('soal_attachment_questions', 'soal_attachment_questions.attachment = soal_attachments.id')
+            ->where('soal_attachment_questions.question = '.$value['id'].' and  soal_attachments.hidden = 0')->asArray()->one();
 
         }
+
+
         
 
         return $this->render('butirsoal', [
@@ -638,6 +646,7 @@ class SoalController extends Controller
         $SoalExplanationRelations->description      = "";
         $SoalExplanationRelations->translate        = "";
         $SoalExplanationRelations->file        = "";
+        $SoalExplanationRelations->audio        = "";
         $SoalExplanationRelations->hidden    = 0;
         $SoalExplanationRelations->ordering    = 0;
 
@@ -729,7 +738,7 @@ class SoalController extends Controller
             $SoalExplanationRelations->description = !empty((string) $listSoalSubjects[$key]['explaination_relations']['description']) ? (string) $listSoalSubjects[$key]['explaination_relations']['description'] : "";
             $SoalExplanationRelations->translate   = !empty((string) $listSoalSubjects[$key]['explaination_relations']['translate']) ? (string) $listSoalSubjects[$key]['explaination_relations']['translate'] : "-";
             $SoalExplanationRelations->file        = !empty((string) $listSoalSubjects[$key]['explaination_relations']['file']) ? (string) $listSoalSubjects[$key]['explaination_relations']['file'] : "-";
-
+            $SoalExplanationRelations->audio       = "-";
             
             $SoalExplanationRelations->hidden      = 0;
             $SoalExplanationRelations->ordering    = 0;
@@ -788,7 +797,7 @@ class SoalController extends Controller
         $connection = \Yii::$app->db;
         $post  = \Yii::$app->request->post();
         $files = $_FILES; 
-   
+        
 
         foreach ($post['opsiActive'] as $key => $value) {
 
@@ -816,8 +825,9 @@ class SoalController extends Controller
                     ])->asArray()->all();
             
                 // ini untuk posis create data
-                foreach($post['SoaljawabanPilGab-'.$value] as $key => $soaljawaban){
+           
 
+                foreach($post['SoaljawabanPilGab-'.$value] as $key => $soaljawaban){
                     if(!empty($soal[$key]['id'])){
                         $SoalChoices = SoalChoices::findOne($soal[$key]['id']);
                     }
@@ -861,7 +871,7 @@ class SoalController extends Controller
 
                     $SoalChoiceRelationsCount = SoalChoiceRelations::findOne(['question' => $value, 'choice' => $SoalChoices->id]);
                     if($SoalChoiceRelationsCount != NULL){
-                        $SoalChoiceRelations = SoalChoiceRelations::findOne(['question' => $value, 'choice' => $SoalChoiceRelationsCount->id]);
+                        $SoalChoiceRelations = SoalChoiceRelations::findOne(['question' => $value, 'choice' => $SoalChoices->id]);
 
 
                         if(!empty($_FILES['photo-'.$value.'-'.($key+1)]['tmp_name'][0])){
@@ -898,8 +908,8 @@ class SoalController extends Controller
                             $SoalChoiceRelations->file = "-";
                         }
                     }
-                    $SoalChoiceRelations->description = !empty($soaljawaban) ? $soaljawaban : '-';
-                
+                    $SoalChoiceRelations->description = !empty($soaljawaban) ? (string) $soaljawaban : '-';
+                    
                     $SoalChoiceRelations->hidden = 0;
 
                     $SoalChoiceRelations->ordering = $key;
@@ -927,15 +937,16 @@ class SoalController extends Controller
 
 
             
-            $count = SoalAttachments::findOne(['subject' => $id]);
+            $count = SoalAttachments::findOne(['subject' => $id,'question' => $value]);
 
 
             if($count != NULL){
-                $SoalAttachments = SoalAttachments::findOne(['subject' => $id]);
+                $SoalAttachments = SoalAttachments::findOne(['subject' => $id,'question' => $value]);
             }
             else{
                 $SoalAttachments = new SoalAttachments();
                 $SoalAttachments->subject = $id;
+                $SoalAttachments->question = $value;
             }
 
             $SoalAttachments->hidden = 0;
@@ -946,10 +957,11 @@ class SoalController extends Controller
             $SoalAttachments->save(false);
 
             $attachmentId = $SoalAttachments->id;
+            
 
-            $count = SoalAttachmentRelations::findOne(['attachment' => $attachmentId]);
+            $count = SoalAttachmentQuestions::findOne(['attachment' => $attachmentId,'question' => $value]);
             if($count != NULL){
-                $SoalAttachmentsRelations = SoalAttachmentRelations::findOne(['attachment' => $attachmentId]);
+                $SoalAttachmentsRelations = SoalAttachmentQuestions::findOne(['attachment' => $attachmentId,'question' => $value]);
                 
                 
                 if(!empty($_FILES['attachmentjudul-'.$value]['tmp_name'][0])){
@@ -978,8 +990,9 @@ class SoalController extends Controller
 
             }
             else{
-                $SoalAttachmentsRelations = new SoalAttachmentRelations();
-                $SoalAttachmentsRelations->attachment = $id;
+                $SoalAttachmentsRelations = new SoalAttachmentQuestions();
+                $SoalAttachmentsRelations->attachment = $attachmentId;
+                $SoalAttachmentsRelations->question = $value;
     
                 if(!empty($_FILES['attachmentjudul-'.$value]['tmp_name'][0])){
                     $destFile = \Yii::$app->basePath."/web/uploads/";
@@ -1015,9 +1028,9 @@ class SoalController extends Controller
             }
 
             
-            $SoalAttachmentsRelations->description = "";
-            $SoalAttachmentsRelations->translate = "";
-            $SoalAttachmentsRelations->ordering = 0;
+            // $SoalAttachmentsRelations->description = "";
+            // $SoalAttachmentsRelations->translate = "";
+            // $SoalAttachmentsRelations->ordering = 0;
             $SoalAttachmentsRelations->hidden = 0;
             $SoalAttachmentsRelations->user_added = Yii::$app->user->id;
             $SoalAttachmentsRelations->user_modified = Yii::$app->user->id;
@@ -1114,18 +1127,13 @@ class SoalController extends Controller
             $SoalExplanationRelations->date_added = date('Y-m-d H:i:s');
             $SoalExplanationRelations->date_modified = date('Y-m-d H:i:s');
             $SoalExplanationRelations->save(false);
-
-
-            
-
         }
 
 
-    
-        \Yii::$app->session->setFlash('success', "Soal berhasil di simpan");
-        return $this->redirect(['/Soal/soal/butirsoal','id' => $id]);        
 
-        
+
+        \Yii::$app->session->setFlash('success', "Soal berhasil di simpan");
+        return $this->redirect(['/Soal/soal/butirsoal','id' => $id]);                
     }
 
 

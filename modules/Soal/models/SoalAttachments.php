@@ -11,6 +11,7 @@ use Yii;
  *
  * @property int $id
  * @property int $subject
+ * @property int $question
  * @property int $user_added
  * @property int $user_modified
  * @property string $date_added
@@ -50,7 +51,7 @@ class SoalAttachments extends \yii\db\ActiveRecord
     {
         return [
             [['subject', 'user_added', 'user_modified', 'date_added', 'date_modified', 'hidden'], 'required'],
-            [['subject', 'user_added', 'user_modified', 'hidden'], 'integer'],
+            [['subject', 'question', 'user_added', 'user_modified', 'hidden'], 'integer'],
             [['date_added', 'date_modified'], 'safe'],
         ];
     }
@@ -63,6 +64,7 @@ class SoalAttachments extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'subject' => 'Subject',
+            'question' => 'question',
             'user_added' => 'User Added',
             'user_modified' => 'User Modified',
             'date_added' => 'Date Added',

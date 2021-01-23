@@ -564,6 +564,9 @@ use kartik\file\FileInput;
 					</div>
 			</div>
 			<div class="modal-footer">
+
+				<a href="<?php echo Yii::$app->request->baseUrl; ?>/soal_sample.docx" class="btn btn-warning">
+				<i class="fa fa-file-doc-o"></i>Template Document</a>
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				<!-- <button type="button" class="btn btn-primary" id="ActionUploadDocs">Uplaod Docs</button> -->
 				<?= Html::submitButton('Upload Doc', ['class' => 'btn btn-success']) ?> 

@@ -14,6 +14,8 @@ use Yii;
  * @property int $question
  * @property int $user_added
  * @property int $user_modified
+ * @property string $file
+ * @property string $audio
  * @property string $date_added
  * @property string $date_modified
  * @property int $hidden
@@ -51,7 +53,7 @@ class SoalAttachmentQuestions extends \yii\db\ActiveRecord
     {
         return [
             [['attachment', 'question', 'user_added', 'user_modified', 'date_added', 'date_modified', 'hidden'], 'required'],
-            [['attachment', 'question', 'user_added', 'user_modified', 'hidden'], 'integer'],
+            [['attachment', 'file','audio', 'question', 'user_added', 'user_modified', 'hidden'], 'integer'],
             [['date_added', 'date_modified'], 'safe'],
         ];
     }
