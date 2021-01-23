@@ -68,7 +68,7 @@ use kartik\file\FileInput;
 
 
 
-<form action="<?php Url::to(['/Soal/soal/soal-publish']); ?>&id=<?= $model['id'] ?>" method="post" enctype="multipart/form-data">
+<form action="<?php echo Url::to(['/Soal/soal/soal-publish']); ?>&id=<?= $model['id'] ?>" method="post" enctype="multipart/form-data">
 	<!-- <div class="soal-subjects-update"> -->
 
 
