@@ -921,7 +921,7 @@ class SoalController extends Controller
                     $SoalChoiceRelations->date_added = date('Y-m-d H:i:s');
                     $SoalChoiceRelations->date_modified = date('Y-m-d H:i:s');
                     $SoalChoiceRelations->save(false);  
-                    $b++;
+                    $d++;
                 }
 
 
