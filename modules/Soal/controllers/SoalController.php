@@ -829,7 +829,10 @@ class SoalController extends Controller
                 $d = 1;
                 foreach($post['SoaljawabanPilGab-'.$value] as $key => $soaljawaban){
 
-                    $count = SoalChoices::findOne($soal[$key]['id']);
+                    $count = NULL;
+                    if(!empty($soal)){
+                        $count = SoalChoices::findOne($soal[$key]['id']);
+                    }
 
                     if($count != NULL){
                         $SoalChoices = SoalChoices::findOne($soal[$key]['id']);
