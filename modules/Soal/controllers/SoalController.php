@@ -862,7 +862,7 @@ class SoalController extends Controller
                     $SoalChoiceRelationsCount = SoalChoiceRelations::findOne(['question' => $value, 'choice' => $SoalChoices->id]);
                     if($SoalChoiceRelationsCount != NULL){
                         $SoalChoiceRelations = SoalChoiceRelations::findOne(['question' => $value, 'choice' => $SoalChoiceRelationsCount->id]);
-                        $SoalChoiceRelations->description = $soaljawaban;
+                        $SoalChoiceRelations->description = !empty($soaljawaban) ? $soaljawaban : '-';
 
 
                         if(!empty($_FILES['photo-'.$value.'-'.($key+1)]['tmp_name'][0])){

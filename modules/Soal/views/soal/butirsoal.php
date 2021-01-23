@@ -239,6 +239,52 @@ use kartik\file\FileInput;
 									?>
 									<?php
 										}
+
+
+										if(empty($value['choices'])){
+											for($i=1; $i<=5;$i++){
+
+												$huruf  = '';
+												if($i == 1){
+													$huruf = 'A';
+												}
+												else if($i == 2){
+													$huruf = 'B';
+												}
+												else if($i == 3){
+													$huruf = 'C';
+												}
+												else if($i == 4){
+													$huruf = 'D';
+												}
+												else if($i == 5){
+													$huruf = 'E';
+												}
+									?>
+
+
+											<div class="input-group mb-3 dvi-<?php echo $value['id']; ?>-<?php echo $i; ?>">
+												<div class="input-group-prepend">
+													<span class="input-group-text"><input type="radio" name="jawabanPilGab-<?php echo $value['id']; ?>[]" value="<?php echo $huruf; ?>" /><?php echo $huruf; ?></span>
+												</div>
+												<textarea name="SoaljawabanPilGab-<?php echo $value['id']; ?>[]" class="form-control" placeholder="Opsi"></textarea>		
+
+												
+												<div class="input-group-prepend">
+													<span class="input-group-text"> 
+													<span class="btn btn-default btn-file">
+														<i class="fa fa-upload" aria-hidden="true"></i> 
+														<input type="file"   name="photo-<?php echo $value['id']; ?>-<?php echo $i; ?>[]" />
+													</span>
+													</span>
+													<span class="input-group-text">
+
+												<a class="btn btn-danger"  onclick="return delHide(this,'<?php echo $value['id']; ?>','<?php echo $i; ?>');"><i class="fa fa-trash"></i></a></span>
+												</div>				   
+											</div>
+									<?php
+											}
+										}
 									?>
 
 
