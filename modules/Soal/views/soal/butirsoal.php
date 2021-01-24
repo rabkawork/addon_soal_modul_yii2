@@ -29,6 +29,15 @@ use kartik\file\FileInput;
 		text-decoration: none;
 	}
 
+	#navbar button {
+		float: left;
+		display: block;
+		color: white;
+		text-align: center;
+		padding: 15px;
+		text-decoration: none;
+	}
+
 	#navbar a:hover {
 		background-color: #ddd;
 		color: black;
@@ -159,7 +168,7 @@ use kartik\file\FileInput;
 
 										
 
-										<div class="col-md-2" id="previewAudio-<?php echo $value['id']; ?>">
+										<div  id="previewAudio-<?php echo $value['id']; ?>">
 											<?php 
 												if($value['attachments']['audio'] != "-" && !empty($value['attachments']['audio'])):
 											?>
@@ -347,7 +356,7 @@ use kartik\file\FileInput;
 											//endif;
 										?>
 
-										<div class="col-md-2" id="previewAudio2-<?php echo $value['id']; ?>">
+										<div  id="previewAudio2-<?php echo $value['id']; ?>">
 											
 											<?php 
 												if($value['explaination_relations']['audio'] != "-" && !empty($value['explaination_relations']['audio'])):
@@ -794,7 +803,7 @@ use kartik\file\FileInput;
 		  					<img class="img-thumbnail" style="display:none;" id="previewImage-` + data + `" />
 						</div>
 
-						<div class="col-md-2" id="previewAudio-` + data + `">
+						<div  id="previewAudio-` + data + `">
 		  					
 						</div>
 					</div>
@@ -962,7 +971,7 @@ use kartik\file\FileInput;
 			  					<img class="img-thumbnail" style="display:none;" id="previewImage2-` + data + `" />
 							</div>
 
-							<div class="col-md-2" id="previewAudio2-` + data + `">
+							<div  id="previewAudio2-` + data + `">
 			  					
 							</div>
 						</div>

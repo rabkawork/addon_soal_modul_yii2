@@ -448,7 +448,7 @@ class SoalController extends Controller
                 
                                     $SoalChoiceRelations = new SoalChoiceRelations();
                 
-                                    $SoalChoiceRelations->question = $id;
+                                    $SoalChoiceRelations->question = $soalQuetions->id;
                                     $SoalChoiceRelations->choice = $SoalChoices->id;
                                     $SoalChoiceRelations->description = $kolom ;
                                     $SoalChoiceRelations->translate = "-";
@@ -778,7 +778,7 @@ class SoalController extends Controller
 
                     $SoalChoiceRelations = new SoalChoiceRelations();
                     $SoalChoiceRelations->choice = $SoalChoices->id;
-                    $SoalChoiceRelations->question = $soalQuetions->id;;
+                    $SoalChoiceRelations->question = $soalQuetions->id;
                     $SoalChoiceRelations->description = $soaljawaban['description'];
                     $SoalChoiceRelations->translate = "-";
                     $SoalChoiceRelations->file = "-";
@@ -806,7 +806,10 @@ class SoalController extends Controller
         $connection = \Yii::$app->db;
         $post  = \Yii::$app->request->post();
         $files = $_FILES; 
-        
+        // echo "<pre>";
+        // var_dump($files);
+        // exit();
+
 
         foreach ($post['opsiActive'] as $key => $value) {
 
