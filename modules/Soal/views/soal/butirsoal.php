@@ -128,42 +128,47 @@ use kartik\file\FileInput;
 									<!-- <label for="">Lampiran Pertanyaan Gambar</label> -->
 									<span class="btn btn-default btn-file"> 
 										<i class="fa fa-upload" aria-hidden="true"></i> Photo
-										<input type="file"  name="attachmentjudul-<?php echo $value['id']; ?>[]"  />
+										<input type="file" class="browse-btn" data-id="imagePreview-<?php echo $value['id']; ?>" name="attachmentjudul-<?php echo $value['id']; ?>[]"  />
 									</span>
 								<!-- </div>
 								<div class="form-group"> -->
 									<!-- <label for="">Lampiran Pertanyaan Audio</label> -->
 									<span class="btn btn-default btn-file">
 										<i class="fa fa-upload" aria-hidden="true"></i> Audio
-										<input type="file"  name="attachmentaudio-<?php echo $value['id']; ?>[]"  />
+										<input type="file" class="browse-btn" data-id="previewAudio-<?php echo $value['id']; ?>"  name="attachmentaudio-<?php echo $value['id']; ?>[]"  />
 									</span>
 								</div>
+
+
 
 
 								<div class="input-group">
 
 										<?php 
-											if($value['attachments']['file'] != "-" && !empty($value['attachments']['file'])):
+											//if($value['attachments']['file'] != "-" && !empty($value['attachments']['file'])):
 										?>
 										<div class="col-md-2">
 										
-											<img src="<?php echo \Yii::$app->request->baseUrl."/" ?>uploads/<?php echo $value['attachments']['file']; ?>" class="img-thumbnail" >
+											<img id="imagePreview-<?php echo $value['id']; ?>" <?php echo $value['attachments']['file'] != "-" && !empty($value['attachments']['file']) ? '' : 'style="display:none;"'; ?> src="<?php echo \Yii::$app->request->baseUrl."/" ?>uploads/<?php echo $value['attachments']['file']; ?>" class="img-thumbnail" >
 										
 										</div>
 										<?php
-											endif;
+											//endif;
 										?>
 
 
 										
-										<?php 
-											if($value['attachments']['audio'] != "-" && !empty($value['attachments']['audio'])):
-										?>
-										<a href="<?php echo \Yii::$app->request->baseUrl."/" ?>uploads/<?php echo $value['attachments']['audio']; ?>"><?php echo $value['attachments']['audio']; ?></a>
 
-										<?php
-											endif;
-										?>
+										<div class="col-md-2" id="previewAudio-<?php echo $value['id']; ?>">
+											<?php 
+												if($value['attachments']['audio'] != "-" && !empty($value['attachments']['audio'])):
+											?>
+											<a href="<?php echo \Yii::$app->request->baseUrl."/" ?>uploads/<?php echo $value['attachments']['audio']; ?>"><?php echo $value['attachments']['audio']; ?></a>
+
+											<?php
+												endif;
+											?>
+										</div>
 									
 								</div>
 
@@ -216,7 +221,7 @@ use kartik\file\FileInput;
 											<span class="input-group-text"> 
 											<span class="btn btn-default btn-file">
 												<i class="fa fa-upload" aria-hidden="true"></i> 
-												<input type="file"   name="photo-<?php echo $value['id']; ?>-<?php echo $number; ?>[]" />
+												<input type="file" class="browse-btn" data-id="photo-<?php echo $value['id']; ?>-<?php echo $number; ?>" name="photo-<?php echo $value['id']; ?>-<?php echo $number; ?>[]" />
 											</span>
 											</span>
 											<span class="input-group-text">
@@ -227,15 +232,15 @@ use kartik\file\FileInput;
 
 									
 									<?php 
-											if($choiceData['file'] != "-" && !empty($choiceData['file'])):
+											//if($choiceData['file'] != "-" && !empty($choiceData['file'])):
 									?>
 									<div class="input-group mb-3">
 										<div class="col-md-2">
-											<img src="<?php echo \Yii::$app->request->baseUrl."/" ?>uploads/<?php echo $choiceData['file']; ?>" class="img-thumbnail" >
+											<img id="photo-<?php echo $value['id']; ?>-<?php echo $number; ?>" <?php echo  $choiceData['file'] != "-" && !empty($choiceData['file']) ? "" : "style='display:none;'"; ?> src="<?php echo \Yii::$app->request->baseUrl."/" ?>uploads/<?php echo $choiceData['file']; ?>" class="img-thumbnail" >
 										</div>
 									</div>
 									<?php
-											endif;
+											//endif;
 									?>
 									<?php
 										}
@@ -274,13 +279,20 @@ use kartik\file\FileInput;
 													<span class="input-group-text"> 
 													<span class="btn btn-default btn-file">
 														<i class="fa fa-upload" aria-hidden="true"></i> 
-														<input type="file"   name="photo-<?php echo $value['id']; ?>-<?php echo $i; ?>[]" />
+														<input type="file" class="browse-btn" data-id="photo-<?php echo $value['id']; ?>-<?php echo $i; ?>"  name="photo-<?php echo $value['id']; ?>-<?php echo $i; ?>[]" />
 													</span>
 													</span>
 													<span class="input-group-text">
 
 												<a class="btn btn-danger"  onclick="return delHide(this,'<?php echo $value['id']; ?>','<?php echo $i; ?>');"><i class="fa fa-trash"></i></a></span>
 												</div>				   
+											</div>
+
+
+											<div class="input-group mb-3">
+												<div class="col-md-2">
+													<img id="photo-<?php echo $value['id']; ?>-<?php echo $i; ?>" style="display:none;" src="" class="img-thumbnail" >
+												</div>
 											</div>
 									<?php
 											}
@@ -308,7 +320,7 @@ use kartik\file\FileInput;
 									<span class="btn btn-default btn-file">
 												<i class="fa fa-upload" aria-hidden="true"></i> Photo
 
-											<input type="file"  name="file-<?php echo $value['id']; ?>-1[]"  />
+											<input type="file" class="browse-btn" data-id="imagePreview2-<?php echo $value['id']; ?>"  name="file-<?php echo $value['id']; ?>-1[]"  />
 									</span>
 								<!-- </div>
 
@@ -316,30 +328,36 @@ use kartik\file\FileInput;
 										<!-- <label for="">Upload Pembahasan Audio</label> -->
 										<span class="btn btn-default btn-file">
 												<i class="fa fa-upload" aria-hidden="true"></i> Audio
-												<input type="file"  name="audio-<?php echo $value['id']; ?>-1[]"  />
+												<input type="file" class="browse-btn" data-id="previewAudio2-<?php echo $value['id']; ?>"  name="audio-<?php echo $value['id']; ?>-1[]"  />
 										</span>
 								</div>
 
 								
 								<div class="input-group mb-3">
-										<?php 
-											if($value['explaination_relations']['file'] != "-" && !empty($value['explaination_relations']['file'])):
+									
+											<?php 
+											// if($value['explaination_relations']['file'] != "-" && !empty($value['explaination_relations']['file'])):
 										?>
 										<div class="col-md-2">
-											<img src="<?php echo \Yii::$app->request->baseUrl."/" ?>uploads/<?php echo $value['explaination_relations']['file']; ?>" class="img-thumbnail" >
+											<img <?php echo $value['explaination_relations']['file'] != "-" && !empty($value['explaination_relations']['file']) ? '' : 'style="display:none";';  ?>
+
+											id="imagePreview2-<?php echo $value['id']; ?>" src="<?php echo \Yii::$app->request->baseUrl."/" ?>uploads/<?php echo $value['explaination_relations']['file']; ?>" class="img-thumbnail"  >
 										</div>
 										<?php
-											endif;
+											//endif;
 										?>
 
-										<?php 
-											if($value['explaination_relations']['audio'] != "-" && !empty($value['explaination_relations']['audio'])):
-										?>
-										<a href="<?php echo \Yii::$app->request->baseUrl."/" ?>uploads/<?php echo $value['explaination_relations']['audio']; ?>"><?php echo $value['explaination_relations']['audio']; ?></a>
+										<div class="col-md-2" id="previewAudio2-<?php echo $value['id']; ?>">
+											
+											<?php 
+												if($value['explaination_relations']['audio'] != "-" && !empty($value['explaination_relations']['audio'])):
+											?>
+											<a href="<?php echo \Yii::$app->request->baseUrl."/" ?>uploads/<?php echo $value['explaination_relations']['audio']; ?>"><?php echo $value['explaination_relations']['audio']; ?></a>
 
-										<?php
-											endif;
-										?>
+											<?php
+												endif;
+											?>
+										</div>
 									
 								</div>
 								
@@ -679,12 +697,56 @@ use kartik\file\FileInput;
 
 
 	});	
+
+
+	function showMyImage1(fileInput,id) {
+		//console.log(fileInput);
+		$("#"+id).show();
+	    var files = fileInput.files;
+
+
+	    var audioType = /audio.*/;
+        var file = files[0];
+        console.log(file);
+		if (file.type.match(audioType)) {
+			$("#"+id).empty();
+			$("#"+id).html('<a href="#">'+file['name']+'</a>');
+	        console.log('masuk sana');
+		}
+		else{
+
+		    for (var i = 0; i < files.length; i++) {
+		        var file = files[i];
+	        	// console.log(file.type);
+	        	
+					var imageType = /image.*/;
+			        
+
+			        if (!file.type.match(imageType)) {
+			            continue;
+			        }
+			      
+			        //alert(id);
+			        var img = document.getElementById(id);//$("#"+id)[0];
+			        //alert(img);
+			        //console.log(img);
+			        img.file = file;
+			        var reader = new FileReader();
+			        reader.onload = (function(aImg) {
+			        	//alert(aImg);
+			            return function(e) {
+			                aImg.src = e.target.result;
+			            };
+			        })(img);
+			        reader.readAsDataURL(file);
+			        console.log('masuk sini');
+		    }
+		}
+	}
+
 	var c = parseInt('<?php echo $b; ?>');
 	
 	$("#tambahSoal").click(function() {
-		// return false;
-
-
 		$.post("<?php echo Url::to(['/Soal/soal/create-soal', 'subjectId' => $model['id']]); ?>", function(data, status) {
 
 			$("#isiDataAppend").append(`
@@ -717,13 +779,24 @@ use kartik\file\FileInput;
 					<div class="form-group">
 							 <span class="btn btn-default btn-file">
 												<i class="fa fa-upload" aria-hidden="true"></i> Photo
-						 <input type="file"  name="attachmentjudul-` + data + `[]"  />
+						 				<input type="file" class="browse-btn" data-id="previewImage-` + data + `"  name="attachmentjudul-` + data + `[]"  />
 							</span>
 			
 						  <span class="btn btn-default btn-file">
-												<i class="fa fa-upload" aria-hidden="true"></i> Audio
-						  <input type="file"  name="attachmentaudio-` + data + `[]"  />
+									<i class="fa fa-upload" aria-hidden="true"></i> Audio
+			  						<input  type="file" class="browse-btn" data-id="previewAudio-` + data + `"  name="attachmentaudio-` + data + `[]"  />
 						  </span>
+
+					</div>
+
+					<div class="input-group">
+						<div class="col-md-2">
+		  					<img class="img-thumbnail" style="display:none;" id="previewImage-` + data + `" />
+						</div>
+
+						<div class="col-md-2" id="previewAudio-` + data + `">
+		  					
+						</div>
 					</div>
 	                
 	              </div>
@@ -743,13 +816,23 @@ use kartik\file\FileInput;
 							<span class="input-group-text"> 
 							<span class="btn btn-default btn-file">
 												<i class="fa fa-upload" aria-hidden="true"></i> 
-								<input type="file"   name="photo-` + data + `-1[]" />
+								<input type="file" class="browse-btn" data-id="photo-` + data + `-1"   name="photo-` + data + `-1[]" />
 							</span>
 							
 							</span>
 							<span class="input-group-text"><a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','1');"><i class="fa fa-trash"></i></a></span>
 						  </div>				   
 						</div>
+
+
+
+						<div class="input-group mb-3">
+							<div class="col-md-2">
+								<img id="photo-` + data + `-1" style="display:none;" src="" class="img-thumbnail" >
+							</div>
+						</div>
+
+
 
 						<div class="input-group mb-3 dvi-` + data + `-2">
 						  <div class="input-group-prepend">
@@ -762,14 +845,18 @@ use kartik\file\FileInput;
 								<span class="btn btn-default btn-file">
 												<i class="fa fa-upload" aria-hidden="true"></i> 
 
-								<input type="file"   name="photo-` + data + `-2[]" />
+								<input type="file" class="browse-btn" data-id="photo-` + data + `-2"   name="photo-` + data + `-2[]" />
 								</span>
 							</span>
 							<span class="input-group-text"><a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','2');"><i class="fa fa-trash"></i></a></span>
 						  </div>				  
 
 						</div>
-
+						<div class="input-group mb-3">
+							<div class="col-md-2">
+								<img id="photo-` + data + `-2" style="display:none;" src="" class="img-thumbnail" >
+							</div>
+						</div>
 
 						<div class="input-group mb-3 dvi-` + data + `-3">
 						  <div class="input-group-prepend">
@@ -780,12 +867,18 @@ use kartik\file\FileInput;
 							<span class="input-group-text"> 
 							<span class="btn btn-default btn-file">
 												<i class="fa fa-upload" aria-hidden="true"></i> 
-								<input type="file"   name="photo-` + data + `-3[]" />
+								<input type="file" class="browse-btn" data-id="photo-` + data + `-3"   name="photo-` + data + `-3[]" />
 							</span>
 							</span>
 							<span class="input-group-text"><a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','3');"><i class="fa fa-trash"></i></a></span>
 						  </div>				  
 
+						</div>
+
+						<div class="input-group mb-3">
+							<div class="col-md-2">
+								<img id="photo-` + data + `-3" style="display:none;" src="" class="img-thumbnail" >
+							</div>
 						</div>
 
 
@@ -798,12 +891,18 @@ use kartik\file\FileInput;
 							<span class="input-group-text"> 
 							<span class="btn btn-default btn-file">
 												<i class="fa fa-upload" aria-hidden="true"></i> 
-								<input type="file"   name="photo-` + data + `-4[]" />
+								<input type="file" class="browse-btn" data-id="photo-` + data + `-4"   name="photo-` + data + `-4[]" />
 								</span>
 								</span>
 							<span class="input-group-text"><a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','4');"><i class="fa fa-trash"></i></a></span>
 						  </div>				  
 
+						</div>
+
+						<div class="input-group mb-3">
+							<div class="col-md-2">
+								<img id="photo-` + data + `-4" style="display:none;" src="" class="img-thumbnail" >
+							</div>
 						</div>
 
 						<div class="input-group mb-3 dvi-` + data + `-5">
@@ -815,13 +914,19 @@ use kartik\file\FileInput;
 							<span class="input-group-text"> 
 								<span class="btn btn-default btn-file">
 												<i class="fa fa-upload" aria-hidden="true"></i> 
-									<input type="file"   name="photo-` + data + `-5[]" />
+									<input type="file" class="browse-btn" data-id="photo-` + data + `-5"   name="photo-` + data + `-5[]" />
 								</span>
 							</span>
 							<span class="input-group-text"><a class="btn btn-danger"  onclick="return delHide(this,'` + data + `','5');"><i class="fa fa-trash"></i></a></span>
 						  </div>				  
 
 
+						</div>
+
+						<div class="input-group mb-3">
+							<div class="col-md-2">
+								<img id="photo-` + data + `-5" style="display:none;" src="" class="img-thumbnail" >
+							</div>
 						</div>
 
 	              	  </div>
@@ -841,14 +946,26 @@ use kartik\file\FileInput;
 					   <div class="form-group">
 							 <span class="btn btn-default btn-file">
 												<i class="fa fa-upload" aria-hidden="true"></i> Photo
-												<input type="file"  name="file-` + data + `-1[]"  />
+												<input type="file" class="browse-btn" data-id="previewImage2-` + data + `"  name="file-` + data + `-1[]"  />
 							 </span>
 					 
 							<span class="btn btn-default btn-file">
 												<i class="fa fa-upload" aria-hidden="true"></i> Audio
-												<input type="file"  name="audio-` + data + `-1[]"  />
+												<input type="file" class="browse-btn" data-id="previewAudio2-` + data + `"  name="audio-` + data + `-1[]"  />
 							</span>
+
 					   </div>
+
+
+						<div class="input-group">
+							<div class="col-md-2">
+			  					<img class="img-thumbnail" style="display:none;" id="previewImage2-` + data + `" />
+							</div>
+
+							<div class="col-md-2" id="previewAudio2-` + data + `">
+			  					
+							</div>
+						</div>
 
 
 	              	   <div class="form-group">
@@ -858,6 +975,9 @@ use kartik\file\FileInput;
 		    	</div>
 		    	</div>
 			`);
+
+
+	
 
 			
 			c++;
@@ -897,6 +1017,14 @@ use kartik\file\FileInput;
 		});
 		return false;
 	});
+
+
+		$(document).on('change','.browse-btn', function(){
+	        		var thumbnailId = $(this).attr('data-id');
+	        		console.log(thumbnailId);
+	        		showMyImage1(this, thumbnailId)
+	        		console.log()
+	        });
 
 	function delHide(sel, subjectId, urutan) {
 

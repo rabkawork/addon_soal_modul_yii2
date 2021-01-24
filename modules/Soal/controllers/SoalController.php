@@ -343,7 +343,10 @@ class SoalController extends Controller
                     $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputFileType);
                     $reader->setLoadSheetsOnly(true);
                     $spreadsheet = $reader->load($uploadExcel->file->tempName);
+
+
                     $worksheet = $spreadsheet->getActiveSheet();
+
                     $highestRow = $worksheet->getHighestRow();
                     $highestColumn = $worksheet->getHighestColumn();
                     $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
@@ -367,7 +370,7 @@ class SoalController extends Controller
                         $kolom8 = $worksheet->getCellByColumnAndRow(8, $row)->getValue(); 
     
     
-                        if(!empty($kolom2) && !empty($kolom7) && !empty($kolom8))
+                        if(!empty($kolom2))
                         {
     
                             $soalQuetions = new SoalQuestions();
@@ -391,7 +394,7 @@ class SoalController extends Controller
                             $soalQuetionRelations->subject = $id;
                             $soalQuetionRelations->answer      = "";
                             $soalQuetionRelations->question    = $soalQuetions->id;
-                            $soalQuetionRelations->description      = $kolom2;
+                            $soalQuetionRelations->description      = !empty($kolom2) ? $kolom2 : '-';
                             $soalQuetionRelations->translate        = "";
                             $soalQuetionRelations->file        = "";
 
@@ -410,7 +413,7 @@ class SoalController extends Controller
                             $SoalExplanationRelations = new SoalExplainationRelations();
                             $SoalExplanationRelations->subject = $id;
                             $SoalExplanationRelations->question    = $soalQuetions->id;
-                            $SoalExplanationRelations->description      = $kolom8;
+                            $SoalExplanationRelations->description      = !empty($kolom8) ? $kolom8 : '-';
                             $SoalExplanationRelations->translate        = "";
                             $SoalExplanationRelations->file        = "";
                             $SoalExplanationRelations->audio        = "-";
@@ -447,7 +450,7 @@ class SoalController extends Controller
                 
                                     $SoalChoiceRelations->question = $id;
                                     $SoalChoiceRelations->choice = $SoalChoices->id;
-                                    $SoalChoiceRelations->description = $kolom;
+                                    $SoalChoiceRelations->description = $kolom ;
                                     $SoalChoiceRelations->translate = "-";
                                     $SoalChoiceRelations->file = "-";
                                     $SoalChoiceRelations->hidden = 0;
@@ -467,6 +470,12 @@ class SoalController extends Controller
                             $c++;
                             $success++;
                         }
+
+
+                        // var_dump($worksheet->getCellByColumnAndRow(2, 3)->getValue());   
+                        // var_dump($worksheet->getCellByColumnAndRow(7, 3)->getValue());   
+                        // var_dump($worksheet->getCellByColumnAndRow(8, 3)->getValue());   
+                        // exit();
                     }
     
                     if($success > 0) {
